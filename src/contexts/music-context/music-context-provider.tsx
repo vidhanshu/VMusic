@@ -7,18 +7,22 @@ import MusicContext from "./music-context";
 import NSMusic from "@/music";
 
 const MusicContextProvider = ({ children }: PropsWithChildren) => {
+  // Audio ref for audio player
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Keeping sidebar state global, so that it can be accessed from anywhere
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
+
+  // current music details
   const [currentMusicDetails, setCurrentMusicDetails] =
-  useState<NSMusic.IMusicProviderState>({
-    isPlaying: false,
-    music: null,
-      completedPercentage: 0,
+    useState<NSMusic.IMusicProviderState>({
+      isPlaying: false,
+      music: null,
       loop: false,
       mute: false,
-      volume: 100,
     });
-    
+
+    // Utility functions for player
   const setIsPlaying = (isPlaying: boolean) => {
     if (!audioRef.current?.src) return;
 
@@ -44,15 +48,6 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     setIsPlaying(!currentMusicDetails.isPlaying);
   };
 
-  const setCompletedPercentage = (percentage: number) => {
-    if (!audioRef.current?.src) return;
-
-    setCurrentMusicDetails((prev) => ({
-      ...prev,
-      completedPercentage: percentage,
-    }));
-  };
-
   const toggleLoop = () => {
     if (!audioRef.current?.src) return;
 
@@ -63,12 +58,6 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     if (!audioRef.current?.src) return;
 
     setCurrentMusicDetails((prev) => ({ ...prev, mute: !prev.mute }));
-  };
-
-  const setVolume = (volume: number) => {
-    if (!audioRef.current?.src) return;
-
-    setCurrentMusicDetails((prev) => ({ ...prev, volume }));
   };
 
   const setMute = (mute: boolean) => {
@@ -112,12 +101,8 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
         audioRef,
         toggleLoop,
         toggleMute,
-        setVolume,
         mute: currentMusicDetails.mute,
-        volume: currentMusicDetails.volume,
         loop: currentMusicDetails.loop,
-        setCompletedPercentage,
-        completedPercentage: currentMusicDetails.completedPercentage,
       }}
     >
       {children}

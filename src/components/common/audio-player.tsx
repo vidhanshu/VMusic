@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Heart,
   Pause,
@@ -11,31 +11,34 @@ import {
   SkipForward,
   ThumbsUp,
   Volume1,
+  Volume2,
   VolumeX,
-  X,
 } from "lucide-react";
 import { Button, Slider, Tooltip } from "@nextui-org/react";
 
-import { formattedTime, percentageToSeconds } from "@/utils/helpers";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
-interface IAudioPlayerProps {
+import { formattedTime, percentageToSeconds } from "@/utils/helpers";
+
+export interface IAudioPlayerProps {
   isSideBarPlayer?: boolean;
+  setSongProgress: React.Dispatch<React.SetStateAction<number>>;
+  songProgress: number;
+  setVolume: React.Dispatch<React.SetStateAction<number>>;
+  volume: number;
 }
-const AudioPlayer = ({ isSideBarPlayer }: IAudioPlayerProps) => {
-  const {
-    mute,
-    toggleMute,
-    currentMusic,
-    completedPercentage,
-    setCompletedPercentage,
-    audioRef,
-    volume,
-    setVolume,
-  } = useMusicContext();
+const AudioPlayer = ({
+  isSideBarPlayer,
+  setSongProgress,
+  setVolume,
+  songProgress,
+  volume,
+}: IAudioPlayerProps) => {
+  const { mute, toggleMute, currentMusic, audioRef, setIsPlaying } =
+    useMusicContext();
 
   const onUpdateMusicProgress = (val: any) => {
-    setCompletedPercentage(val);
+    setSongProgress(val);
     if (!audioRef?.current || !currentMusic?.duration) return;
     audioRef.current.currentTime = (val * Number(currentMusic.duration)) / 100;
   };
@@ -47,97 +50,97 @@ const AudioPlayer = ({ isSideBarPlayer }: IAudioPlayerProps) => {
     }
   };
 
-  if (isSideBarPlayer) {
-    return (
-      <div className="flex flex-col items-center gap-4">
-        <AudioPlayer.EssentialControls />
-        <Slider
-          aria-label="progress"
-          isDisabled={!currentMusic}
-          disableAnimation={!currentMusic}
-          onChange={onUpdateMusicProgress}
-          renderThumb={(props) => (
-            <span
-              {...props}
-              className="absolute top-[1px] h-4 w-4 cursor-pointer rounded-full bg-primary-50 hover:bg-primary-100 active:bg-primary-200"
-            />
-          )}
-          startContent={
-            <AudioPlayer.StartTime
-              duration={Number(currentMusic?.duration)}
-              completedPercentage={completedPercentage}
-            />
-          }
-          endContent={
-            <AudioPlayer.EndTime duration={Number(currentMusic?.duration)} />
-          }
-          classNames={{
-            track: "cursor-pointer",
-          }}
-          size="sm"
-          value={completedPercentage}
-          color="secondary"
-        />
-        <div className="self-start">
-          <AudioPlayer.SoundControls
-            mute={mute}
-            toggleMute={toggleMute}
-            volume={volume}
-            handleUpdateVolume={onUpdateVolume}
-          />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex flex-grow items-center gap-x-8">
-      <Slider
-        aria-label="progress"
-        isDisabled={!currentMusic}
-        disableAnimation={!currentMusic}
-        onChange={onUpdateMusicProgress}
-        renderThumb={(props) => (
-          <span
-            {...props}
-            className="absolute top-[1px] h-4 w-4 cursor-pointer rounded-full bg-primary-50 hover:bg-primary-100 active:bg-primary-200"
+    <>
+      {isSideBarPlayer ? (
+        <div className="flex flex-col items-center gap-4">
+          <AudioPlayer.EssentialControls />
+          <Slider
+            aria-label="progress"
+            isDisabled={!currentMusic}
+            disableAnimation={!currentMusic}
+            onChange={onUpdateMusicProgress}
+            renderThumb={(props) => (
+              <span
+                {...props}
+                className="absolute top-[1px] h-4 w-4 cursor-pointer rounded-full bg-primary-50 hover:bg-primary-100 active:bg-primary-200"
+              />
+            )}
+            startContent={
+              <AudioPlayer.StartTime
+                duration={Number(currentMusic?.duration)}
+                completedPercentage={songProgress}
+              />
+            }
+            endContent={
+              <AudioPlayer.EndTime duration={Number(currentMusic?.duration)} />
+            }
+            classNames={{
+              track: "cursor-pointer",
+            }}
+            size="sm"
+            value={songProgress}
+            color="secondary"
           />
-        )}
-        classNames={{
-          track: "cursor-pointer",
-        }}
-        startContent={
-          <div className="flex items-center gap-x-4">
-            <AudioPlayer.EssentialControls />
-            <AudioPlayer.StartTime
-              duration={Number(currentMusic?.duration)}
-              completedPercentage={completedPercentage}
+          <div className="self-start">
+            <AudioPlayer.SoundControls
+              mute={mute}
+              toggleMute={toggleMute}
+              volume={volume}
+              handleUpdateVolume={onUpdateVolume}
             />
           </div>
-        }
-        endContent={
-          <AudioPlayer.EndTime duration={Number(currentMusic?.duration)} />
-        }
-        size="sm"
-        value={completedPercentage}
-        color="secondary"
-      />
-      <div className="flex items-center gap-x-2">
-        <Button
-          variant="light"
-          radius="full"
-          isIconOnly
-          size="sm"
-          startContent={<Heart className="text-white" size={20} />}
-        />
-        <AudioPlayer.SoundControls
-          mute={mute}
-          toggleMute={toggleMute}
-          volume={volume}
-          handleUpdateVolume={onUpdateVolume}
-        />
-      </div>
-    </div>
+        </div>
+      ) : (
+        <div className="flex flex-grow items-center gap-x-8">
+          <Slider
+            aria-label="progress"
+            isDisabled={!currentMusic}
+            disableAnimation={!currentMusic}
+            onChange={onUpdateMusicProgress}
+            renderThumb={(props) => (
+              <span
+                {...props}
+                className="absolute top-[1px] h-4 w-4 cursor-pointer rounded-full bg-primary-50 hover:bg-primary-100 active:bg-primary-200"
+              />
+            )}
+            classNames={{
+              track: "cursor-pointer",
+            }}
+            startContent={
+              <div className="flex items-center gap-x-4">
+                <AudioPlayer.EssentialControls />
+                <AudioPlayer.StartTime
+                  duration={Number(currentMusic?.duration)}
+                  completedPercentage={songProgress}
+                />
+              </div>
+            }
+            endContent={
+              <AudioPlayer.EndTime duration={Number(currentMusic?.duration)} />
+            }
+            size="sm"
+            value={songProgress}
+            color="secondary"
+          />
+          <div className="flex items-center gap-x-2">
+            <Button
+              variant="light"
+              radius="full"
+              isIconOnly
+              size="sm"
+              startContent={<Heart className="text-white" size={20} />}
+            />
+            <AudioPlayer.SoundControls
+              mute={mute}
+              toggleMute={toggleMute}
+              volume={volume}
+              handleUpdateVolume={onUpdateVolume}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
@@ -185,10 +188,12 @@ AudioPlayer.SoundControls = ({
         isIconOnly
         size="sm"
         startContent={
-          mute ? (
+          mute || !volume ? (
             <VolumeX className="text-white" size={20} />
-          ) : (
+          ) : volume <= 50 ? (
             <Volume1 className="text-white" size={20} />
+          ) : (
+            <Volume2 className="text-white" size={20} />
           )
         }
       />
@@ -285,5 +290,29 @@ AudioPlayer.EssentialControls = () => {
         />
       </Tooltip>
     </div>
+  );
+};
+
+AudioPlayer.HiddenAudioElement = ({
+  setSongProgress,
+}: {
+  setSongProgress: React.Dispatch<React.SetStateAction<number>>;
+}) => {
+  const { audioRef, currentMusic, mute, loop } = useMusicContext();
+
+  return (
+    <audio
+      muted={mute}
+      loop={loop}
+      autoPlay
+      hidden
+      ref={audioRef}
+      onTimeUpdate={(a) => {
+        const timestamp = a.currentTarget;
+        const duration = Number(currentMusic?.duration) || 0;
+        const percentage = (timestamp.currentTime / duration) * 100;
+        setSongProgress(percentage);
+      }}
+    />
   );
 };

@@ -10,19 +10,19 @@ import Logo from "./Logo";
 
 import { SIDEBAR_MENU } from "@/utils/constants";
 import Typography from "./Typography";
+import useMusicContext from "@/contexts/music-context/use-music-context";
+import { SIDEBAR_ANIMATION } from "@/utils/common/constants";
 
 const Sidebar = () => {
+  const { isRightSidebarOpen } = useMusicContext();
+
   return (
     <m.aside
-      initial={{
-        x: -300,
-        opacity: 0,
-      }}
-      animate={{
-        x: 0,
-        opacity: 1,
-      }}
-      className="sticky top-0 z-[51] col-span-2 flex h-[calc(100vh-65px)] flex-grow flex-col justify-between border-r-[2px] border-primary-500 bg-primary-700 py-4"
+      {...SIDEBAR_ANIMATION}
+      className={cn(
+        "sticky top-0 z-[51] col-span-2 flex h-[calc(100vh-65px)] flex-grow flex-col justify-between border-r-[2px] border-primary-500 bg-primary-700 py-4",
+        isRightSidebarOpen && "h-screen",
+      )}
     >
       <div>
         <div className="flex items-center justify-center py-6">
@@ -31,7 +31,13 @@ const Sidebar = () => {
         <div className="space-y-8 pl-4  pt-8">
           {SIDEBAR_MENU.map((item, idx) => (
             <div key={idx}>
-              <Typography className="mb-4" color="secondary" variant="T_SemiBold_H8">{item.title}</Typography>
+              <Typography
+                className="mb-4"
+                color="secondary"
+                variant="T_SemiBold_H8"
+              >
+                {item.title}
+              </Typography>
               <ul className="space-y-2">
                 {item.menuItems.map((menuItem, idx) => (
                   <li key={idx}>
@@ -76,8 +82,9 @@ Sidebar.MenuItem = function ({ icon: Icon, title, link }: IMenuItemProps) {
       fullWidth
       startContent={<Icon size={16} />}
       className={cn(
-        "relative justify-start rounded-none rounded-l-md bg-transparent font-semibold text-primary-100 hover:bg-primary-300 focus-visible:outline-none hover:text-white",
-        isActive && "bg-gradient-to-r from-primary-300 to-primary-700 text-white",
+        "relative justify-start rounded-none rounded-l-md bg-transparent font-semibold text-primary-100 hover:bg-primary-300 hover:text-white focus-visible:outline-none",
+        isActive &&
+          "bg-gradient-to-r from-primary-300 to-primary-700 text-white",
       )}
     >
       {title}

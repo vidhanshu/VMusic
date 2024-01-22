@@ -50,24 +50,18 @@ namespace NSMusic {
     audioRef: React.RefObject<HTMLAudioElement> | null;
     isRightSidebarOpen: boolean;
     setIsRightSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    completedPercentage: number;
-    setCompletedPercentage: (percentage: number) => void;
     toggleLoop: () => void;
     loop: boolean;
     mute: boolean;
-    volume: number;
     toggleMute: () => void;
     setMute: (mute: boolean) => void;
-    setVolume: (volume: number) => void;
   }
 
   interface IMusicProviderState {
     isPlaying: boolean;
     music: null | IMusic;
-    completedPercentage: number;
     loop: boolean;
     mute: boolean;
-    volume: number;
   }
 }
 

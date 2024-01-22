@@ -1,40 +1,46 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import React, { useEffect, useState } from "react";
 import { Heart, Music, PlayCircle } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
-import { AnimatePresence, motion as m } from "framer-motion";
+import { motion as m } from "framer-motion";
 
 import Typography from "@/components/common/Typography";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import { HERO_CAROUSEL } from "@/utils/discover/constants";
+import { HERO_CARD_ANIMATION } from "@/utils/common/constants";
 
 const HeroCard = () => {
-  const [active, setActive] = useState(2);
   const { setCurrentMusic, currentMusic, setIsPlaying, isPlaying } =
     useMusicContext();
+
+  const [active, setActive] = useState(2);
+  const [autSlide, setAutSlide] = useState(true);
 
   const { name, image, songName } = HERO_CAROUSEL[active]!;
 
   useEffect(() => {
+    if (!autSlide) return;
     const interval = setInterval(() => {
-      setActive((i) => (i + 1) % HERO_CAROUSEL.length);
-    }, 5000);
+      setActive((prev) => (prev + 1) % HERO_CAROUSEL.length);
+    }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [autSlide]);
 
   // if the song which is there in the context is the same as the current song in this carousel
   const isCurrentSong = currentMusic?.id === HERO_CAROUSEL[active]?.music?.id;
 
+  // doing this all stuff instead of directly showing card cz of the animation
   return HERO_CAROUSEL.map((_, idx) => {
     return active === idx ? (
       <m.div
+        onMouseOver={() => setAutSlide(false)}
+        onMouseLeave={() => setAutSlide(true)}
         key={idx}
-        initial={{ y: -30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        {...HERO_CARD_ANIMATION}
         className="flex h-[351px] justify-between gap-x-16 overflow-hidden rounded-xl
             bg-[linear-gradient(90deg,_#332F4C_22.46%_22.46%,_#4A456B_47.75%_47.75%,_#958CDD_100%_100%)] px-8 pt-4"
       >

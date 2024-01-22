@@ -3,32 +3,28 @@
 import React from "react";
 import Image from "next/image";
 import { Play, X } from "lucide-react";
-import { Button } from "@nextui-org/react";
 import { motion as m } from "framer-motion";
+import { Button, cn } from "@nextui-org/react";
 
-import useMusicContext from "@/contexts/music-context/use-music-context";
 import Typography from "./Typography";
 import SongMetaCard from "./song-meta-card";
-import AudioPlayer from "./audio-player";
+import AudioPlayer, { IAudioPlayerProps } from "./audio-player";
 
-const RightSideBar = () => {
-  const { setIsRightSidebarOpen, currentMusic } = useMusicContext();
+import useMusicContext from "@/contexts/music-context/use-music-context";
+
+import { RIGHT_SONG_PLAYER_ANIMATION } from "@/utils/common/constants";
+
+const RightSideBar = (props: IAudioPlayerProps) => {
+  const { currentMusic, setIsRightSidebarOpen, isRightSidebarOpen } =
+    useMusicContext();
 
   return (
     <m.div
-      initial={{
-        x: 300,
-        opacity: 0,
-      }}
-      animate={{
-        x: 0,
-        opacity: 1,
-      }}
-      exit={{
-        x: 300,
-        opacity: 0,
-      }}
-      className="sticky top-[75px] h-[calc(100vh-65px-73px)] border-l-[2px] border-primary-500 bg-background p-4 shadow-md"
+      {...RIGHT_SONG_PLAYER_ANIMATION}
+      className={cn(
+        "h-[calc(100vh-65px-73px)] border-l-[2px] border-primary-500 bg-background/90 p-4 shadow-md backdrop-blur-md",
+        isRightSidebarOpen && "h-[calc(100vh-73px)]",
+      )}
     >
       <div className="flex justify-end">
         <Button
@@ -64,11 +60,11 @@ const RightSideBar = () => {
         />
       </div>
       {/* controls */}
-      <AudioPlayer isSideBarPlayer />
+      <AudioPlayer {...props} />
       {/* next in the queue */}
       <SongMetaCard
         fullWidth
-        className="flex justify-between p-8 mt-4"
+        className="mt-4 flex justify-between p-8"
         endContent={<Play className="text-white" />}
         artist="Vishal Mishra"
       />

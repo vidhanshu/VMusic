@@ -50,6 +50,7 @@ interface ITypeographyProps extends PropsWithChildren {
   className?: string;
   color?: CVariant;
   as?: React.ElementType;
+  isHoverUnderline?: boolean;
 }
 
 const getVariant = (variant: TypographyVariant) => {
@@ -255,6 +256,7 @@ function Typography({
   disableSelect = false,
   className,
   as,
+  isHoverUnderline = false,
   ...props
 }: ITypeographyProps) {
   if (!variant) {
@@ -274,7 +276,7 @@ function Typography({
 
   const content = (
     <Component
-      className={`${fontTypes} ${className} ${lineClampClass} ${textColor} overflow-wrap overflow-hidden leading-normal`}
+      className={`${fontTypes} ${className} ${lineClampClass} ${textColor} ${isHoverUnderline && "hover:underline"} overflow-wrap overflow-hidden leading-normal`}
       style={{ userSelect: disableSelect ? "none" : "auto" }}
       {...props}
     >

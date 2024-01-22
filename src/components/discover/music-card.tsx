@@ -8,9 +8,15 @@ interface IMusicCardProps {
   image?: string;
   name: string;
   artists: string;
+  handleOnClick: () => void;
 }
 
-const MusicCard = ({ image, name, artists }: IMusicCardProps) => {
+const MusicCard = ({
+  image,
+  name,
+  artists,
+  handleOnClick,
+}: IMusicCardProps) => {
   return (
     <div>
       <div className="group relative overflow-hidden rounded-lg">
@@ -19,10 +25,12 @@ const MusicCard = ({ image, name, artists }: IMusicCardProps) => {
           height={150}
           alt="music image"
           src={image || "/pahadon-mein.jpg"}
+          quality={100}
           className="mx-auto min-h-[150px] min-w-[150px]"
         />
         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity hover:bg-black/50 hover:opacity-100">
           <Button
+            onClick={handleOnClick}
             color="primary"
             radius="full"
             isIconOnly
@@ -41,8 +49,16 @@ const MusicCard = ({ image, name, artists }: IMusicCardProps) => {
         </div>
       </div>
       <div className="mt-1">
-        <Typography className="truncate w-[150px] text-center">{name}</Typography>
-        <Typography color="secondary" variant="T_Regular_H8" className="truncate w-[150px] text-center">{artists}</Typography>
+        <Typography className="w-[150px] truncate text-center">
+          {name}
+        </Typography>
+        <Typography
+          color="secondary"
+          variant="T_Regular_H8"
+          className="w-[150px] truncate text-center"
+        >
+          {artists}
+        </Typography>
       </div>
     </div>
   );

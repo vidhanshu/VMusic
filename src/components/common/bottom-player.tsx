@@ -1,92 +1,101 @@
+"use client";
+
 import React from "react";
-import { Button, Slider, User, cn } from "@nextui-org/react";
-import { Heart, Play, SkipBack, SkipForward, Volume1 } from "lucide-react";
-import SongMetaCard from "./song-meta-card";
+import { Button } from "@nextui-org/react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import useMusicContext from "@/contexts/music-context/use-music-context";
+import Typography from "./Typography";
+import Image from "next/image";
+import Link from "next/link";
+import AudioPlayer from "./audio-player";
 
 const BottomPlayer = () => {
+  const {
+    audioRef,
+    isRightSidebarOpen,
+    currentMusic,
+    mute,
+    loop,
+    setIsRightSidebarOpen,
+    setCompletedPercentage,
+  } = useMusicContext();
+
   return (
     <div className="relative h-[65px]">
+      {/**
+       * hidden audio element responsible for playing music
+       */}
+      <audio
+        muted={mute}
+        loop={loop}
+        autoPlay
+        hidden
+        ref={audioRef}
+        onTimeUpdate={(a) => {
+          const timestamp = a.currentTarget;
+          const duration = Number(currentMusic?.duration) || 0;
+          const percentage = (timestamp.currentTime / duration) * 100;
+          setCompletedPercentage(percentage);
+        }}
+      />
+
       {/**
        * Cannot give h-full because it's not fix relative to the above div
        * rather it's relative to the whole page
        */}
       <div className="fixed bottom-0 flex h-[65px] w-full items-center justify-between gap-x-8 bg-[#1D1B2D] px-4">
-        <SongMetaCard className="text-white" artist="Vishal Mishra" />
-        <div className="flex flex-grow items-center gap-x-2">
-          <Slider
-            renderThumb={(props) => (
-              <span
-                {...props}
-                className="absolute top-[1px] h-4 w-4 cursor-pointer rounded-full bg-primary-50 hover:bg-primary-100 active:bg-primary-200"
-              />
-            )}
-            classNames={{
-              track: "cursor-pointer",
-            }}
-            startContent={
-              <div className="flex items-center gap-x-4">
-                <div className="flex items-center gap-x-2">
-                  <Button
-                    className="rounded-full"
-                    variant="light"
-                    color="primary"
-                    isIconOnly
-                    startContent={<SkipBack size={20} className="text-white" />}
-                  />
-                  <Button
-                    className="rounded-full"
-                    variant="light"
-                    color="primary"
-                    isIconOnly
-                    startContent={<Play size={20} className="text-white" />}
-                  />
-                  <Button
-                    className="rounded-full"
-                    variant="light"
-                    color="primary"
-                    isIconOnly
-                    startContent={
-                      <SkipForward size={20} className="text-white" />
-                    }
-                  />
-                </div>
-                <p className="text-white">00:30</p>
-              </div>
-            }
-            size="sm"
-            defaultValue={50}
-            color="secondary"
-          />
-          <p className="text-white">00:30</p>
-          <Button
-            variant="light"
-            radius="full"
-            isIconOnly
-            size="sm"
-            startContent={<Heart className="text-white" size={20} />}
-          />
-
-          <div className="flex min-w-[150px] items-center gap-x-2">
+        <div className="flex items-center justify-center gap-x-4 rounded-sm px-6">
+          <div className="relative overflow-hidden rounded-md">
+            <Image
+              width={55}
+              height={55}
+              alt="current-music-image"
+              src={currentMusic?.image?.[1]?.link || "/vmusic.svg"}
+            />
             <Button
-              variant="light"
+              className="absolute right-3 top-3"
               radius="full"
               isIconOnly
+              variant="faded"
               size="sm"
-              startContent={<Volume1 className="text-white" size={20} />}
-            />
-            <Slider
-              renderThumb={(props) => (
-                <span
-                  {...props}
-                  className="absolute top-[1px] h-4 w-4 cursor-pointer rounded-full bg-success hover:bg-success-300 active:bg-success-200"
-                />
-              )}
-              color="success"
-              size="sm"
-              defaultValue={20}
+              startContent={
+                isRightSidebarOpen ? (
+                  <ChevronDown size={20} className="text-white" />
+                ) : (
+                  <ChevronUp size={20} className="text-white" />
+                )
+              }
+              onClick={() => {
+                setIsRightSidebarOpen((prev) => !prev);
+              }}
             />
           </div>
+          <div>
+            <Link href="/#">
+              <Typography
+                isHoverUnderline
+                className="max-w-[150px] text-ellipsis text-nowrap"
+                variant="T_SemiBold_H6"
+              >
+                {currentMusic?.name || "Please select a song"}
+              </Typography>
+            </Link>
+            {/* Show only one artist */}
+            <Link href="/#">
+              <Typography
+                isHoverUnderline
+                className="max-w-[150px] text-ellipsis text-nowrap"
+                variant="T_Regular_H8"
+                color="secondary"
+              >
+                {currentMusic?.primaryArtists ||
+                  currentMusic?.featuredArtists ||
+                  "Unknown"}
+              </Typography>
+            </Link>
+          </div>
         </div>
+        <AudioPlayer />
       </div>
     </div>
   );

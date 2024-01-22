@@ -8,7 +8,7 @@ import { Button, cn } from "@nextui-org/react";
 
 import Typography from "./Typography";
 import SongMetaCard from "./song-meta-card";
-import AudioPlayer, { IAudioPlayerProps } from "./audio-player";
+import AudioPlayer, { type IAudioPlayerProps } from "./audio-player";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
@@ -41,7 +41,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
             className="mx-auto max-w-[300px] truncate text-center"
             variant="T_SemiBold_H4"
           >
-            {currentMusic?.name || "Please play a song"}
+            {currentMusic?.name ?? "Please play a song"}
           </Typography>
           <Typography
             className="mx-auto max-w-[300px] truncate text-center"
@@ -53,7 +53,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
         </div>
         <Image
           className="mx-auto aspect-square w-full max-w-[300px] rounded-lg object-cover"
-          src={currentMusic?.image?.[2]?.link || "/vmusic.svg"}
+          src={currentMusic?.image?.[2]?.link ?? "/vmusic.svg"}
           width={200}
           height={200}
           alt="music image"

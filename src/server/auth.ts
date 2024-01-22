@@ -6,7 +6,7 @@ import {
 } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import { env } from "@/env";
+// import { env } from "@/env";
 import { db } from "@/server/db";
 
 /**
@@ -60,7 +60,7 @@ export const authOptions: NextAuthOptions = {
           type: "password",
         },
       },
-      authorize(credentials, req) {
+      authorize() {
         // TODO: Implement login logic here
         return null;
       },

@@ -65,8 +65,8 @@ const HeroCard = () => {
                     isCurrentSong && isPlaying && "bg-success text-white",
                   )}
                   onClick={() => {
-                    if (!isCurrentSong)
-                      setCurrentMusic(HERO_CAROUSEL[active]?.music! as any);
+                    if (!isCurrentSong && !!HERO_CAROUSEL[active]?.music)
+                      setCurrentMusic(HERO_CAROUSEL[active]?.music ?? null);
                     else {
                       setIsPlaying(!isPlaying);
                     }

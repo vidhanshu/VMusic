@@ -1,8 +1,6 @@
-import React, { PropsWithChildren } from "react";
-
 import CommonLayout from "@/components/common/common-layout";
 
-const MainLayout = ({ children }: PropsWithChildren) => {
+const MainLayout = ({ children }: React.PropsWithChildren) => {
   return <CommonLayout>{children}</CommonLayout>;
 };
 

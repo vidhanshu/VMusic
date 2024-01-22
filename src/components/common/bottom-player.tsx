@@ -8,7 +8,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { AnimatePresence, motion as m } from "framer-motion";
 
 import Typography from "./Typography";
-import AudioPlayer from "./audio-player";
+import AudioPlayer, { HiddenAudioElement } from "./audio-player";
 import RightSideBar from "./right-sidebar";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
@@ -24,7 +24,7 @@ const BottomPlayer = () => {
 
   return (
     <>
-      <AudioPlayer.HiddenAudioElement setSongProgress={setSongProgress} />
+      <HiddenAudioElement setSongProgress={setSongProgress} />
       <AnimatePresence>
         {isRightSidebarOpen && (
           <m.div
@@ -67,15 +67,15 @@ const BottomPlayer = () => {
               className="fixed bottom-0 flex h-[65px] w-full items-center justify-between gap-x-8 bg-[#1D1B2D]/90 px-4 backdrop-blur-md"
             >
               <div className="flex items-center justify-center gap-x-4 rounded-sm px-6">
-                <div className="relative overflow-hidden rounded-md">
+                <div className="group relative overflow-hidden rounded-md">
                   <Image
                     width={55}
                     height={55}
                     alt="current-music-image"
-                    src={currentMusic?.image?.[1]?.link || "/vmusic.svg"}
+                    src={currentMusic?.image?.[1]?.link ?? "/vmusic.svg"}
                   />
                   <Button
-                    className="absolute right-3 top-3"
+                    className="absolute right-3 top-3 opacity-0 group-hover:opacity-100"
                     radius="full"
                     isIconOnly
                     variant="faded"
@@ -99,7 +99,7 @@ const BottomPlayer = () => {
                       className="max-w-[150px] text-ellipsis text-nowrap"
                       variant="T_SemiBold_H6"
                     >
-                      {currentMusic?.name || "Please select a song"}
+                      {currentMusic?.name ?? "Please select a song"}
                     </Typography>
                   </Link>
                   {/* Show only one artist */}
@@ -110,8 +110,8 @@ const BottomPlayer = () => {
                       variant="T_Regular_H8"
                       color="secondary"
                     >
-                      {currentMusic?.primaryArtists ||
-                        currentMusic?.featuredArtists ||
+                      {(!!currentMusic?.primaryArtists ||
+                        !!currentMusic?.featuredArtists) ??
                         "Unknown"}
                     </Typography>
                   </Link>

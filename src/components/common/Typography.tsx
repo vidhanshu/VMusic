@@ -1,6 +1,4 @@
-import React, { PropsWithChildren } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import React, { type PropsWithChildren } from "react";
 
 export type TypographyVariant =
   | "T_Bold_H1"
@@ -263,8 +261,8 @@ function Typography({
     throw new Error("variant is required");
   }
 
-  let { className: fontTypes, element: Element } = getVariant(variant);
-  let textColor = getColor(color);
+  const { className: fontTypes, element: Element } = getVariant(variant);
+  const textColor = getColor(color);
 
   const lineClampClass = maxLines
     ? maxLines > 0
@@ -272,7 +270,7 @@ function Typography({
       : "whitespace-normal"
     : "";
 
-  let Component = as ?? Element;
+  const Component = as ?? Element;
 
   const content = (
     <Component

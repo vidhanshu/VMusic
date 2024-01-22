@@ -1,4 +1,11 @@
-export const HERO_CAROUSEL = [
+import type NSMusic from "@/music";
+
+export const HERO_CAROUSEL: {
+  songName: string;
+  name: string;
+  image: string;
+  music: NSMusic.IMusic;
+}[] = [
   {
     songName: "Break My Heart",
     name: "Dua Lipa",

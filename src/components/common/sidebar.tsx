@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button, cn } from "@nextui-org/react";
 import { motion as m } from "framer-motion";
-import { ChevronRight, LucideIcon } from "lucide-react";
+import { ChevronRight, type LucideIcon } from "lucide-react";
 
 import Logo from "./Logo";
 
@@ -41,7 +41,7 @@ const Sidebar = () => {
               <ul className="space-y-2">
                 {item.menuItems.map((menuItem, idx) => (
                   <li key={idx}>
-                    <Sidebar.MenuItem {...menuItem} />
+                    <MenuItem {...menuItem} />
                   </li>
                 ))}
               </ul>
@@ -70,7 +70,8 @@ interface IMenuItemProps {
   title: string;
   link: string;
 }
-Sidebar.MenuItem = function ({ icon: Icon, title, link }: IMenuItemProps) {
+
+export const MenuItem = function ({ icon: Icon, title, link }: IMenuItemProps) {
   const pathname = usePathname();
   const isActive = pathname === link;
 

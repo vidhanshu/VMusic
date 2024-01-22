@@ -1,10 +1,15 @@
 "use client";
 
-import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
+import React, {
+  type PropsWithChildren,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import MusicContext from "./music-context";
 
-import NSMusic from "@/music";
+import type NSMusic from "@/music";
 
 const MusicContextProvider = ({ children }: PropsWithChildren) => {
   // Audio ref for audio player
@@ -22,22 +27,22 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
       mute: false,
     });
 
-    // Utility functions for player
+  // Utility functions for player
   const setIsPlaying = (isPlaying: boolean) => {
     if (!audioRef.current?.src) return;
 
     setCurrentMusicDetails((prev) => ({ ...prev, isPlaying }));
   };
 
-  const setCurrentMusic = (music: NSMusic.IMusic) => {
+  const setCurrentMusic = (music: NSMusic.IMusic | null) => {
     if (!audioRef.current) return;
 
     setCurrentMusicDetails((prev) => ({ ...prev, music }));
 
     const musicUrl =
-      music.downloadUrl?.[2]?.link ||
-      music.downloadUrl?.[1]?.link ||
-      music.downloadUrl?.[0]?.link ||
+      music?.downloadUrl?.[2]?.link ??
+      music?.downloadUrl?.[1]?.link ??
+      music?.downloadUrl?.[0]?.link ??
       "";
     audioRef.current.src = musicUrl;
     setIsPlaying(true);
@@ -76,6 +81,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (!audioRef.current?.src) return;
     if (currentMusicDetails.isPlaying) {
+      // eslint-disable-next-line
       audioRef.current.play();
     } else {
       audioRef.current.pause();
@@ -87,9 +93,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
       value={{
         // right sidebar
         isRightSidebarOpen,
-        setIsRightSidebarOpen: setIsRightSidebarOpen as React.Dispatch<
-          React.SetStateAction<boolean>
-        >,
+        setIsRightSidebarOpen: setIsRightSidebarOpen,
         // music
         currentMusic: currentMusicDetails.music,
         isPlaying: currentMusicDetails.isPlaying,

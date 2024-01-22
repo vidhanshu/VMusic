@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 namespace NSMusic {
   interface IImageSong {
     quality: string;
@@ -14,17 +16,17 @@ namespace NSMusic {
       url: string;
     };
     year: string;
-    releaseDate?: string;
-    duration: number;
+    releaseDate: null | string;
+    duration: string;
     label: string;
     primaryArtists: string;
     primaryArtistsId: string;
     featuredArtists: string;
     featuredArtistsId: string;
-    explicitContent: 0;
-    playCount: number;
+    explicitContent: number;
+    playCount: string | number;
     language: string;
-    hasLyrics: boolean;
+    hasLyrics: boolean | string;
     url: string;
     copyright: string;
     image: IImageSong[];
@@ -43,7 +45,7 @@ namespace NSMusic {
   interface IMusicContext {
     isPlaying: boolean;
     setIsPlaying: (isPlaying: boolean) => void;
-    setCurrentMusic: (music: IMusic) => void;
+    setCurrentMusic: (music: IMusic | null) => void;
     togglePlay: () => void;
     setPlayPause: (isPlaying: boolean) => void;
     currentMusic: IMusic | null;

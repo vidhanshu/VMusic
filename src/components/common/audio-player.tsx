@@ -34,19 +34,22 @@ const AudioPlayer = ({
   songProgress,
   volume,
 }: IAudioPlayerProps) => {
-  const { mute, toggleMute, currentMusic, audioRef, setIsPlaying } =
-    useMusicContext();
+  const { mute, toggleMute, currentMusic, audioRef } = useMusicContext();
 
-  const onUpdateMusicProgress = (val: any) => {
-    setSongProgress(val);
+  const onUpdateMusicProgress = (val: number | number[]) => {
+    const val1 = val as number;
+
+    setSongProgress(val1);
     if (!audioRef?.current || !currentMusic?.duration) return;
-    audioRef.current.currentTime = (val * Number(currentMusic.duration)) / 100;
+    audioRef.current.currentTime = (val1 * Number(currentMusic.duration)) / 100;
   };
 
-  const onUpdateVolume = (val: any) => {
+  const onUpdateVolume = (val: number | number[]) => {
+    const val1 = val as number;
+
     if (audioRef?.current) {
-      audioRef.current.volume = val / 100;
-      setVolume(val);
+      audioRef.current.volume = val1 / 100;
+      setVolume(val1);
     }
   };
 
@@ -54,7 +57,7 @@ const AudioPlayer = ({
     <>
       {isSideBarPlayer ? (
         <div className="flex flex-col items-center gap-4">
-          <AudioPlayer.EssentialControls />
+          <EssentialControls />
           <Slider
             aria-label="progress"
             isDisabled={!currentMusic}
@@ -67,14 +70,12 @@ const AudioPlayer = ({
               />
             )}
             startContent={
-              <AudioPlayer.StartTime
+              <StartTime
                 duration={Number(currentMusic?.duration)}
                 completedPercentage={songProgress}
               />
             }
-            endContent={
-              <AudioPlayer.EndTime duration={Number(currentMusic?.duration)} />
-            }
+            endContent={<EndTime duration={Number(currentMusic?.duration)} />}
             classNames={{
               track: "cursor-pointer",
             }}
@@ -83,7 +84,7 @@ const AudioPlayer = ({
             color="secondary"
           />
           <div className="self-start">
-            <AudioPlayer.SoundControls
+            <SoundControls
               mute={mute}
               toggleMute={toggleMute}
               volume={volume}
@@ -109,16 +110,14 @@ const AudioPlayer = ({
             }}
             startContent={
               <div className="flex items-center gap-x-4">
-                <AudioPlayer.EssentialControls />
-                <AudioPlayer.StartTime
+                <EssentialControls />
+                <StartTime
                   duration={Number(currentMusic?.duration)}
                   completedPercentage={songProgress}
                 />
               </div>
             }
-            endContent={
-              <AudioPlayer.EndTime duration={Number(currentMusic?.duration)} />
-            }
+            endContent={<EndTime duration={Number(currentMusic?.duration)} />}
             size="sm"
             value={songProgress}
             color="secondary"
@@ -131,7 +130,7 @@ const AudioPlayer = ({
               size="sm"
               startContent={<Heart className="text-white" size={20} />}
             />
-            <AudioPlayer.SoundControls
+            <SoundControls
               mute={mute}
               toggleMute={toggleMute}
               volume={volume}
@@ -144,9 +143,11 @@ const AudioPlayer = ({
   );
 };
 
+AudioPlayer.displayName = "AudioPlayer";
+
 export default AudioPlayer;
 
-AudioPlayer.StartTime = ({
+export const StartTime = ({
   completedPercentage,
   duration,
 }: {
@@ -162,19 +163,19 @@ AudioPlayer.StartTime = ({
   );
 };
 
-AudioPlayer.EndTime = ({ duration }: { duration: number }) => {
+export const EndTime = ({ duration }: { duration: number }) => {
   return (
     <p className="text-xs text-white">{formattedTime(Number(duration))}</p>
   );
 };
 
-AudioPlayer.SoundControls = ({
+export const SoundControls = ({
   mute,
   toggleMute,
   handleUpdateVolume,
   volume,
 }: {
-  handleUpdateVolume: (val: any) => void;
+  handleUpdateVolume: (val: number | number[]) => void;
   mute: boolean;
   toggleMute: () => void;
   volume: number;
@@ -214,7 +215,7 @@ AudioPlayer.SoundControls = ({
   );
 };
 
-AudioPlayer.EssentialControls = () => {
+export const EssentialControls = () => {
   const { loop, toggleLoop, currentMusic, togglePlay, isPlaying } =
     useMusicContext();
 
@@ -293,7 +294,7 @@ AudioPlayer.EssentialControls = () => {
   );
 };
 
-AudioPlayer.HiddenAudioElement = ({
+export const HiddenAudioElement = ({
   setSongProgress,
 }: {
   setSongProgress: React.Dispatch<React.SetStateAction<number>>;

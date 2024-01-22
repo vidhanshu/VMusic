@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, ButtonProps, User, cn } from "@nextui-org/react";
+import { Button, type ButtonProps, User, cn } from "@nextui-org/react";
 
 import Typography from "./Typography";
 
@@ -21,7 +21,7 @@ const SongMetaCard = ({
   endContent,
   ...props
 }: ISongMetaCardProps) => {
-  const { setIsPlaying } = useMusicContext();
+  const { togglePlay } = useMusicContext();
 
   return (
     <Button
@@ -33,10 +33,10 @@ const SongMetaCard = ({
       {startContent}
       <User
         avatarProps={{
-          src: image || "/pahadon-mein.jpg",
+          src: image ?? "/pahadon-mein.jpg",
           className: "w-[40px] h-[40px] rounded-md",
         }}
-        onClick={() => setIsPlaying((i) => !i)}
+        onClick={togglePlay}
         name="Pahle bhi main"
         classNames={{
           name: "text-white",

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { PropsWithChildren, useState } from "react";
+import React, { type PropsWithChildren, useState } from "react";
 import { cn } from "@nextui-org/react";
 
 import Navbar from "./navbar";

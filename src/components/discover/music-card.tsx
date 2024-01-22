@@ -24,7 +24,7 @@ const MusicCard = ({
           width={150}
           height={150}
           alt="music image"
-          src={image || "/pahadon-mein.jpg"}
+          src={image ?? "/pahadon-mein.jpg"}
           quality={100}
           className="mx-auto min-h-[150px] min-w-[150px]"
         />

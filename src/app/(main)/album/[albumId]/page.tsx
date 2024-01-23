@@ -13,6 +13,7 @@ const AlbumIdPage = async ({
   return (
     <div>
       <DetailPageHeader
+        id={data?.id}
         isAlbumHeader
         image={data?.image?.[2]?.link}
         name={data?.name}
@@ -22,10 +23,12 @@ const AlbumIdPage = async ({
             ? data?.primaryArtists.join(", ")
             : data?.primaryArtists
         }
+        // needing to pass to reset the array after disabling shuffle
+        songs={data?.songs ?? []}
         artistsId={data?.primaryArtistsId}
         songCount={data?.songCount ?? "0"}
       />
-      <SongsList songs={data?.songs ?? []} />
+      <SongsList listId={data?.id} songs={data?.songs ?? []} />
     </div>
   );
 };

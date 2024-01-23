@@ -97,6 +97,21 @@ namespace NSMusic {
     mute: boolean;
     toggleMute: () => void;
     setMute: (mute: boolean) => void;
+    // music queue
+    queue: {
+      id: string;
+      songs: IMusic[];
+      activeIndex: number;
+      shuffle: boolean;
+    };
+    setQueue: (queue: {
+      id?: string;
+      songs?: IMusic[];
+      shuffle?: boolean;
+      activeIndex?: number;
+    }) => void;
+    prevSong: () => boolean;
+    nextSong: () => boolean;
 
     // home page stuffs
     data: IMusicProviderState["data"];
@@ -108,6 +123,12 @@ namespace NSMusic {
     music: null | IMusic;
     loop: boolean;
     mute: boolean;
+    queue: {
+      id: string,
+      songs: IMusic[];
+      activeIndex: number;
+      shuffle: boolean;
+    };
     data: {
       newReleases: IMusic[];
       topCharts: IChart[];

@@ -1,14 +1,46 @@
 "use client";
 
-import type NSMusic from "@/music";
-import { ChevronLeft, Clock } from "lucide-react";
-import Typography from "@/components/common/Typography";
-import { SongListItem } from "./song-list-item";
+import dynamic from "next/dynamic";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { ChevronLeft, Clock } from "lucide-react";
 
-const SongsList = ({ songs }: { songs: NSMusic.IMusic[] }) => {
+import Typography from "@/components/common/Typography";
+const SongListItem = dynamic(
+  () => import("./song-list-item").then((mod) => mod.SongListItem),
+  { ssr: false },
+);
+
+import useMusicContext from "@/contexts/music-context/use-music-context";
+
+import type NSMusic from "@/music";
+
+const SongsList = ({
+  songs,
+  listId,
+}: {
+  songs: NSMusic.IMusic[];
+  listId?: string;
+}) => {
   const router = useRouter();
+  const { currentMusic, togglePlay, setCurrentMusic, queue, setQueue } =
+    useMusicContext();
+
+  const handleSongClick = (idx: number, id: string) => {
+    const isCurrentSongPlaying = currentMusic?.id === id;
+    // if current song is already playing, then pause other wise set current song
+    if (isCurrentSongPlaying) {
+      togglePlay();
+    } else {
+      setQueue({
+        id: listId,
+        activeIndex: idx,
+        songs,
+        shuffle: queue.shuffle,
+      });
+      setCurrentMusic(songs[idx]!);
+    }
+  };
 
   if (!songs.length) {
     return (
@@ -48,7 +80,14 @@ const SongsList = ({ songs }: { songs: NSMusic.IMusic[] }) => {
       </div>
       <div className="space-y-4">
         {songs.map((song, idx) => {
-          return <SongListItem key={idx} song={song} idx={idx} />;
+          return (
+            <SongListItem
+              handleSongClick={handleSongClick}
+              key={idx}
+              song={song}
+              idx={idx}
+            />
+          );
         })}
       </div>
     </div>

@@ -3,18 +3,23 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronLeft, Pause, Play, Shuffle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button, Tooltip, cn } from "@nextui-org/react";
+import { ChevronLeft, Pause, Play, Shuffle } from "lucide-react";
 
 import Typography from "@/components/common/Typography";
 
 import {
   getArtistAndArtistIdArray,
   getShortNumberRepresentation,
+  shuffleArray,
 } from "@/utils/common/helpers";
-import { useRouter } from "next/navigation";
+import useMusicContext from "@/contexts/music-context/use-music-context";
+
+import type NSMusic from "@/music";
 
 interface IDetailPageHeaderProps {
+  id?: string;
   image?: string;
   name?: string;
   artists?: string;
@@ -23,6 +28,7 @@ interface IDetailPageHeaderProps {
   songCount: string;
   followers?: string;
   isAlbumHeader?: boolean;
+  songs: NSMusic.IMusic[];
 }
 const DetailPageHeader = ({
   image,
@@ -32,13 +38,76 @@ const DetailPageHeader = ({
   songCount,
   artistsId,
   followers,
+  id: originalListId,
+  songs: ORIGINAL_SONGS,
   isAlbumHeader = false,
 }: IDetailPageHeaderProps) => {
   let artistMeta: { name: string; id: string }[] = [];
   if (isAlbumHeader) {
     artistMeta = getArtistAndArtistIdArray(artists, artistsId);
   }
+  const {
+    setQueue,
+    isPlaying,
+    queue: { shuffle, id: qListId },
+    setCurrentMusic,
+    togglePlay,
+  } = useMusicContext();
   const router = useRouter();
+
+  const handleShuffle = () => {
+    // if the current playlist/album is not in queue add it
+    if (originalListId !== qListId) {
+      const shuffledArray = shuffleArray(ORIGINAL_SONGS);
+      // this also means that, the shuffle is inactive
+      setQueue({
+        shuffle: true,
+        songs: shuffledArray,
+        id: originalListId,
+        activeIndex: 0,
+      });
+      // automatically start the first song in shuffled array
+      setCurrentMusic(shuffledArray?.[0] ?? null);
+    }
+    // the current playlist/album is already in the queue
+    else {
+      // check if shuffle is active?
+      if (shuffle) {
+        setQueue({
+          songs: ORIGINAL_SONGS,
+          activeIndex: 0,
+          shuffle: false,
+        });
+        // automatically start the first song in ORINGAL_ARRAY
+        setCurrentMusic(ORIGINAL_SONGS?.[0] ?? null);
+      } else {
+        const shuffledArray = shuffleArray(ORIGINAL_SONGS);
+        // this also means that, the shuffle is inactive
+        setQueue({
+          shuffle: true,
+          songs: shuffledArray,
+          activeIndex: 0,
+        });
+        // automatically start the first song in shuffled array
+        setCurrentMusic(shuffledArray?.[0] ?? null);
+      }
+    }
+  };
+
+  const handlePlayAlbumOrPlayList = () => {
+    // if current album/playlist already in queue
+    if (originalListId === qListId) {
+      togglePlay();
+    } else {
+      setQueue({
+        songs: ORIGINAL_SONGS,
+        activeIndex: 0,
+        shuffle: false,
+        id: originalListId,
+      });
+      setCurrentMusic(ORIGINAL_SONGS?.[0] ?? null);
+    }
+  };
 
   return (
     <>
@@ -103,11 +172,9 @@ const DetailPageHeader = ({
                   size="lg"
                   color="success"
                   isIconOnly
-                  onClick={() => {
-                    // TODO: play the album
-                  }}
+                  onClick={handlePlayAlbumOrPlayList}
                   startContent={
-                    true ? (
+                    isPlaying && originalListId === qListId ? (
                       <Pause size={20} className="fill-white text-white" />
                     ) : (
                       <Play size={20} className="fill-white text-white" />
@@ -120,18 +187,22 @@ const DetailPageHeader = ({
                   variant="solid"
                   radius="full"
                   size="lg"
-                  color="default"
+                  color={
+                    shuffle && originalListId === qListId
+                      ? "success"
+                      : "default"
+                  }
                   isIconOnly
-                  onClick={() => {
-                    // TODO: play the album
-                  }}
+                  onClick={handleShuffle}
                   startContent={<Shuffle size={20} className="text-white" />}
                 />
               </Tooltip>
             </div>
           </div>
         ) : (
-          <Typography variant="T_Bold_H1">Sorry No Album found!</Typography>
+          <Typography variant="T_Bold_H1">
+            Sorry No {isAlbumHeader ? "Album" : "Playlist"} found!
+          </Typography>
         )}
       </div>
     </>

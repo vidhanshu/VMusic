@@ -21,7 +21,7 @@ const LatestReleases = () => {
         <div className="flex gap-x-10">
           {newReleases.map((item, idx) => (
             <AlbumCard
-              href={`/artist/${item.id}`}
+              href={`/playlists/${item.id}`}
               name={item.name}
               image={item.image?.[1]?.link}
               key={idx}

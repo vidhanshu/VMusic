@@ -15,8 +15,15 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 import { RIGHT_SONG_PLAYER_ANIMATION } from "@/utils/common/constants";
 
 const RightSideBar = (props: IAudioPlayerProps) => {
-  const { currentMusic, setIsRightSidebarOpen, isRightSidebarOpen } =
-    useMusicContext();
+  const {
+    currentMusic,
+    setIsRightSidebarOpen,
+    isRightSidebarOpen,
+    queue: { songs, activeIndex },
+    nextSong,
+  } = useMusicContext();
+
+  const NEXT_SONG = songs[(activeIndex + 1) % songs.length];
 
   return (
     <m.div
@@ -52,22 +59,32 @@ const RightSideBar = (props: IAudioPlayerProps) => {
           </Typography>
         </div>
         <Image
-          className="mx-auto aspect-square w-full max-w-[300px] rounded-lg object-cover"
+          className="mx-auto aspect-square h-auto w-[300px] rounded-lg object-cover"
           src={currentMusic?.image?.[2]?.link ?? "/vmusic.svg"}
-          width={200}
-          height={200}
+          width={300}
+          height={300}
           alt="music image"
         />
       </div>
       {/* controls */}
       <AudioPlayer {...props} />
       {/* next in the queue */}
-      <SongMetaCard
-        fullWidth
-        className="mt-4 flex justify-between p-8"
-        endContent={<Play className="text-white" />}
-        artist="Vishal Mishra"
-      />
+      <div className="mt-6">
+        <Typography variant="T_Regular_H6">Next in queue</Typography>
+        <SongMetaCard
+          fullWidth
+          onClick={nextSong}
+          className="mt-4 flex justify-between gap-x-4 p-8"
+          endContent={<Play size={16} className="text-white" />}
+          artist={
+            NEXT_SONG?.primaryArtists instanceof Array
+              ? NEXT_SONG?.primaryArtists.join(", ")
+              : NEXT_SONG?.primaryArtists
+          }
+          image={NEXT_SONG?.image?.[0]?.link}
+          name={NEXT_SONG?.name}
+        />
+      </div>
     </m.div>
   );
 };

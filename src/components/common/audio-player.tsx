@@ -216,8 +216,15 @@ export const SoundControls = ({
 };
 
 export const EssentialControls = () => {
-  const { loop, toggleLoop, currentMusic, togglePlay, isPlaying } =
-    useMusicContext();
+  const {
+    loop,
+    toggleLoop,
+    currentMusic,
+    togglePlay,
+    isPlaying,
+    nextSong,
+    prevSong,
+  } = useMusicContext();
 
   return (
     <div className="flex items-center gap-x-2">
@@ -236,6 +243,7 @@ export const EssentialControls = () => {
         <Button
           disabled={!currentMusic}
           disableAnimation={!currentMusic}
+          onClick={prevSong}
           variant="light"
           radius="full"
           color="secondary"
@@ -268,6 +276,7 @@ export const EssentialControls = () => {
           variant="light"
           radius="full"
           color="secondary"
+          onClick={nextSong}
           isIconOnly
           startContent={<SkipForward size={20} className="text-white" />}
         />
@@ -299,7 +308,7 @@ export const HiddenAudioElement = ({
 }: {
   setSongProgress: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const { audioRef, currentMusic, mute, loop, setIsPlaying } =
+  const { audioRef, currentMusic, mute, loop, nextSong, setIsPlaying } =
     useMusicContext();
 
   return (
@@ -309,9 +318,12 @@ export const HiddenAudioElement = ({
       autoPlay
       hidden
       onEnded={() => {
-        // TODO: play next song or something
-        setIsPlaying(false);
-        setSongProgress(0);
+        if (!loop) {
+          if (!nextSong()) {
+            setSongProgress(0);
+            setIsPlaying(false);
+          }
+        }
       }}
       ref={audioRef}
       onTimeUpdate={(a) => {

@@ -15,10 +15,23 @@ import { getMusicUrl } from "@/utils/common/helpers";
 
 const MusicContextProvider = ({ children }: PropsWithChildren) => {
   // to store the last playing music
-  const [localMusic, setLocalMusic] = useLocalStorage<NSMusic.IMusic | null>(
-    "music",
-    null,
-  );
+  const [localMusic, setLocalMusic] = useLocalStorage<{
+    currentMusic: NSMusic.IMusic | null;
+    queue: {
+      id: string;
+      shuffle: boolean;
+      activeIndex: number;
+      songs: NSMusic.IMusic[];
+    };
+  }>("music", {
+    currentMusic: null,
+    queue: {
+      id: "",
+      shuffle: false,
+      activeIndex: 0,
+      songs: [],
+    },
+  });
 
   // Audio ref for audio player
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -30,18 +43,24 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
   const [currentMusicDetails, setCurrentMusicDetails] =
     useState<NSMusic.IMusicProviderState>({
       isPlaying: false,
-      music: localMusic,
+      music: localMusic.currentMusic ?? null,
       loop: false,
       mute: false,
+      queue: {
+        id: localMusic.queue.id,
+        shuffle: false,
+        songs: localMusic.queue.songs ?? [],
+        activeIndex: localMusic.queue.activeIndex ?? 0,
+      },
       data: {
         newReleases: [],
         topCharts: [],
         topArtists: [],
         topPlaylists: [],
         trending: {
-          albums:[],
-          songs: []
-        }
+          albums: [],
+          songs: [],
+        },
       },
     });
 
@@ -65,7 +84,10 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
 
     setCurrentMusicDetails((prev) => ({ ...prev, music }));
     // also store in local storage
-    setLocalMusic(music);
+    setLocalMusic((prev) => ({
+      ...prev,
+      currentMusic: music,
+    }));
 
     const musicUrl =
       music?.downloadUrl?.[2]?.link ??
@@ -121,7 +143,61 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
 
   const setData = (data: NSMusic.IMusicProviderState["data"]) => {
     setCurrentMusicDetails((prev) => ({ ...prev, data }));
-  }
+  };
+
+  const setQueue = (queue: {
+    songs?: NSMusic.IMusic[];
+    shuffle?: boolean;
+    activeIndex?: number;
+  }) => {
+    if (!queue.songs && !queue.shuffle && !queue.activeIndex) return;
+
+    setCurrentMusicDetails((prev) => ({
+      ...prev,
+      queue: {
+        ...currentMusicDetails.queue,
+        ...queue,
+      },
+    }));
+  };
+
+  const nextSong = () => {
+    if (!audioRef.current) return false;
+
+    const { songs, activeIndex } = currentMusicDetails.queue;
+    // if no queue exists
+    if (!songs.length) {
+      return false;
+    }
+
+    const nextIndex = activeIndex + 1;
+    setCurrentMusic(songs[nextIndex % songs.length] ?? null);
+    setQueue({
+      activeIndex: nextIndex,
+      songs,
+      shuffle: currentMusicDetails.queue.shuffle,
+    });
+
+    return true;
+  };
+
+  const prevSong = () => {
+    if (!audioRef.current) return false;
+
+    const { songs, activeIndex } = currentMusicDetails.queue;
+    // if no queue exists
+    if (!songs.length) return false;
+
+    const prevIndex = activeIndex - 1;
+    const indexToSet = prevIndex < 0 ? songs.length - 1 : prevIndex;
+    setCurrentMusic(songs[indexToSet] ?? null);
+    setQueue({
+      activeIndex: prevIndex,
+      songs,
+      shuffle: currentMusicDetails.queue.shuffle,
+    });
+    return true;
+  };
 
   // effects
   useEffect(() => {
@@ -136,9 +212,19 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.src = getMusicUrl(localMusic?.downloadUrl);
+      audioRef.current.src = getMusicUrl(localMusic?.currentMusic?.downloadUrl);
     }
   }, [localMusic]);
+
+  // if queue changes, then update the localstorage as well
+  useEffect(() => {
+    setLocalMusic((prev) => ({
+      ...prev,
+      queue: currentMusicDetails.queue,
+    }));
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentMusicDetails.queue]);
 
   return (
     <MusicContext.Provider
@@ -159,8 +245,17 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
         toggleMute,
         mute: currentMusicDetails.mute,
         loop: currentMusicDetails.loop,
-        data:currentMusicDetails.data,
-        setData
+        data: currentMusicDetails.data,
+        setData,
+        queue: {
+          id: currentMusicDetails.queue.id,
+          activeIndex: currentMusicDetails.queue.activeIndex,
+          songs: currentMusicDetails.queue.songs,
+          shuffle: currentMusicDetails.queue.shuffle,
+        },
+        setQueue,
+        nextSong,
+        prevSong,
       }}
     >
       {children}

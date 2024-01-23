@@ -13,7 +13,10 @@ import RightSideBar from "./right-sidebar";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
-import { BOTTOM_PLAYER_ANIMATION } from "@/utils/common/constants";
+import {
+  BOTTOM_PLAYER_ANIMATION,
+  RIGHT_SONG_PLAYER_ANIMATION,
+} from "@/utils/common/constants";
 
 const BottomPlayer = () => {
   const [volume, setVolume] = React.useState(80);
@@ -21,28 +24,14 @@ const BottomPlayer = () => {
 
   const { isRightSidebarOpen, currentMusic, setIsRightSidebarOpen } =
     useMusicContext();
-  
+
   return (
     <>
       <HiddenAudioElement setSongProgress={setSongProgress} />
       <AnimatePresence>
         {isRightSidebarOpen && (
           <m.div
-            initial={{
-              x: 300,
-              opacity: 0,
-            }}
-            animate={{
-              x: 0,
-              opacity: 1,
-            }}
-            exit={{
-              x: 300,
-              opacity: 0,
-            }}
-            transition={{
-              stiffness: 0,
-            }}
+            {...RIGHT_SONG_PLAYER_ANIMATION}
             className="fixed right-0 top-[73px]"
           >
             <RightSideBar

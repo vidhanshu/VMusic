@@ -1,20 +1,26 @@
-import { Button, Tooltip, cn } from "@nextui-org/react";
-import { Download, Pause, Play } from "lucide-react";
-import { formattedTime } from "@/utils/helpers";
 import Image from "next/image";
-import useMusicContext from "@/contexts/music-context/use-music-context";
+import { formattedTime } from "@/utils/helpers";
+import { Download, Pause, Play } from "lucide-react";
+import { Button, Tooltip, cn } from "@nextui-org/react";
+
+import Typography from "@/components/common/Typography";
+
 import { downloadSong, getMusicUrl } from "@/utils/common/helpers";
+
+import useMusicContext from "@/contexts/music-context/use-music-context";
+
 import type NSMusic from "@/music";
-import Typography from "../Typography";
 
 export const SongListItem = ({
   song,
   idx,
+  handleSongClick,
 }: {
   song: NSMusic.IMusic;
   idx: number;
+  handleSongClick: (idx: number, id: string) => void;
 }) => {
-  const { currentMusic, isPlaying, setCurrentMusic, togglePlay } =
+  const { currentMusic, isPlaying, togglePlay } =
     useMusicContext();
 
   const artists =
@@ -41,14 +47,7 @@ export const SongListItem = ({
               radius="full"
               color="success"
               isIconOnly
-              onClick={() => {
-                // if current song is already playing, the pause other wise set current song
-                if (isCurrentSongPlaying) {
-                  togglePlay();
-                } else {
-                  setCurrentMusic(song);
-                }
-              }}
+              onClick={handleSongClick.bind(null, idx, song.id)}
               startContent={
                 isCurrentSongPlaying && isPlaying ? (
                   <Pause size={20} className="fill-white text-white" />

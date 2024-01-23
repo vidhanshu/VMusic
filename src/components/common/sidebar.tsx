@@ -83,7 +83,7 @@ export const MenuItem = function ({ icon: Icon, title, link }: IMenuItemProps) {
       fullWidth
       startContent={<Icon size={16} />}
       className={cn(
-        "relative justify-start rounded-none rounded-l-md bg-transparent font-semibold text-primary-100 hover:bg-primary-300 hover:text-white focus-visible:outline-none",
+        "relative justify-start rounded-none rounded-l-md bg-transparent font-semibold text-primary-50 hover:bg-primary-300 hover:text-white focus-visible:outline-none",
         isActive &&
           "bg-gradient-to-r from-primary-300 to-primary-700 text-white",
       )}

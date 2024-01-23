@@ -30,6 +30,15 @@ const MusicContext = createContext<NSMusic.IMusicContext>({
     },
   },
   setData: () => {},
+  queue: {
+    id: "",
+    songs: [],
+    activeIndex: 0,
+    shuffle: false,
+  },
+  prevSong: () => false,
+  nextSong: () => false,
+  setQueue: () => {},
 });
 
 export default MusicContext;

@@ -1,7 +1,7 @@
-import React from "react";
-import { getAlbumById } from "@/actions/get-album-by-id";
 import SongsList from "@/components/common/song-list/songs-list";
 import DetailPageHeader from "@/components/common/detail-page-header";
+
+import { getAlbumById } from "@/actions/get-album-by-id";
 
 const AlbumIdPage = async ({
   params: { albumId },
@@ -13,6 +13,7 @@ const AlbumIdPage = async ({
   return (
     <div>
       <DetailPageHeader
+        isAlbumHeader
         image={data?.image?.[2]?.link}
         name={data?.name}
         year={data?.year}

@@ -3,6 +3,17 @@
 import type NSMusic from "@/music";
 import { REVALIDATE } from "@/utils/common/constants";
 
+interface ReturnType {
+  data: {
+    albums: NSMusic.IMusic[];
+    charts: NSMusic.IChart[];
+    playlists: NSMusic.IPlaylist[];
+    trending: {
+      songs: NSMusic.IMusic[];
+      albums: NSMusic.IAlbum[];
+    };
+  };
+}
 export const getHomeData = async () => {
   try {
     const data = await fetch(
@@ -14,19 +25,9 @@ export const getHomeData = async () => {
         },
       },
     );
-    const json = (await data.json()) as {
-      data: {
-        albums: NSMusic.IMusic[];
-        charts: NSMusic.IChart[];
-        playlists: NSMusic.IPlaylist[];
-        trending: {
-          songs: NSMusic.IMusic[];
-          albums: NSMusic.IAlbum[];
-        };
-      };
-    };
-    return json.data ?? {};
+    const json = (await data.json()) as { data: ReturnType["data"] };
+    return json.data ?? null;
   } catch (error) {
-    return {};
+    return {} as ReturnType["data"];
   }
 };

@@ -32,7 +32,7 @@ export const SongListItem = ({
     >
       <div className="flex items-center gap-x-2">
         <Tooltip content="Play/Pause">
-          <div className="flex h-10 w-10 items-center justify-center">
+          <div className="flex min-h-10 min-w-10 items-center justify-center">
             <Button
               className={cn(
                 isCurrentSongPlaying ? "flex" : "hidden group-hover:flex",
@@ -42,7 +42,7 @@ export const SongListItem = ({
               color="success"
               isIconOnly
               onClick={() => {
-                console.log(isCurrentSongPlaying, isPlaying);
+                // if current song is already playing, the pause other wise set current song
                 if (isCurrentSongPlaying) {
                   togglePlay();
                 } else {
@@ -57,18 +57,20 @@ export const SongListItem = ({
                 )
               }
             />
-            <Typography
-              variant="T_SemiBold_H5"
-              className="block group-hover:hidden"
-            >
-              {idx + 1}
-            </Typography>
+            {!isCurrentSongPlaying && (
+              <Typography
+                variant="T_SemiBold_H5"
+                className="block group-hover:hidden"
+              >
+                {idx + 1}
+              </Typography>
+            )}
           </div>
         </Tooltip>
 
         <div className="flex gap-x-2">
           <Image
-            className="rounded-sm"
+            className="rounded-sm object-cover"
             src={song.image?.[0]?.link ?? "/vmusic.svg"}
             width={50}
             height={50}
@@ -81,7 +83,11 @@ export const SongListItem = ({
             >
               {song.name}
             </Typography>
-            <Typography variant="T_Regular_H7" color="secondary">
+            <Typography
+              className="max-w-[300px] truncate"
+              variant="T_Regular_H7"
+              color={!isCurrentSongPlaying ? "secondary" : "primary"}
+            >
               {artists}
             </Typography>
           </div>

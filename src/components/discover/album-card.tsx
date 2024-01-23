@@ -8,17 +8,13 @@ import Link from "next/link";
 interface IAlbumCardProps {
   image?: string;
   name: string;
-  id: string;
+  href: string;
 }
 
-const AlbumCard = ({ image, name, id }: IAlbumCardProps) => {
+const AlbumCard = ({ image, name, href }: IAlbumCardProps) => {
   return (
     <div className="p-0">
-      <Button
-        as={Link}
-        href={`/album/${id}`}
-        className="h-[150px] w-[150px] px-0"
-      >
+      <Button as={Link} href={href} className="h-[150px] w-[150px] px-0">
         <div className="group relative overflow-hidden rounded-lg">
           <Image
             width={150}

@@ -26,7 +26,7 @@ const TrendingAlbums = () => {
         <div className="flex gap-x-10">
           {trending.albums.map((item, idx) => (
             <AlbumCard
-              id={item.id}
+              href={`/album/${item.id}`}
               name={item.name}
               image={item.image?.[1]?.link}
               key={idx}

@@ -1,11 +1,36 @@
 "use client";
 
 import type NSMusic from "@/music";
-import { Clock } from "lucide-react";
+import { ChevronLeft, Clock } from "lucide-react";
 import Typography from "@/components/common/Typography";
 import { SongListItem } from "./song-list-item";
+import { Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 const SongsList = ({ songs }: { songs: NSMusic.IMusic[] }) => {
+  const router = useRouter();
+
+  if (!songs.length) {
+    return (
+      <div className="flex flex-col items-center gap-6 py-8">
+        <Typography
+          className="text-center"
+          color="secondary"
+          variant="T_Bold_H1"
+        >
+          No Songs found!
+        </Typography>
+        <Button
+          onClick={() => router.back()}
+          startContent={<ChevronLeft size={20} />}
+          color="success"
+          className="text-white"
+        >
+          Back
+        </Button>
+      </div>
+    );
+  }
   return (
     <div>
       <div className="group grid grid-cols-3 justify-between rounded-md p-2">

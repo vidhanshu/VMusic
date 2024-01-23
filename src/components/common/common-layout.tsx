@@ -11,8 +11,9 @@ const BottomPlayer = dynamic(() => import("./bottom-player"), { ssr: false });
 
 import useOnline from "@/hooks/use-online";
 import useMusicKeyboardControls from "@/hooks/use-music-keyboard-controls";
-import NSMusic from "@/music";
 import useMusicContext from "@/contexts/music-context/use-music-context";
+
+import type NSMusic from "@/music";
 
 const CommonLayout = ({
   children,
@@ -31,6 +32,7 @@ const CommonLayout = ({
     if (data) {
       setData(data);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (

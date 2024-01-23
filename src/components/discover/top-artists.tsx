@@ -1,5 +1,3 @@
-import React from "react";
-
 import { ARTISTS } from "@/utils/constants";
 import ArtistCard from "./artist-card";
 import Typography from "@/components/common/Typography";
@@ -15,13 +13,13 @@ const TopArtists = () => {
           See all
         </span>
       </div>
-      <div className="flex flex-wrap justify-between gap-6">
+      <div className="flex flex-wrap gap-6">
         {ARTISTS.map((artist, idx) => (
           <ArtistCard
             id={artist.id}
             key={idx}
             name={artist.name}
-            image="/pahadon-mein.jpg"
+            image={artist.image?.[1]?.link}
           />
         ))}
       </div>

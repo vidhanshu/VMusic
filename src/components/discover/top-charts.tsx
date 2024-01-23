@@ -1,12 +1,18 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { MUSICS } from "@/utils/constants";
 import { Button } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
+import useMusicContext from "@/contexts/music-context/use-music-context";
 
 const TopCharts = () => {
+  const {
+    data: { topCharts },
+  } = useMusicContext();
+
   return (
     <div className="py-6">
       <div className="flex justify-between">
@@ -16,7 +22,7 @@ const TopCharts = () => {
         </span>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        {MUSICS.playlists.map((item, idx) => (
+        {topCharts.map((item, idx) => (
           <TopChartCard
             key={idx}
             id={item.id}

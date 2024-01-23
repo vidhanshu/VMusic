@@ -1,18 +1,37 @@
 "use client";
 
-import React, { type PropsWithChildren, useState } from "react";
+import dynamic from "next/dynamic";
 import { cn } from "@nextui-org/react";
+import React, { type PropsWithChildren, useState, useEffect } from "react";
 
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
-import BottomPlayer from "./bottom-player";
-import useMusicKeyboardControls from "@/hooks/use-music-keyboard-controls";
+import NoInternet from "./no-internet";
+const BottomPlayer = dynamic(() => import("./bottom-player"), { ssr: false });
 
-const CommonLayout = ({ children }: PropsWithChildren) => {
+import useOnline from "@/hooks/use-online";
+import useMusicKeyboardControls from "@/hooks/use-music-keyboard-controls";
+import NSMusic from "@/music";
+import useMusicContext from "@/contexts/music-context/use-music-context";
+
+const CommonLayout = ({
+  children,
+  data,
+}: PropsWithChildren & {
+  data: NSMusic.IMusicProviderState["data"];
+}) => {
   // apply key shortcuts
   useMusicKeyboardControls();
+  const { setData } = useMusicContext();
 
   const [sidebar, setSidebar] = useState(true);
+  const online = useOnline();
+
+  useEffect(() => {
+    if (data) {
+      setData(data);
+    }
+  }, [data]);
 
   return (
     <main className="flex flex-col">
@@ -20,7 +39,10 @@ const CommonLayout = ({ children }: PropsWithChildren) => {
         {sidebar && <Sidebar />}
         <div className={cn(sidebar ? "col-span-10" : "col-span-12")}>
           <Navbar sidebar={sidebar} setSidebar={setSidebar} />
-          <div className="p-8">{children}</div>
+          <div className="p-8">
+            <div className={cn(!online && "hidden")}>{children}</div>
+            {!online && <NoInternet />}
+          </div>
         </div>
       </div>
       <BottomPlayer />

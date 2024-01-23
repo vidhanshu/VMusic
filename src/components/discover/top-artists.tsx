@@ -1,6 +1,6 @@
 import React from "react";
 
-import { MUSICS } from "@/utils/constants";
+import { ARTISTS } from "@/utils/constants";
 import ArtistCard from "./artist-card";
 import Typography from "@/components/common/Typography";
 
@@ -16,7 +16,7 @@ const TopArtists = () => {
         </span>
       </div>
       <div className="flex flex-wrap justify-between gap-6">
-        {MUSICS.artists.map((artist, idx) => (
+        {ARTISTS.map((artist, idx) => (
           <ArtistCard
             id={artist.id}
             key={idx}

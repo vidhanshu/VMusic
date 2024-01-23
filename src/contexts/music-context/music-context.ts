@@ -19,6 +19,17 @@ const MusicContext = createContext<NSMusic.IMusicContext>({
   toggleLoop: () => {},
   toggleMute: () => {},
   togglePlay: () => {},
+  data: {
+    newReleases: [],
+    topCharts: [],
+    topPlaylists: [],
+    topArtists: [],
+    trending: {
+      albums: [],
+      songs: [],
+    },
+  },
+  setData: () => {},
 });
 
 export default MusicContext;

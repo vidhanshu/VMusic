@@ -19,10 +19,10 @@ namespace NSMusic {
     releaseDate: null | string;
     duration: string;
     label: string;
-    primaryArtists: string;
-    primaryArtistsId: string;
+    primaryArtists: string | IArtist[];
+    primaryArtistsId?: string;
     featuredArtists: string;
-    featuredArtistsId: string;
+    featuredArtistsId?: string | IArtist[];
     explicitContent: number;
     playCount: string | number;
     language: string;
@@ -30,8 +30,44 @@ namespace NSMusic {
     url: string;
     copyright: string;
     image: IImageSong[];
-    downloadUrl: IImageSong[];
+    downloadUrl?: IImageSong[];
   }
+
+  interface IAlbum {
+    id: string;
+    name: string;
+    year: string;
+    type: string;
+    playCount: string;
+    language: string;
+    explicitContent: string;
+    url: string;
+    primaryArtists: IArtist[];
+    featuredArtists: IArtist[];
+    artists: IArtist[];
+    image: IImageSong[];
+    songs: [];
+  }
+
+  interface IPlaylist {
+    id: string;
+    userId: string;
+    title: string;
+    subtitle: string;
+    type: string;
+    image: IImageSong[];
+    url: string;
+    songCount: string;
+    firstname: string;
+    followerCount: string;
+    lastUpdated: string;
+    explicitContent: string;
+  }
+
+  type IChart = { language: string } & Omit<
+    IPlaylist,
+    "songCount" | "userId" | "followerCount" | "lastUpdated"
+  >;
 
   interface IArtist {
     id: string;
@@ -57,6 +93,10 @@ namespace NSMusic {
     mute: boolean;
     toggleMute: () => void;
     setMute: (mute: boolean) => void;
+
+    // home page stuffs
+    data: IMusicProviderState["data"];
+    setData: (data: IMusicProviderState["data"]) => void;
   }
 
   interface IMusicProviderState {
@@ -64,6 +104,16 @@ namespace NSMusic {
     music: null | IMusic;
     loop: boolean;
     mute: boolean;
+    data: {
+      newReleases: IMusic[];
+      topCharts: IChart[];
+      topPlaylists: IPlaylist[];
+      topArtists: IArtist[];
+      trending: {
+        songs: IMusic[];
+        albums: IAlbum[];
+      };
+    };
   }
 }
 

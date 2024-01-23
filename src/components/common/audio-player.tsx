@@ -299,7 +299,8 @@ export const HiddenAudioElement = ({
 }: {
   setSongProgress: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const { audioRef, currentMusic, mute, loop } = useMusicContext();
+  const { audioRef, currentMusic, mute, loop, setIsPlaying } =
+    useMusicContext();
 
   return (
     <audio
@@ -307,6 +308,11 @@ export const HiddenAudioElement = ({
       loop={loop}
       autoPlay
       hidden
+      onEnded={() => {
+        // TODO: play next song or something
+        setIsPlaying(false);
+        setSongProgress(0);
+      }}
       ref={audioRef}
       onTimeUpdate={(a) => {
         const timestamp = a.currentTarget;

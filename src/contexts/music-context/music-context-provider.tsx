@@ -10,8 +10,16 @@ import React, {
 import MusicContext from "./music-context";
 
 import type NSMusic from "@/music";
+import { useLocalStorage } from "usehooks-ts";
+import { getMusicUrl } from "@/utils/common/helpers";
 
 const MusicContextProvider = ({ children }: PropsWithChildren) => {
+  // to store the last playing music
+  const [localMusic, setLocalMusic] = useLocalStorage<NSMusic.IMusic | null>(
+    "music",
+    null,
+  );
+
   // Audio ref for audio player
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -22,14 +30,32 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
   const [currentMusicDetails, setCurrentMusicDetails] =
     useState<NSMusic.IMusicProviderState>({
       isPlaying: false,
-      music: null,
+      music: localMusic,
       loop: false,
       mute: false,
+      data: {
+        newReleases: [],
+        topCharts: [],
+        topArtists: [],
+        topPlaylists: [],
+        trending: {
+          albums:[],
+          songs: []
+        }
+      },
     });
 
   // Utility functions for player
   const setIsPlaying = (isPlaying: boolean) => {
-    if (!audioRef.current?.src) return;
+    // to set localMusic src
+    if (!audioRef.current?.src) {
+      const musicUrl = getMusicUrl(currentMusicDetails.music?.downloadUrl);
+      if (musicUrl && audioRef.current) {
+        audioRef.current.src = musicUrl;
+      } else {
+        return;
+      }
+    }
 
     setCurrentMusicDetails((prev) => ({ ...prev, isPlaying }));
   };
@@ -38,6 +64,8 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     if (!audioRef.current) return;
 
     setCurrentMusicDetails((prev) => ({ ...prev, music }));
+    // also store in local storage
+    setLocalMusic(music);
 
     const musicUrl =
       music?.downloadUrl?.[2]?.link ??
@@ -49,18 +77,32 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
   };
 
   const togglePlay = () => {
-    if (!audioRef.current?.src) return;
+    // to set localMusic src
+    if (!audioRef.current?.src) {
+      const musicUrl = getMusicUrl(currentMusicDetails.music?.downloadUrl);
+      if (musicUrl && audioRef.current) {
+        audioRef.current.src = musicUrl;
+      } else {
+        return;
+      }
+    }
     setIsPlaying(!currentMusicDetails.isPlaying);
   };
 
   const toggleLoop = () => {
     if (!audioRef.current?.src) return;
-
-    setCurrentMusicDetails((prev) => ({ ...prev, loop: !prev.loop }));
+    setCurrentMusicDetails((prev) => {
+      if (!currentMusicDetails.isPlaying) {
+        setIsPlaying(true);
+      }
+      return { ...prev, loop: !prev.loop };
+    });
   };
 
   const toggleMute = () => {
-    if (!audioRef.current?.src) return;
+    if (!audioRef.current?.src) {
+      return;
+    }
 
     setCurrentMusicDetails((prev) => ({ ...prev, mute: !prev.mute }));
   };
@@ -77,6 +119,10 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     setCurrentMusicDetails((prev) => ({ ...prev, isPlaying }));
   };
 
+  const setData = (data: NSMusic.IMusicProviderState["data"]) => {
+    setCurrentMusicDetails((prev) => ({ ...prev, data }));
+  }
+
   // effects
   useEffect(() => {
     if (!audioRef.current?.src) return;
@@ -87,6 +133,12 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
       audioRef.current.pause();
     }
   }, [currentMusicDetails.isPlaying]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.src = getMusicUrl(localMusic?.downloadUrl);
+    }
+  }, [localMusic]);
 
   return (
     <MusicContext.Provider
@@ -107,6 +159,8 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
         toggleMute,
         mute: currentMusicDetails.mute,
         loop: currentMusicDetails.loop,
+        data:currentMusicDetails.data,
+        setData
       }}
     >
       {children}

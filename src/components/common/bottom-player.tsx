@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@nextui-org/react";
@@ -21,7 +21,7 @@ const BottomPlayer = () => {
 
   const { isRightSidebarOpen, currentMusic, setIsRightSidebarOpen } =
     useMusicContext();
-
+  
   return (
     <>
       <HiddenAudioElement setSongProgress={setSongProgress} />

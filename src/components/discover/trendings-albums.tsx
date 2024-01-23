@@ -1,10 +1,19 @@
-import React from "react";
+"use client";
+
 import { ScrollShadow } from "@nextui-org/react";
 
-import { MUSICS } from "@/utils/constants";
 import AlbumCard from "./album-card";
+import useMusicContext from "@/contexts/music-context/use-music-context";
 
 const TrendingAlbums = () => {
+  const {
+    data: {
+      trending,
+    },
+  } = useMusicContext();
+
+  console.log(trending)
+
   return (
     <div className="py-6">
       <div className="flex justify-between">
@@ -15,7 +24,7 @@ const TrendingAlbums = () => {
       </div>
       <ScrollShadow hideScrollBar orientation="horizontal">
         <div className="flex gap-x-10">
-          {MUSICS.trendingAlbums.map((item, idx) => (
+          {trending.albums.map((item, idx) => (
             <AlbumCard
               id={item.id}
               name={item.name}

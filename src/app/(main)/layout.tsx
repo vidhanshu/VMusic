@@ -1,7 +1,25 @@
+import { getHomeData } from "@/actions/get-home-data";
 import CommonLayout from "@/components/common/common-layout";
 
-const MainLayout = ({ children }: React.PropsWithChildren) => {
-  return <CommonLayout>{children}</CommonLayout>;
+const MainLayout = async ({ children }: React.PropsWithChildren) => {
+  const data = await getHomeData();
+
+  return (
+    <CommonLayout
+      data={{
+        newReleases: data?.albums ?? [],
+        topCharts: data?.charts ?? [],
+        topArtists: [],
+        topPlaylists: data?.playlists ?? [],
+        trending: {
+          songs: data?.trending?.songs ?? [],
+          albums: data?.trending?.albums ?? [],
+        },
+      }}
+    >
+      {children}
+    </CommonLayout>
+  );
 };
 
 export default MainLayout;

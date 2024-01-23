@@ -10,3 +10,12 @@ export const getMusicUrl = (downloadUrl?: NSMusic.IMusic["downloadUrl"]) => {
     ""
   );
 };
+
+export const downloadSong = (downloadUrl: string) => {
+  if (!!downloadUrl) {
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.download = "song.mp3";
+    a.click();
+  }
+};

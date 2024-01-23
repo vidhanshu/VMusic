@@ -10,7 +10,6 @@ const config = {
     remotePatterns: [
       {
         hostname: "c.saavncdn.com",
-        protocol: "https",
       },
       {
         hostname: "www.jiosaavn.com",

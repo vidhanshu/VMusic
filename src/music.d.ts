@@ -42,7 +42,9 @@ namespace NSMusic {
     language: string;
     explicitContent: string;
     url: string;
-    primaryArtists: IArtist[];
+    primaryArtists: IArtist[] | string;
+    primaryArtistsId?: string;
+    songCount?: string;
     featuredArtists: IArtist[];
     artists: IArtist[];
     image: IImageSong[];
@@ -53,6 +55,7 @@ namespace NSMusic {
     id: string;
     userId: string;
     title: string;
+    name?: string;
     subtitle: string;
     type: string;
     image: IImageSong[];
@@ -62,6 +65,7 @@ namespace NSMusic {
     followerCount: string;
     lastUpdated: string;
     explicitContent: string;
+    songs?: IMusic[];
   }
 
   type IChart = { language: string } & Omit<

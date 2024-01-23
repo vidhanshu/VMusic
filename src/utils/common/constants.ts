@@ -1,3 +1,6 @@
+export const REVALIDATE = 43200;
+
+// Animation constants
 export const SIDEBAR_ANIMATION = {
   initial: {
     x: -300,

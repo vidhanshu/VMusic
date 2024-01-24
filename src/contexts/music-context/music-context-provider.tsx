@@ -199,12 +199,22 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     return true;
   };
 
+  const playTheAudioRef = async () => {
+    if (!audioRef.current?.src) return;
+
+    try {
+      await audioRef.current.play();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // effects
   useEffect(() => {
     if (!audioRef.current?.src) return;
     if (currentMusicDetails.isPlaying) {
       // eslint-disable-next-line
-      audioRef.current.play();
+      playTheAudioRef();
     } else {
       audioRef.current.pause();
     }
@@ -222,7 +232,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
       ...prev,
       queue: currentMusicDetails.queue,
     }));
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentMusicDetails.queue]);
 

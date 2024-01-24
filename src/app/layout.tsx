@@ -4,8 +4,10 @@ import MusicContextProvider from "@/contexts/music-context/music-context-provide
 import { Providers } from "@/components/common/nextui-provider";
 import { NunitoSans } from "@/fonts";
 import "@/styles/globals.css";
+import { env } from "@/env";
 
 export const metadata = {
+  metadataBase: new URL(env.NEXTAUTH_URL ?? "http://localhost:3000"),
   title: {
     template: "%s | VMusic",
     default: "VMusic",

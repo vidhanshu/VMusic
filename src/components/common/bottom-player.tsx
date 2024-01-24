@@ -18,6 +18,7 @@ import {
   RIGHT_SONG_PLAYER_ANIMATION,
 } from "@/utils/common/constants";
 import { decodeHTML } from "@/utils/common/helpers";
+import RenderArtistsAsLinks from "./render-artists-as-link";
 
 const BottomPlayer = () => {
   const [volume, setVolume] = React.useState(80);
@@ -99,14 +100,14 @@ const BottomPlayer = () => {
                   {/* Show only one artist */}
                   <Link href="/#">
                     <Typography
-                      isHoverUnderline
                       className="max-w-[150px] text-ellipsis text-nowrap"
                       variant="T_Regular_H8"
                       color="secondary"
                     >
-                      {(!!currentMusic?.primaryArtists ||
-                        !!currentMusic?.featuredArtists) ??
-                        "Unknown"}
+                      <RenderArtistsAsLinks
+                        artists={currentMusic?.primaryArtists ?? ""}
+                        artistsIds={currentMusic?.primaryArtistsId ?? ""}
+                      />
                     </Typography>
                   </Link>
                 </div>

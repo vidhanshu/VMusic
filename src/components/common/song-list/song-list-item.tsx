@@ -15,6 +15,7 @@ import {
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
+import RenderArtistsAsLinks from "../render-artists-as-link";
 
 export const SongListItem = ({
   song,
@@ -91,7 +92,10 @@ export const SongListItem = ({
               variant="T_Regular_H7"
               color={!isCurrentSongPlaying ? "secondary" : "primary"}
             >
-              {artists}
+              <RenderArtistsAsLinks
+                artists={song?.primaryArtists ?? ""}
+                artistsIds={song?.primaryArtistsId ?? ""}
+              />
             </Typography>
           </div>
         </div>

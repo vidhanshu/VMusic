@@ -15,6 +15,7 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import { RIGHT_SONG_PLAYER_ANIMATION } from "@/utils/common/constants";
 import { decodeHTML, getArtistName } from "@/utils/common/helpers";
+import RenderArtistsAsLinks from "./render-artists-as-link";
 
 const RightSideBar = (props: IAudioPlayerProps) => {
   const {
@@ -74,6 +75,15 @@ const RightSideBar = (props: IAudioPlayerProps) => {
             variant="T_Regular_H7"
             color="secondary"
           >
+            {!currentMusic?.primaryArtists &&
+            !currentMusic?.primaryArtistsId ? (
+              "Unknown"
+            ) : (
+              <RenderArtistsAsLinks
+                artists={currentMusic?.primaryArtists ?? ""}
+                artistsIds={currentMusic?.primaryArtistsId ?? ""}
+              />
+            )}
             {getArtistName(currentMusic?.primaryArtists) ?? "Unknown"}
           </Typography>
         </div>

@@ -1,7 +1,39 @@
 import SongsList from "@/components/common/song-list/songs-list";
 import DetailPageHeader from "@/components/common/detail-page-header";
+import { type Metadata, type ResolvingMetadata } from "next";
 
 import { getPlaylistById } from "@/actions/get-playlist-by-id";
+import { decodeHTML } from "@/utils/common/helpers";
+
+type Props = {
+  params: { playlistId: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  // fetch data
+  const playlist = await getPlaylistById(params.playlistId);
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  const currentImage = playlist?.image?.[1]?.link ?? "/vmusic.svg";
+
+  return {
+    title: decodeHTML(playlist?.name ?? "Unknown Playlist"),
+    openGraph: {
+      images: [currentImage, ...previousImages],
+    },
+    twitter: {
+      title:
+        decodeHTML(playlist?.name ?? "Unknown Playlist") ?? "Unknown Playlist",
+      images: [currentImage, ...previousImages],
+    },
+  };
+}
 
 const PlaylistIdPage = async ({
   params: { playlistId },

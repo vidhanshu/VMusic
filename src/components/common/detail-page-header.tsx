@@ -11,13 +11,13 @@ import Typography from "@/components/common/Typography";
 
 import {
   decodeHTML,
-  getArtistAndArtistIdArray,
   getShortNumberRepresentation,
   shuffleArray,
 } from "@/utils/common/helpers";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
+import RenderArtistsAsLinks from "./render-artists-as-link";
 
 interface IDetailPageHeaderProps {
   id?: string;
@@ -43,10 +43,6 @@ const DetailPageHeader = ({
   songs: ORIGINAL_SONGS,
   isAlbumHeader = false,
 }: IDetailPageHeaderProps) => {
-  let artistMeta: { name: string; id: string }[] = [];
-  if (isAlbumHeader) {
-    artistMeta = getArtistAndArtistIdArray(artists, artistsId);
-  }
   const {
     setQueue,
     isPlaying,
@@ -124,7 +120,7 @@ const DetailPageHeader = ({
             width={250}
             height={250}
             alt="album image"
-            className="rounded-md shadow-lg min-w-[250px] h-auto"
+            className="h-auto min-w-[250px] rounded-md shadow-lg"
           />
 
           <div className="absolute left-4 top-4">
@@ -152,16 +148,10 @@ const DetailPageHeader = ({
             <Typography variant="T_Regular_H5">
               {isAlbumHeader ? (
                 <>
-                  {artistMeta.map((artist, index) => (
-                    <Link
-                      key={index}
-                      href={`/artist/${artist.id}`}
-                      className="hover:underline"
-                    >
-                      {artist.name}
-                      {index != artistMeta?.length - 1 ? ", " : ""}
-                    </Link>
-                  ))}{" "}
+                  <RenderArtistsAsLinks
+                    artists={artists ?? ""}
+                    artistsIds={artistsId}
+                  />{" "}
                   . {year}
                 </>
               ) : isNaN(Number(followers)) ? (

@@ -43,7 +43,7 @@ const SongMetaCard = ({
             color="secondary"
             variant="T_Regular_H8"
           >
-            {artist || "Vishal Mishra"}
+            {artist}
           </Typography>
         }
       />

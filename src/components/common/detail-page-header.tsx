@@ -111,29 +111,34 @@ const DetailPageHeader = ({
 
   return (
     <>
-      <Tooltip content="Back">
-        <Button
-          isIconOnly
-          radius="full"
-          onClick={() => router.back()}
-          startContent={<ChevronLeft size={20} />}
-          color="primary"
-          className="mb-4 text-white"
-        />
-      </Tooltip>
       <div
         className={cn(
           "flex gap-x-8 rounded-md bg-gradient-to-b from-primary-300 to-primary-900 p-2",
           name ? "items-end" : "items-center",
         )}
       >
-        <Image
-          src={image ?? "/vmusic.svg"}
-          width={250}
-          height={250}
-          alt="album image"
-          className="rounded-md shadow-lg"
-        />
+        <div className="relative">
+          <Image
+            src={image ?? "/vmusic.svg"}
+            width={250}
+            height={250}
+            alt="album image"
+            className="rounded-md shadow-lg"
+          />
+
+          <div className="absolute left-4 top-4">
+            <Tooltip content="Back">
+              <Button
+                isIconOnly
+                radius="full"
+                onClick={() => router.back()}
+                startContent={<ChevronLeft size={20} />}
+                color="primary"
+                className="mb-4 text-white"
+              />
+            </Tooltip>
+          </div>
+        </div>
         {name ? (
           <div className="flex flex-col gap-4">
             <Typography

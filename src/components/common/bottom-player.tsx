@@ -22,7 +22,7 @@ const BottomPlayer = () => {
   const [volume, setVolume] = React.useState(80);
   const [songProgress, setSongProgress] = React.useState(0);
 
-  const { isRightSidebarOpen, currentMusic, setIsRightSidebarOpen } =
+  const { isRightSidebarOpen, currentMusic, setIsRightSidebarOpen, queue } =
     useMusicContext();
 
   return (
@@ -82,7 +82,7 @@ const BottomPlayer = () => {
                   />
                 </div>
                 <div>
-                  <Link href="/#">
+                  <Link href={`/playlists/${queue.id}`}>
                     <Typography
                       isHoverUnderline
                       className="max-w-[150px] text-ellipsis text-nowrap"

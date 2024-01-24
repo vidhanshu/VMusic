@@ -1,3 +1,5 @@
+import type NSMusic from "@/music";
+
 export const REVALIDATE = 43200;
 
 // Animation constants
@@ -56,5 +58,28 @@ export const HERO_CARD_ANIMATION = {
   animate: { y: 0, opacity: 1 },
   transition: {
     stiffness: 0,
+  },
+};
+
+export const DEFAULT_SEARCH_ALL_VAL:NSMusic.ISearchAllType = {
+  topQuery: {
+    results: [],
+    position: 0,
+  },
+  albums: {
+    results: [],
+    position: 1,
+  },
+  songs: {
+    results: [],
+    position: 2,
+  },
+  playlists: {
+    results: [],
+    position: 3,
+  },
+  artists: {
+    results: [],
+    position: 4,
   },
 };

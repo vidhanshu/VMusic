@@ -11,40 +11,19 @@ const SongListItem = dynamic(
   { ssr: false },
 );
 
-import useMusicContext from "@/contexts/music-context/use-music-context";
-
 import type NSMusic from "@/music";
 
-const SongsList = ({
+const SearcedSongsList = ({
   songs,
-  listId,
   showListHeader = true,
   handleSongClick: customHandleSongClick,
 }: {
   songs: NSMusic.IMusic[];
   listId?: string;
   showListHeader?: boolean;
-  handleSongClick?: (idx: number) => void;
+  handleSongClick: (idx: number) => void;
 }) => {
   const router = useRouter();
-  const { currentMusic, togglePlay, setCurrentMusic, queue, setQueue } =
-    useMusicContext();
-
-  const handleSongClick = (idx: number, id: string) => {
-    const isCurrentSongPlaying = currentMusic?.id === id;
-    // if current song is already playing, then pause other wise set current song
-    if (isCurrentSongPlaying) {
-      togglePlay();
-    } else {
-      setQueue({
-        id: listId,
-        activeIndex: idx,
-        songs,
-        shuffle: queue.shuffle,
-      });
-      setCurrentMusic(songs[idx]!);
-    }
-  };
 
   if (!songs.length) {
     return (
@@ -91,9 +70,7 @@ const SongsList = ({
         {songs.map((song, idx) => {
           return (
             <SongListItem
-              handleSongClick={
-                customHandleSongClick?.bind(null, idx) ?? handleSongClick
-              }
+              handleSongClick={customHandleSongClick?.bind(null, idx)}
               key={idx}
               song={song}
               idx={idx}
@@ -105,4 +82,4 @@ const SongsList = ({
   );
 };
 
-export default SongsList;
+export default SearcedSongsList;

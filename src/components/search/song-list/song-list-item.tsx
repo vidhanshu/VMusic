@@ -18,10 +18,10 @@ export const SongListItem = ({
 }: {
   song: NSMusic.IMusic;
   idx: number;
-  handleSongClick: (idx: number, id: string) => void;
+  handleSongClick: (idx: number) => void;
 }) => {
-  const { currentMusic, isPlaying } =
-    useMusicContext();
+  console.log(song);
+  const { currentMusic, isPlaying } = useMusicContext();
 
   const artists =
     song.primaryArtists instanceof Array
@@ -31,7 +31,7 @@ export const SongListItem = ({
   return (
     <div
       className={cn(
-        "group grid grid-cols-3 justify-between rounded-md bg-primary-500 p-2",
+        "group grid grid-cols-2 justify-between rounded-md bg-primary-500 p-2",
         isCurrentSongPlaying &&
           "bg-gradient-to-r from-primary-200 to-primary-300",
       )}
@@ -47,7 +47,7 @@ export const SongListItem = ({
               radius="full"
               color="success"
               isIconOnly
-              onClick={handleSongClick.bind(null, idx, song.id)}
+              onClick={handleSongClick.bind(null, idx)}
               startContent={
                 isCurrentSongPlaying && isPlaying ? (
                   <Pause size={20} className="fill-white text-white" />
@@ -73,14 +73,14 @@ export const SongListItem = ({
             src={song.image?.[0]?.link ?? "/vmusic.svg"}
             width={50}
             height={50}
-            alt={song.name}
+            alt={song.name ?? song.title}
           />
           <div>
             <Typography
               variant="T_SemiBold_H6"
               className="max-w-[300px] truncate"
             >
-              {song.name}
+              {song.name ?? song.title}
             </Typography>
             <Typography
               className="max-w-[300px] truncate"
@@ -92,15 +92,7 @@ export const SongListItem = ({
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-center">
-        <Typography>
-          {Number(song.playCount).toLocaleString("en-US")}
-        </Typography>
-      </div>
       <div className="flex items-center justify-end gap-x-4">
-        <Typography variant="T_SemiBold_H6">
-          {formattedTime(Number(song.duration))}
-        </Typography>
         <Button
           variant="solid"
           radius="full"

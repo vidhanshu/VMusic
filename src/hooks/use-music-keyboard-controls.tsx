@@ -8,13 +8,14 @@ const useMusicKeyboardControls = () => {
   const { toggleMute, togglePlay, isPlaying } = useMusicContext();
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.code === "Space") {
-      e.preventDefault();
-      togglePlay();
-    } else if (e.code === "KeyM") {
-      e.preventDefault();
-      toggleMute();
-    }
+    // if (e.code === "Space") {
+    //   e.preventDefault();
+    //   togglePlay();
+    // } else 
+    // if (e.code === "KeyM") {
+    //   e.preventDefault();
+    //   toggleMute();
+    // }
   };
 
   useEffect(() => {

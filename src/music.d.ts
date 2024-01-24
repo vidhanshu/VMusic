@@ -9,6 +9,7 @@ namespace NSMusic {
   interface IMusic {
     id: string;
     name: string;
+    title?: string;
     type: string;
     album?: {
       id: string;
@@ -138,6 +139,29 @@ namespace NSMusic {
         songs: IMusic[];
         albums: IAlbum[];
       };
+    };
+  }
+
+  interface ISearchAllType{
+    topQuery: {
+      results: NSMusic.IMusic[];
+      position: 0;
+    };
+    songs: {
+      results: NSMusic.IMusic[];
+      position: 2;
+    };
+    albums: {
+      results: NSMusic.IAlbum[];
+      position: 1;
+    };
+    artists: {
+      results: NSMusic.IArtist[];
+      position: 4;
+    };
+    playlists: {
+      results: NSMusic.IPlaylist[];
+      position: 3;
     };
   }
 }

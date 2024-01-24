@@ -12,8 +12,6 @@ const TrendingAlbums = () => {
     },
   } = useMusicContext();
 
-  console.log(trending)
-
   return (
     <div className="py-6">
       <div className="flex justify-between">

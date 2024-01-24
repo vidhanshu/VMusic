@@ -8,7 +8,6 @@ import { Button } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-
 import search from "@/actions/search";
 import SearchedSongs from "./searched-songs";
 import SearchLoadingSkeleton from "./search-loading-skeleton";
@@ -89,7 +88,7 @@ const SearchedResults = () => {
         </div>
       ) : (
         <>
-          {results.topQuery.results.length ? (
+          {results?.topQuery?.results?.length ? (
             <div className="py-8">
               <Typography color="secondary" variant="T_Medium_H5">
                 Top Results for <span className="text-success">{q}</span>
@@ -97,7 +96,7 @@ const SearchedResults = () => {
               <SearchedSongs songs={results.topQuery.results} />
             </div>
           ) : null}
-          {results.songs.results.length ? (
+          {results?.songs?.results?.length ? (
             <div>
               <Typography color="secondary" variant="T_Medium_H5">
                 Songs for <span className="text-success">{q}</span>
@@ -105,13 +104,13 @@ const SearchedResults = () => {
               <SearchedSongs songs={results.songs.results} />
             </div>
           ) : null}
-          {results.albums.results.length ? (
+          {results?.albums?.results?.length ? (
             <SearchedAlbums albums={results.albums.results} />
           ) : null}
-          {results.playlists.results.length ? (
+          {results?.playlists?.results?.length ? (
             <SearchedPlaylists playlists={results.playlists.results} />
           ) : null}
-          {results.artists.results.length ? (
+          {results?.artists?.results?.length ? (
             <SearchedArtists artists={results.artists.results} />
           ) : null}
         </>

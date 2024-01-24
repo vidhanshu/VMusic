@@ -3,6 +3,7 @@ import { ScrollShadow } from "@nextui-org/react";
 
 import ArtistCard from "../discover/artist-card";
 import type NSMusic from "@/music";
+import { decodeHTML } from "@/utils/common/helpers";
 
 const SearchedArtists = ({ artists }: { artists: NSMusic.IArtist[] }) => {
   return (
@@ -13,7 +14,7 @@ const SearchedArtists = ({ artists }: { artists: NSMusic.IArtist[] }) => {
           {artists.map((item, idx) => (
             <ArtistCard
               id={item.id}
-              name={item.name?.replace(/&amp;/gi, "&")}
+              name={decodeHTML(item.title ?? item.name) ?? "Unknown Artist"}
               image={item.image?.[1]?.link}
               key={idx}
             />

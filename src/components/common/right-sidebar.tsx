@@ -2,9 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
-import { Play, X } from "lucide-react";
+import Link from "next/link";
+import { ListMusic, Play, X } from "lucide-react";
 import { motion as m } from "framer-motion";
-import { Button, cn } from "@nextui-org/react";
+import { Button, Tooltip, cn } from "@nextui-org/react";
 
 import Typography from "./Typography";
 import SongMetaCard from "./song-meta-card";
@@ -13,17 +14,22 @@ import AudioPlayer, { type IAudioPlayerProps } from "./audio-player";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import { RIGHT_SONG_PLAYER_ANIMATION } from "@/utils/common/constants";
+import { decodeHTML, getArtistName } from "@/utils/common/helpers";
 
 const RightSideBar = (props: IAudioPlayerProps) => {
   const {
     currentMusic,
     setIsRightSidebarOpen,
     isRightSidebarOpen,
-    queue: { songs, activeIndex },
+    queue: { songs, activeIndex, id: qId },
     nextSong,
   } = useMusicContext();
 
-  const NEXT_SONG = songs[(activeIndex + 1) % songs.length];
+  const NEXT_SONG = songs?.length
+    ? songs[(activeIndex + 1) % songs.length]
+    : null;
+
+  const isAlbum = songs[0]?.album?.id === qId;
 
   return (
     <m.div
@@ -33,7 +39,20 @@ const RightSideBar = (props: IAudioPlayerProps) => {
         isRightSidebarOpen && "h-[calc(100vh-73px)]",
       )}
     >
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <Tooltip content={`Got to ${isAlbum ? "album" : "playlist"}`}>
+          <Button
+            size="sm"
+            as={Link}
+            isIconOnly
+            radius="full"
+            color="success"
+            variant="solid"
+            className="text-white"
+            href={isAlbum ? `/album/${qId}` : `/playlists/${qId}`}
+            startContent={<ListMusic size={16} />}
+          />
+        </Tooltip>
         <Button
           size="sm"
           isIconOnly
@@ -48,14 +67,14 @@ const RightSideBar = (props: IAudioPlayerProps) => {
             className="mx-auto max-w-[300px] truncate text-center"
             variant="T_SemiBold_H4"
           >
-            {currentMusic?.name ?? "Please play a song"}
+            {decodeHTML(currentMusic?.name ?? "Please play a song")}
           </Typography>
           <Typography
             className="mx-auto max-w-[300px] truncate text-center"
             variant="T_Regular_H7"
             color="secondary"
           >
-            {currentMusic?.name}
+            {getArtistName(currentMusic?.primaryArtists) ?? "Unknown"}
           </Typography>
         </div>
         <Image
@@ -76,11 +95,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
           onClick={nextSong}
           className="mt-4 flex justify-between gap-x-4 p-8"
           endContent={<Play size={16} className="text-white" />}
-          artist={
-            NEXT_SONG?.primaryArtists instanceof Array
-              ? NEXT_SONG?.primaryArtists.join(", ")
-              : NEXT_SONG?.primaryArtists
-          }
+          artist={getArtistName(NEXT_SONG?.primaryArtists) ?? "Unknown artist"}
           image={NEXT_SONG?.image?.[0]?.link}
           name={NEXT_SONG?.name}
         />

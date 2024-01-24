@@ -22,7 +22,7 @@ const TopPlaylists = () => {
         <div className="flex gap-x-10">
           {topPlaylists.map((item, idx) => (
             <AlbumCard
-              href={`/playlists/${item.id}`}
+              href={`/playlists/${item.id}/#`}
               name={item.title}
               image={item.image?.[1]?.link}
               key={idx}

@@ -166,7 +166,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
 
     const { songs, activeIndex } = currentMusicDetails.queue;
     // if no queue exists
-    if (!songs.length) {
+    if (!songs?.length) {
       return false;
     }
 
@@ -186,7 +186,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
 
     const { songs, activeIndex } = currentMusicDetails.queue;
     // if no queue exists
-    if (!songs.length) return false;
+    if (!songs?.length) return false;
 
     const prevIndex = activeIndex - 1;
     const indexToSet = prevIndex < 0 ? songs.length - 1 : prevIndex;

@@ -17,6 +17,7 @@ import {
   BOTTOM_PLAYER_ANIMATION,
   RIGHT_SONG_PLAYER_ANIMATION,
 } from "@/utils/common/constants";
+import { decodeHTML } from "@/utils/common/helpers";
 
 const BottomPlayer = () => {
   const [volume, setVolume] = React.useState(80);
@@ -82,13 +83,17 @@ const BottomPlayer = () => {
                   />
                 </div>
                 <div>
-                  <Link href={`/playlists/${queue.id}`}>
+                  <Link
+                    scroll={true}
+                    // if the current queue is album then go to album page
+                    href={`${queue.songs[0]?.album?.id === queue.id ? "/album" : "/playlists"}/${queue.id}/#`}
+                  >
                     <Typography
                       isHoverUnderline
                       className="max-w-[150px] text-ellipsis text-nowrap"
                       variant="T_SemiBold_H6"
                     >
-                      {currentMusic?.name ?? "Please select a song"}
+                      {decodeHTML(currentMusic?.name ?? "Please select a song")}
                     </Typography>
                   </Link>
                   {/* Show only one artist */}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Button } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
+import { decodeHTML } from "@/utils/common/helpers";
 
 interface IArtistCardProps {
   image?: string;
@@ -17,6 +18,7 @@ const ArtistCard = ({ image, name, id }: IArtistCardProps) => {
     <div>
       <Button
         as={Link}
+        scroll={true}
         radius="full"
         href={`/artist/${id}`}
         className="h-[150px] min-w-[150px] px-0"
@@ -29,8 +31,8 @@ const ArtistCard = ({ image, name, id }: IArtistCardProps) => {
           className="mx-auto min-h-[150px] min-w-[150px] rounded-lg"
         />
       </Button>
-      <Typography className="text-center mt-1 w-[150px] truncate">
-        {name}
+      <Typography className="mt-1 w-[150px] truncate text-center">
+        {decodeHTML(name)}
       </Typography>
     </div>
   );

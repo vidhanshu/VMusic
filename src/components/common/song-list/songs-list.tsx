@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Button } from "@nextui-org/react";
+import { Button, cn } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, Clock } from "lucide-react";
 
@@ -20,11 +20,13 @@ const SongsList = ({
   listId,
   showListHeader = true,
   handleSongClick: customHandleSongClick,
+  showPlayCount = true,
 }: {
   songs: NSMusic.IMusic[];
   listId?: string;
   showListHeader?: boolean;
   handleSongClick?: (idx: number) => void;
+  showPlayCount?: boolean;
 }) => {
   const router = useRouter();
   const { currentMusic, togglePlay, setCurrentMusic, queue, setQueue } =
@@ -46,7 +48,7 @@ const SongsList = ({
     }
   };
 
-  if (!songs.length) {
+  if (!songs?.length) {
     return (
       <div className="flex flex-col items-center gap-6 py-8">
         <Typography
@@ -70,17 +72,24 @@ const SongsList = ({
   return (
     <div>
       {showListHeader && (
-        <div className="group grid grid-cols-3 justify-between rounded-md p-2">
+        <div
+          className={cn(
+            "group grid grid-cols-2 justify-between rounded-md p-2",
+            showPlayCount && "grid-cols-3",
+          )}
+        >
           <Typography color="secondary" variant="T_Medium_H6">
             # Title
           </Typography>
-          <Typography
-            className="justify-self-center"
-            color="secondary"
-            variant="T_Medium_H6"
-          >
-            # Play Count
-          </Typography>
+          {showPlayCount && (
+            <Typography
+              className="justify-self-center"
+              color="secondary"
+              variant="T_Medium_H6"
+            >
+              # Play Count
+            </Typography>
+          )}
           <Clock
             className="mr-20 justify-self-end text-primary-100"
             size={20}
@@ -94,6 +103,7 @@ const SongsList = ({
               handleSongClick={
                 customHandleSongClick?.bind(null, idx) ?? handleSongClick
               }
+              showPlayCount={showPlayCount}
               key={idx}
               song={song}
               idx={idx}

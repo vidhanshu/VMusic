@@ -2,6 +2,7 @@ import SongsList from "@/components/common/song-list/songs-list";
 import DetailPageHeader from "@/components/common/detail-page-header";
 
 import { getAlbumById } from "@/actions/get-album-by-id";
+import { getArtistName } from "@/utils/common/helpers";
 
 const AlbumIdPage = async ({
   params: { albumId },
@@ -18,11 +19,7 @@ const AlbumIdPage = async ({
         image={data?.image?.[2]?.link}
         name={data?.name}
         year={data?.year}
-        artists={
-          data?.primaryArtists instanceof Array
-            ? data?.primaryArtists.join(", ")
-            : data?.primaryArtists
-        }
+        artists={getArtistName(data?.primaryArtists ?? "Unknown Artist")}
         // needing to pass to reset the array after disabling shuffle
         songs={data?.songs ?? []}
         artistsId={data?.primaryArtistsId}

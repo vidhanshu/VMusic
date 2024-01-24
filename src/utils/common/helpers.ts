@@ -60,3 +60,14 @@ export function shuffleArray<T>(array: T[]) {
   }
   return newArray;
 }
+
+export function decodeHTML(encodedText: string) {
+  if (typeof window === "undefined") return encodedText;
+
+  const doc = new window.DOMParser().parseFromString(encodedText, "text/html");
+  return doc.documentElement.textContent;
+}
+
+export function getArtistName(artist: string | NSMusic.IArtist[] | undefined) {
+  return artist instanceof Array ? artist.join(", ") : artist;
+}

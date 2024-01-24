@@ -77,10 +77,30 @@ namespace NSMusic {
   interface IArtist {
     id: string;
     name: string;
+    title?: string;
     url: string;
     role: string;
     image: IImageSong[];
     isRadioPresent: boolean;
+  }
+
+  interface IDetailedArtist {
+    id: string;
+    name: string;
+    url: string;
+    image: IImageSong[];
+    followerCount: string;
+    fanCount: string;
+    isVerified: true;
+    dominantLanguage: string;
+    dominantType: string;
+    bio: [];
+    dob: string;
+    fb: string;
+    twitter: string;
+    wiki: string;
+    availableLanguages: string[];
+    isRadioPresent: true;
   }
 
   interface IMusicContext {
@@ -125,7 +145,7 @@ namespace NSMusic {
     loop: boolean;
     mute: boolean;
     queue: {
-      id: string,
+      id: string;
       songs: IMusic[];
       activeIndex: number;
       shuffle: boolean;
@@ -142,7 +162,7 @@ namespace NSMusic {
     };
   }
 
-  interface ISearchAllType{
+  interface ISearchAllType {
     topQuery: {
       results: NSMusic.IMusic[];
       position: 0;

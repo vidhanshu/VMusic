@@ -5,7 +5,12 @@ import { Button, Tooltip, cn } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
 
-import { downloadSong, getMusicUrl } from "@/utils/common/helpers";
+import {
+  decodeHTML,
+  downloadSong,
+  getArtistName,
+  getMusicUrl,
+} from "@/utils/common/helpers";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
@@ -15,25 +20,24 @@ export const SongListItem = ({
   song,
   idx,
   handleSongClick,
+  showPlayCount = true,
 }: {
   song: NSMusic.IMusic;
   idx: number;
   handleSongClick: (idx: number, id: string) => void;
+  showPlayCount?: boolean;
 }) => {
-  const { currentMusic, isPlaying } =
-    useMusicContext();
+  const { currentMusic, isPlaying } = useMusicContext();
 
-  const artists =
-    song.primaryArtists instanceof Array
-      ? song.primaryArtists.join(", ")
-      : song.primaryArtists;
+  const artists = getArtistName(song.primaryArtists ?? "Unknown");
   const isCurrentSongPlaying = currentMusic?.id === song.id;
   return (
     <div
       className={cn(
-        "group grid grid-cols-3 justify-between rounded-md bg-primary-500 p-2",
+        "group grid grid-cols-2 justify-between rounded-md bg-primary-500 p-2",
         isCurrentSongPlaying &&
           "bg-gradient-to-r from-primary-200 to-primary-300",
+        showPlayCount && "grid-cols-3",
       )}
     >
       <div className="flex items-center gap-x-2">
@@ -69,7 +73,7 @@ export const SongListItem = ({
 
         <div className="flex gap-x-2">
           <Image
-            className="rounded-sm object-cover"
+            className="h-[50px] w-[50px] rounded-sm object-cover"
             src={song.image?.[0]?.link ?? "/vmusic.svg"}
             width={50}
             height={50}
@@ -80,7 +84,7 @@ export const SongListItem = ({
               variant="T_SemiBold_H6"
               className="max-w-[300px] truncate"
             >
-              {song.name}
+              {decodeHTML(song.name)}
             </Typography>
             <Typography
               className="max-w-[300px] truncate"
@@ -92,11 +96,13 @@ export const SongListItem = ({
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-center">
-        <Typography>
-          {Number(song.playCount).toLocaleString("en-US")}
-        </Typography>
-      </div>
+      {showPlayCount && (
+        <div className="flex items-center justify-center">
+          <Typography>
+            {Number(song.playCount).toLocaleString("en-US")}
+          </Typography>
+        </div>
+      )}
       <div className="flex items-center justify-end gap-x-4">
         <Typography variant="T_SemiBold_H6">
           {formattedTime(Number(song.duration))}

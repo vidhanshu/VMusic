@@ -12,6 +12,8 @@ const SongListItem = dynamic(
 );
 
 import type NSMusic from "@/music";
+import { ArtistListItem } from "./artist-list-item";
+import Link from "next/link";
 
 const SearcedSongsList = ({
   songs,
@@ -25,7 +27,7 @@ const SearcedSongsList = ({
 }) => {
   const router = useRouter();
 
-  if (!songs.length) {
+  if (!songs?.length) {
     return (
       <div className="flex flex-col items-center gap-6 py-8">
         <Typography
@@ -68,6 +70,15 @@ const SearcedSongsList = ({
       )}
       <div className="space-y-4">
         {songs.map((song, idx) => {
+          if (song.type === "artist")
+            return (
+              <Link key={idx} href={`/artist/${song.id}`}>
+                <ArtistListItem
+                  name={song.title}
+                  image={song.image?.[0]?.link}
+                />
+              </Link>
+            );
           return (
             <SongListItem
               handleSongClick={customHandleSongClick?.bind(null, idx)}

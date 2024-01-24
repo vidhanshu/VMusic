@@ -10,6 +10,7 @@ import { ChevronLeft, Pause, Play, Shuffle } from "lucide-react";
 import Typography from "@/components/common/Typography";
 
 import {
+  decodeHTML,
   getArtistAndArtistIdArray,
   getShortNumberRepresentation,
   shuffleArray,
@@ -123,13 +124,14 @@ const DetailPageHeader = ({
             width={250}
             height={250}
             alt="album image"
-            className="rounded-md shadow-lg"
+            className="rounded-md shadow-lg min-w-[250px] h-auto"
           />
 
           <div className="absolute left-4 top-4">
             <Tooltip content="Back">
               <Button
                 isIconOnly
+                variant="shadow"
                 radius="full"
                 onClick={() => router.back()}
                 startContent={<ChevronLeft size={20} />}
@@ -145,7 +147,7 @@ const DetailPageHeader = ({
               variant="T_Bold_H1"
               className="max-h-[120px] max-w-full truncate text-wrap"
             >
-              {name}
+              {decodeHTML(name)}
             </Typography>
             <Typography variant="T_Regular_H5">
               {isAlbumHeader ? (
@@ -157,7 +159,7 @@ const DetailPageHeader = ({
                       className="hover:underline"
                     >
                       {artist.name}
-                      {index != artistMeta.length - 1 ? ", " : ""}
+                      {index != artistMeta?.length - 1 ? ", " : ""}
                     </Link>
                   ))}{" "}
                   . {year}

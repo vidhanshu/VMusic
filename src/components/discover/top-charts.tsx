@@ -49,7 +49,7 @@ export const TopChartCard = ({
   return (
     <Button
       as={Link}
-      href={`/playlists/${id}`}
+      href={`/playlists/${id}/#`}
       color="primary"
       className="flex h-auto w-auto justify-between gap-x-4 p-2"
     >

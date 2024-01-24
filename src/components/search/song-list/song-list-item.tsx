@@ -5,7 +5,7 @@ import { Button, Tooltip, cn } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
 
-import { downloadSong, getMusicUrl } from "@/utils/common/helpers";
+import { downloadSong, getArtistName, getMusicUrl } from "@/utils/common/helpers";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
@@ -20,13 +20,9 @@ export const SongListItem = ({
   idx: number;
   handleSongClick: (idx: number) => void;
 }) => {
-  console.log(song);
   const { currentMusic, isPlaying } = useMusicContext();
 
-  const artists =
-    song.primaryArtists instanceof Array
-      ? song.primaryArtists.join(", ")
-      : song.primaryArtists;
+  const artists = getArtistName(song.primaryArtists ?? "Unknown");
   const isCurrentSongPlaying = currentMusic?.id === song.id;
   return (
     <div

@@ -19,14 +19,16 @@ const LatestReleases = () => {
       </div>
       <ScrollShadow hideScrollBar orientation="horizontal">
         <div className="flex gap-x-10">
-          {newReleases.map((item, idx) => (
-            <AlbumCard
-              href={`/playlists/${item.id}`}
-              name={item.name}
-              image={item.image?.[1]?.link}
-              key={idx}
-            />
-          ))}
+          {newReleases
+            .filter((item) => item.type === "album")
+            .map((item, idx) => (
+              <AlbumCard
+                href={`/album/${item.id}`}
+                name={item.name}
+                image={item.image?.[1]?.link}
+                key={idx}
+              />
+            ))}
         </div>
       </ScrollShadow>
     </div>

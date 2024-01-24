@@ -1,3 +1,5 @@
+import { Toaster } from "sonner";
+
 import MusicContextProvider from "@/contexts/music-context/music-context-provider";
 import { Providers } from "@/components/common/nextui-provider";
 import { NunitoSans } from "@/fonts";
@@ -23,6 +25,7 @@ export default function RootLayout({
         <Providers>
           <MusicContextProvider>{children}</MusicContextProvider>
         </Providers>
+        <Toaster />
       </body>
     </html>
   );

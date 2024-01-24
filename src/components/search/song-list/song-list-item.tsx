@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { formattedTime } from "@/utils/helpers";
 import { Download, Pause, Play } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
 

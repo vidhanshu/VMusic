@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button, Tooltip, cn } from "@nextui-org/react";
 import { ChevronLeft, Verified } from "lucide-react";
+import { motion as m } from "framer-motion";
 
 import Typography from "@/components/common/Typography";
 
@@ -18,7 +19,6 @@ const ArtistHeader = ({
   artist: {
     name,
     image,
-    id,
     dominantType,
     isVerified,
     followerCount,
@@ -38,7 +38,11 @@ const ArtistHeader = ({
           name ? "items-end" : "items-center",
         )}
       >
-        <div className="relative">
+        <m.div
+          initial={{ opacity: 0, scale: 0.5, x: -100}}
+          animate={{ opacity: 1, scale: 1, x: 0}}
+          className="relative"
+        >
           <Image
             width={250}
             height={250}
@@ -69,7 +73,7 @@ const ArtistHeader = ({
               />
             </Tooltip>
           </div>
-        </div>
+        </m.div>
         {name ? (
           <div className="flex flex-col gap-4">
             <Typography
@@ -84,7 +88,11 @@ const ArtistHeader = ({
                 {getShortNumberRepresentation(Number(followerCount))} Followers
                 . {dominantLanguage}
               </Typography>
-              <Typography className="capitalize" color="secondary" variant="T_Regular_H6">
+              <Typography
+                className="capitalize"
+                color="secondary"
+                variant="T_Regular_H6"
+              >
                 {availableLanguages?.slice(0, 5)?.join(", ")}....
               </Typography>
             </div>

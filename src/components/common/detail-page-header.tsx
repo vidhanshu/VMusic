@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button, Tooltip, cn } from "@nextui-org/react";
 import { ChevronLeft, Pause, Play, Shuffle } from "lucide-react";
+import { motion as m } from "framer-motion";
 
 import Typography from "@/components/common/Typography";
 
@@ -114,7 +114,11 @@ const DetailPageHeader = ({
           name ? "items-end" : "items-center",
         )}
       >
-        <div className="relative">
+        <m.div
+          initial={{ opacity: 0, scale: 0.5, x: -100 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          className="relative"
+        >
           <Image
             src={image ?? "/vmusic.svg"}
             width={250}
@@ -136,7 +140,7 @@ const DetailPageHeader = ({
               />
             </Tooltip>
           </div>
-        </div>
+        </m.div>
         {name ? (
           <div className="flex flex-col gap-4">
             <Typography

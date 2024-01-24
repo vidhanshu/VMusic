@@ -61,7 +61,13 @@ export const HERO_CARD_ANIMATION = {
   },
 };
 
-export const DEFAULT_SEARCH_ALL_VAL:NSMusic.ISearchAllType = {
+export const SONG_LIST_ITEM_ANIMATION = {
+  initial: { opacity: 0, x: -100 },
+  whileInView: { opacity: 1, x: 0 },
+  viewport: { once: true },
+};
+
+export const DEFAULT_SEARCH_ALL_VAL: NSMusic.ISearchAllType = {
   topQuery: {
     results: [],
     position: 0,

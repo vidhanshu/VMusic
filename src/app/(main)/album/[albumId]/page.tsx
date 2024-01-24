@@ -5,20 +5,15 @@ import { getAlbumById } from "@/actions/get-album-by-id";
 import { decodeHTML, getArtistName } from "@/utils/common/helpers";
 import { type Metadata, type ResolvingMetadata } from "next";
 
-type Props = {
-  params: { albumId: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 export async function generateMetadata(
-  { params }: Props,
+  { params }: { params: { albumId: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   // fetch data
   const album = await getAlbumById(params.albumId);
 
   // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
+  const previousImages = (await parent).openGraph?.images ?? [];
 
   const currentImage = album?.image?.[1]?.link ?? "/vmusic.svg";
 

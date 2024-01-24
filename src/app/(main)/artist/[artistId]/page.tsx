@@ -1,27 +1,25 @@
-import ArtistHeader from "@/components/common/detail-artist-header";
+import { type Metadata, type ResolvingMetadata } from "next";
+
 import { getArtist } from "@/actions/get-artist-by-id";
 import { getSongsByArtistId } from "@/actions/get-artist-songs";
+import { getAlbumsByArtistId } from "@/actions/get-artist-albums";
+
+import ArtistHeader from "@/components/common/detail-artist-header";
 import SongsList from "@/components/common/song-list/songs-list";
 import TrendingAlbums from "@/components/discover/trendings-albums";
-import { getAlbumsByArtistId } from "@/actions/get-artist-albums";
-import { type Metadata, type ResolvingMetadata } from "next";
+
 import { decodeHTML } from "@/utils/common/helpers";
 
-type Props = {
-  params: { artistId: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 export async function generateMetadata(
-  { params }: Props,
+  { params }: { params: { artistId: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   // fetch data
   const album = await getArtist(params.artistId);
 
   // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
-  const previousTwitterImages = (await parent).twitter?.images || [];
+  const previousImages = (await parent).openGraph?.images ?? [];
+  const previousTwitterImages = (await parent).twitter?.images ?? [];
 
   const currentImage = album?.image?.[1]?.link ?? "/vmusic.svg";
   const title = decodeHTML(album?.name ?? "Unknown Artist") ?? "Unknown Artist";
@@ -53,6 +51,10 @@ const ArtistIdPage = async ({
     <div className="space-y-8">
       <ArtistHeader artist={artistData} />
       <SongsList
+        pagination={{
+          initialPage: 1,
+          total: songsData?.total ?? 0,
+        }}
         showPlayCount={false}
         listId={artistId}
         songs={songsData?.results ?? []}

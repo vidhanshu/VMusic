@@ -18,10 +18,8 @@ import {
 import {
   Modal,
   ModalContent,
-  ModalHeader,
   ModalBody,
   useDisclosure,
-  ModalFooter,
   Spinner,
 } from "@nextui-org/react";
 import { Button, Slider, Tooltip } from "@nextui-org/react";
@@ -111,31 +109,29 @@ const AudioPlayer = ({
         placement="center"
       >
         <ModalContent>
-          {(onClose) => (
-            <div className="py-8">
-              <ModalBody>
-                {lyrics.loading ? (
-                  <Spinner color="success" />
-                ) : lyrics.noLyrics ? (
-                  <Typography className="text-center" variant="T_SemiBold_H2">
-                    No Lyrics
+          <div className="py-8">
+            <ModalBody>
+              {lyrics.loading ? (
+                <Spinner color="success" />
+              ) : lyrics.noLyrics ? (
+                <Typography className="text-center" variant="T_SemiBold_H2">
+                  No Lyrics
+                </Typography>
+              ) : (
+                <div className="space-y-4">
+                  <Typography variant="T_Bold_H3">
+                    {lyrics.data?.snippet}
                   </Typography>
-                ) : (
-                  <div className="space-y-4">
-                    <Typography variant="T_Bold_H3">
-                      {lyrics.data?.snippet}
-                    </Typography>
-                    <Typography variant="T_Regular_H6">
-                      {lyrics.data?.lyrics}
-                    </Typography>
-                    <Typography color="secondary" variant="T_Regular_H8">
-                      {lyrics.data?.copyright}
-                    </Typography>
-                  </div>
-                )}
-              </ModalBody>
-            </div>
-          )}
+                  <Typography variant="T_Regular_H6">
+                    {lyrics.data?.lyrics}
+                  </Typography>
+                  <Typography color="secondary" variant="T_Regular_H8">
+                    {lyrics.data?.copyright}
+                  </Typography>
+                </div>
+              )}
+            </ModalBody>
+          </div>
         </ModalContent>
       </Modal>
       {isSideBarPlayer ? (

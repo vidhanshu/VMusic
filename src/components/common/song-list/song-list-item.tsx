@@ -2,20 +2,17 @@ import Image from "next/image";
 import { formattedTime } from "@/utils/helpers";
 import { Download, Pause, Play } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
+import { motion as m } from "framer-motion";
 
 import Typography from "@/components/common/Typography";
 
-import {
-  decodeHTML,
-  downloadSong,
-  getArtistName,
-  getMusicUrl,
-} from "@/utils/common/helpers";
+import { decodeHTML, downloadSong, getMusicUrl } from "@/utils/common/helpers";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
 import RenderArtistsAsLinks from "../render-artists-as-link";
+import { SONG_LIST_ITEM_ANIMATION } from "@/utils/common/constants";
 
 export const SongListItem = ({
   song,
@@ -30,10 +27,10 @@ export const SongListItem = ({
 }) => {
   const { currentMusic, isPlaying } = useMusicContext();
 
-  const artists = getArtistName(song.primaryArtists ?? "Unknown");
   const isCurrentSongPlaying = currentMusic?.id === song.id;
   return (
-    <div
+    <m.div
+      {...SONG_LIST_ITEM_ANIMATION}
       className={cn(
         "group grid grid-cols-2 justify-between rounded-md bg-primary-500 p-2",
         isCurrentSongPlaying &&
@@ -122,6 +119,6 @@ export const SongListItem = ({
           startContent={<Download size={20} className="text-white" />}
         />
       </div>
-    </div>
+    </m.div>
   );
 };

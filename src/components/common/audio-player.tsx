@@ -3,6 +3,7 @@
 import React from "react";
 import {
   Heart,
+  Mic2,
   Pause,
   Play,
   Repeat,
@@ -14,11 +15,22 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  useDisclosure,
+  ModalFooter,
+  Spinner,
+} from "@nextui-org/react";
 import { Button, Slider, Tooltip } from "@nextui-org/react";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import { formattedTime, percentageToSeconds } from "@/utils/helpers";
+import { getLyricsById } from "@/actions/get-lyrics-by-id";
+import Typography from "./Typography";
 
 export interface IAudioPlayerProps {
   isSideBarPlayer?: boolean;
@@ -34,6 +46,20 @@ const AudioPlayer = ({
   songProgress,
   volume,
 }: IAudioPlayerProps) => {
+  const [lyrics, setLyrics] = React.useState<{
+    data: {
+      lyrics: string;
+      snippet: string;
+      copyright: string;
+    } | null;
+    loading: boolean;
+    noLyrics: boolean;
+  }>({
+    data: null,
+    loading: false,
+    noLyrics: false,
+  });
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { mute, toggleMute, currentMusic, audioRef } = useMusicContext();
 
   const onUpdateMusicProgress = (val: number | number[]) => {
@@ -53,8 +79,65 @@ const AudioPlayer = ({
     }
   };
 
+  const handleGetLyrics = async () => {
+    if (!currentMusic?.id) return;
+
+    setLyrics((prev) => ({ ...prev, loading: true, noLyrics: false }));
+    const l = await getLyricsById(currentMusic.id);
+    if (l?.lyrics) {
+      setLyrics({
+        data: {
+          lyrics: l.lyrics,
+          snippet: l.snippet,
+          copyright: l.copyright,
+        },
+        loading: false,
+        noLyrics: false,
+      });
+    } else {
+      setLyrics({ data: null, loading: false, noLyrics: true });
+    }
+  };
+
   return (
     <>
+      <Modal
+        size="2xl"
+        isDismissable={false}
+        backdrop="blur"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        scrollBehavior="outside"
+        placement="center"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <div className="py-8">
+              <ModalBody>
+                {lyrics.loading ? (
+                  <Spinner color="success" />
+                ) : lyrics.noLyrics ? (
+                  <Typography className="text-center" variant="T_SemiBold_H2">
+                    No Lyrics
+                  </Typography>
+                ) : (
+                  <div className="space-y-4">
+                    <Typography variant="T_Bold_H3">
+                      {lyrics.data?.snippet}
+                    </Typography>
+                    <Typography variant="T_Regular_H6">
+                      {lyrics.data?.lyrics}
+                    </Typography>
+                    <Typography color="secondary" variant="T_Regular_H8">
+                      {lyrics.data?.copyright}
+                    </Typography>
+                  </div>
+                )}
+              </ModalBody>
+            </div>
+          )}
+        </ModalContent>
+      </Modal>
       {isSideBarPlayer ? (
         <div className="flex flex-col items-center gap-4">
           <EssentialControls />
@@ -123,13 +206,28 @@ const AudioPlayer = ({
             color="secondary"
           />
           <div className="flex items-center gap-x-2">
-            <Button
-              variant="light"
-              radius="full"
-              isIconOnly
-              size="sm"
-              startContent={<Heart className="text-white" size={20} />}
-            />
+            <Tooltip content="Lyrics">
+              <Button
+                onClick={async () => {
+                  onOpen();
+                  await handleGetLyrics();
+                }}
+                variant="light"
+                radius="full"
+                isIconOnly
+                size="sm"
+                startContent={<Mic2 className="text-white" size={20} />}
+              />
+            </Tooltip>
+            <Tooltip content="Like">
+              <Button
+                variant="light"
+                radius="full"
+                isIconOnly
+                size="sm"
+                startContent={<Heart className="text-white" size={20} />}
+              />
+            </Tooltip>
             <SoundControls
               mute={mute}
               toggleMute={toggleMute}

@@ -20,7 +20,7 @@ const Sidebar = () => {
     <m.aside
       {...SIDEBAR_ANIMATION}
       className={cn(
-        "sticky top-0 z-[51] col-span-2 flex h-[calc(100vh-65px)] flex-grow flex-col justify-between border-r-[2px] border-primary-500 bg-primary-700 py-4",
+        "sticky top-0 z-[50] col-span-2 flex h-[calc(100vh-65px)] flex-grow flex-col justify-between border-r-[2px] border-primary-500 bg-primary-700 py-4",
         isRightSidebarOpen && "h-screen",
       )}
     >

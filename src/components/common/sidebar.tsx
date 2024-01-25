@@ -4,28 +4,47 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button, cn } from "@nextui-org/react";
 import { motion as m } from "framer-motion";
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight, X, type LucideIcon } from "lucide-react";
 
 import Logo from "./Logo";
+import Typography from "./Typography";
 
 import { SIDEBAR_MENU } from "@/utils/constants";
-import Typography from "./Typography";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 import { SIDEBAR_ANIMATION } from "@/utils/common/constants";
+import { setDocumentOverflow } from "@/utils/common/helpers";
+import { useMediaQuery } from "usehooks-ts";
 
-const Sidebar = () => {
+const Sidebar = ({
+  setSidebar,
+}: {
+  setSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { isRightSidebarOpen } = useMusicContext();
 
   return (
     <m.aside
       {...SIDEBAR_ANIMATION}
       className={cn(
-        "sticky top-0 z-[50] col-span-2 flex h-[calc(100vh-65px)] flex-grow flex-col justify-between border-r-[2px] border-primary-500 bg-primary-700 py-4",
+        "bg-primary-700 py-4 md:sticky md:top-0 md:z-[50] md:col-span-2 md:flex md:h-[calc(100vh-65px)] md:flex-grow md:flex-col md:justify-between md:border-r-[2px] md:border-primary-500",
+        "fixed inset-0 z-[51]",
         isRightSidebarOpen && "h-screen",
       )}
     >
       <div>
-        <div className="flex items-center justify-center py-6">
+        <div className="flex items-center justify-between gap-x-4 px-4 py-0 md:justify-center md:px-0 md:py-6">
+          <Button
+            className="flex md:hidden"
+            isIconOnly
+            radius="full"
+            variant="flat"
+            color="secondary"
+            startContent={<X size={16} />}
+            onClick={() => {
+              setSidebar(false);
+              setDocumentOverflow(false);
+            }}
+          />
           <Logo withName />
         </div>
         <div className="space-y-8 pl-4  pt-8">
@@ -54,7 +73,7 @@ const Sidebar = () => {
           endContent={<ChevronRight size={16} />}
           fullWidth
           variant="bordered"
-          className="border-primary-100"
+          className="border-primary-100 text-white"
         >
           Login
         </Button>

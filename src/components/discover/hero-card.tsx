@@ -12,8 +12,10 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import { HERO_CAROUSEL } from "@/utils/discover/constants";
 import { HERO_CARD_ANIMATION } from "@/utils/common/constants";
+import { useMediaQuery } from "usehooks-ts";
 
 const HeroCard = () => {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const { setCurrentMusic, currentMusic, setIsPlaying, isPlaying } =
     useMusicContext();
 
@@ -42,18 +44,30 @@ const HeroCard = () => {
         key={idx}
         {...HERO_CARD_ANIMATION}
         className="flex h-[351px] justify-between gap-x-16 overflow-hidden rounded-xl
-            bg-[linear-gradient(90deg,_#332F4C_22.46%_22.46%,_#4A456B_47.75%_47.75%,_#958CDD_100%_100%)] px-8 pt-4"
+            md:bg-[linear-gradient(90deg,_#332F4C_22.46%_22.46%,_#4A456B_47.75%_47.75%,_#958CDD_100%_100%)] px-8 pt-4
+            bg-[linear-gradient(to_right,rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url('/vmusic.svg')] bg-center bg-cover bg-no-repeat
+            "
       >
-        <div className="flex flex-grow justify-between">
-          <div className="flex flex-col justify-between pb-4">
-            <Typography variant="T_Regular_H4" className="text-white">
+        <div className="flex flex-grow items-stretch justify-between">
+          <div className="flex flex-grow flex-col items-center justify-between pb-4 md:flex-grow-0 md:items-start">
+            <Typography
+              variant="T_Regular_H4"
+              className="text-center text-white md:text-left"
+            >
               Trending New Hits
             </Typography>
             <div className="space-y-4">
-              <Typography color="success" variant="T_Bold_H1">
+              <Typography
+                className="text-center md:text-left"
+                color="success"
+                variant="T_Bold_H1"
+              >
                 {songName}
               </Typography>
-              <Typography className="text-white" variant="T_SemiBold_H2">
+              <Typography
+                className="text-center  text-white md:text-left"
+                variant="T_SemiBold_H2"
+              >
                 {name}
               </Typography>
             </div>
@@ -96,29 +110,31 @@ const HeroCard = () => {
             </div>
           </div>
           <Image
-            className="-mb-1 aspect-square w-auto"
+            className="-mb-1 hidden aspect-square w-auto md:block"
             src={image}
             width={300}
             height={300}
             alt={name}
           />
         </div>
-        <div className="flex flex-col gap-2 pb-12 pt-8">
-          {Array.from({ length: HERO_CAROUSEL.length }).map((item, idx) => {
-            return (
-              <div
-                key={idx}
-                onClick={() => setActive(idx)}
-                className={cn(
-                  "w-[8px] flex-grow cursor-pointer rounded-full",
-                  idx === active
-                    ? "max-h-[16px] rounded-full bg-white"
-                    : "bg-white/30",
-                )}
-              />
-            );
-          })}
-        </div>
+        {!isMobile && (
+          <div className="flex flex-col gap-2 pb-12 pt-8">
+            {Array.from({ length: HERO_CAROUSEL.length }).map((item, idx) => {
+              return (
+                <div
+                  key={idx}
+                  onClick={() => setActive(idx)}
+                  className={cn(
+                    "w-[8px] flex-grow cursor-pointer rounded-full",
+                    idx === active
+                      ? "max-h-[16px] rounded-full bg-white"
+                      : "bg-white/30",
+                  )}
+                />
+              );
+            })}
+          </div>
+        )}
       </m.div>
     ) : (
       <React.Fragment key={idx} />

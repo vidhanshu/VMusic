@@ -18,8 +18,7 @@ export default {
   plugins: [
     nextui({
       themes: {
-        "purple-dark": {
-          extend: "dark",
+        dark: {
           colors: {
             background: "#29263F",
             foreground: "#FFFFFF",
@@ -49,7 +48,7 @@ export default {
               200: "#676099",
               300: "#454066",
               400: "#3E395C",
-              500: "#35314E",
+              500: "#eee",
               600: "#312C46",
               700: "#302B46",
               800: "#2F2B45",

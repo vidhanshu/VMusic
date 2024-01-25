@@ -71,3 +71,14 @@ export function decodeHTML(encodedText: string) {
 export function getArtistName(artist: string | NSMusic.IArtist[] | undefined) {
   return artist instanceof Array ? artist.join(", ") : artist;
 }
+
+export function getLinkByQueueType(
+  type: "album" | "playlist" | "artist",
+  id: string,
+) {
+  return `${type === "playlist" ? "/playlists" : `/${type}`}/${id}/#`;
+}
+
+export function setDocumentOverflow(val: boolean) {
+  document.body.style.overflow = val ? "hidden" : "auto";
+}

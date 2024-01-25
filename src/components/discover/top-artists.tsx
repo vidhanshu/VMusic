@@ -9,7 +9,7 @@ const TopArtists = () => {
         <Typography variant="T_SemiBold_H4" className="mb-6">
           Trending Artists
         </Typography>
-        <span className="w-[150px] cursor-pointer truncate text-center text-primary-100">
+        <span className="cursor-pointer truncate text-center text-primary-100">
           See all
         </span>
       </div>

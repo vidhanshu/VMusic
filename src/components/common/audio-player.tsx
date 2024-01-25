@@ -21,6 +21,7 @@ import {
   ModalBody,
   useDisclosure,
   Spinner,
+  cn,
 } from "@nextui-org/react";
 import { Button, Slider, Tooltip } from "@nextui-org/react";
 
@@ -78,7 +79,7 @@ const AudioPlayer = ({
   };
 
   const handleGetLyrics = async () => {
-    if (!currentMusic?.id) return;
+    if (!currentMusic?.id || lyrics?.data) return;
 
     setLyrics((prev) => ({ ...prev, loading: true, noLyrics: false }));
     const l = await getLyricsById(currentMusic.id);
@@ -136,7 +137,7 @@ const AudioPlayer = ({
       </Modal>
       {isSideBarPlayer ? (
         <div className="flex flex-col items-center gap-4">
-          <EssentialControls />
+          <EssentialControls isLightModeEnabled />
           <Slider
             aria-label="progress"
             isDisabled={!currentMusic}
@@ -150,16 +151,22 @@ const AudioPlayer = ({
             )}
             startContent={
               <StartTime
+                isLightModeEnabled
                 duration={Number(currentMusic?.duration)}
                 completedPercentage={songProgress}
               />
             }
-            endContent={<EndTime duration={Number(currentMusic?.duration)} />}
+            endContent={
+              <EndTime
+                isLightModeEnabled
+                duration={Number(currentMusic?.duration)}
+              />
+            }
             classNames={{
               track: "cursor-pointer",
             }}
             size="sm"
-            value={songProgress}
+            value={songProgress ?? 0}
             color="secondary"
           />
           <div className="self-start">
@@ -167,6 +174,7 @@ const AudioPlayer = ({
               mute={mute}
               toggleMute={toggleMute}
               volume={volume}
+              isLightModeEnabled
               handleUpdateVolume={onUpdateVolume}
             />
           </div>
@@ -198,7 +206,7 @@ const AudioPlayer = ({
             }
             endContent={<EndTime duration={Number(currentMusic?.duration)} />}
             size="sm"
-            value={songProgress}
+            value={songProgress ?? 0}
             color="secondary"
           />
           <div className="flex items-center gap-x-2">
@@ -212,7 +220,7 @@ const AudioPlayer = ({
                 radius="full"
                 isIconOnly
                 size="sm"
-                startContent={<Mic2 className="text-white" size={20} />}
+                startContent={<Mic2 className="text-white" size={16} />}
               />
             </Tooltip>
             <Tooltip content="Like">
@@ -221,7 +229,7 @@ const AudioPlayer = ({
                 radius="full"
                 isIconOnly
                 size="sm"
-                startContent={<Heart className="text-white" size={20} />}
+                startContent={<Heart className="text-white" size={16} />}
               />
             </Tooltip>
             <SoundControls
@@ -244,12 +252,20 @@ export default AudioPlayer;
 export const StartTime = ({
   completedPercentage,
   duration,
+  isLightModeEnabled = false,
 }: {
   completedPercentage: number;
   duration: number;
+  isLightModeEnabled?: boolean;
 }) => {
   return (
-    <p className="text-xs text-white">
+    <p
+      className={cn(
+        isLightModeEnabled
+          ? "text-black dark:text-white"
+          : "text-xs text-white",
+      )}
+    >
       {formattedTime(
         percentageToSeconds(completedPercentage, Number(duration)),
       )}
@@ -257,9 +273,23 @@ export const StartTime = ({
   );
 };
 
-export const EndTime = ({ duration }: { duration: number }) => {
+export const EndTime = ({
+  duration,
+  isLightModeEnabled = false,
+}: {
+  duration: number;
+  isLightModeEnabled?: boolean;
+}) => {
   return (
-    <p className="text-xs text-white">{formattedTime(Number(duration))}</p>
+    <p
+      className={cn(
+        isLightModeEnabled
+          ? "text-black dark:text-white"
+          : "text-xs text-white",
+      )}
+    >
+      {formattedTime(Number(duration))}
+    </p>
   );
 };
 
@@ -268,11 +298,13 @@ export const SoundControls = ({
   toggleMute,
   handleUpdateVolume,
   volume,
+  isLightModeEnabled,
 }: {
   handleUpdateVolume: (val: number | number[]) => void;
   mute: boolean;
   toggleMute: () => void;
   volume: number;
+  isLightModeEnabled?: boolean;
 }) => {
   return (
     <div className="flex min-w-[150px] items-center gap-x-2">
@@ -284,11 +316,32 @@ export const SoundControls = ({
         size="sm"
         startContent={
           mute || !volume ? (
-            <VolumeX className="text-white" size={20} />
+            <VolumeX
+              className={cn(
+                isLightModeEnabled
+                  ? "text-black dark:text-white"
+                  : "text-white",
+              )}
+              size={16}
+            />
           ) : volume <= 50 ? (
-            <Volume1 className="text-white" size={20} />
+            <Volume1
+              className={cn(
+                isLightModeEnabled
+                  ? "text-black dark:text-white"
+                  : "text-white",
+              )}
+              size={16}
+            />
           ) : (
-            <Volume2 className="text-white" size={20} />
+            <Volume2
+              className={cn(
+                isLightModeEnabled
+                  ? "text-black dark:text-white"
+                  : "text-white",
+              )}
+              size={16}
+            />
           )
         }
       />
@@ -303,13 +356,17 @@ export const SoundControls = ({
         )}
         color="success"
         size="sm"
-        value={volume}
+        value={volume ?? 0}
       />
     </div>
   );
 };
 
-export const EssentialControls = () => {
+export const EssentialControls = ({
+  isLightModeEnabled = false,
+}: {
+  isLightModeEnabled?: boolean;
+}) => {
   const {
     loop,
     toggleLoop,
@@ -330,7 +387,16 @@ export const EssentialControls = () => {
           radius="full"
           color="secondary"
           isIconOnly
-          startContent={<ThumbsUp size={20} className="text-white" />}
+          startContent={
+            <ThumbsUp
+              size={20}
+              className={cn(
+                isLightModeEnabled
+                  ? "text-black dark:text-white"
+                  : "text-white",
+              )}
+            />
+          }
         />
       </Tooltip>
       <Tooltip content="Previous">
@@ -342,7 +408,16 @@ export const EssentialControls = () => {
           radius="full"
           color="secondary"
           isIconOnly
-          startContent={<SkipBack size={20} className="text-white" />}
+          startContent={
+            <SkipBack
+              size={20}
+              className={cn(
+                isLightModeEnabled
+                  ? "text-black dark:text-white"
+                  : "text-white",
+              )}
+            />
+          }
         />
       </Tooltip>
       <Tooltip content="Play/Pause">
@@ -356,9 +431,23 @@ export const EssentialControls = () => {
           onClick={togglePlay}
           startContent={
             isPlaying ? (
-              <Pause size={20} className="text-white" />
+              <Pause
+                size={20}
+                className={cn(
+                  isLightModeEnabled
+                    ? "text-black dark:text-white"
+                    : "text-white",
+                )}
+              />
             ) : (
-              <Play size={20} className="text-white" />
+              <Play
+                size={20}
+                className={cn(
+                  isLightModeEnabled
+                    ? "text-black dark:text-white"
+                    : "text-white",
+                )}
+              />
             )
           }
         />
@@ -372,7 +461,16 @@ export const EssentialControls = () => {
           color="secondary"
           onClick={nextSong}
           isIconOnly
-          startContent={<SkipForward size={20} className="text-white" />}
+          startContent={
+            <SkipForward
+              size={20}
+              className={cn(
+                isLightModeEnabled
+                  ? "text-black dark:text-white"
+                  : "text-white",
+              )}
+            />
+          }
         />
       </Tooltip>
       <Tooltip content={loop ? "Looping" : "Loop"}>
@@ -386,9 +484,23 @@ export const EssentialControls = () => {
           isIconOnly
           startContent={
             loop ? (
-              <Repeat1 className="text-white" size={20} />
+              <Repeat1
+                className={cn(
+                  isLightModeEnabled
+                    ? "text-black dark:text-white"
+                    : "text-white",
+                )}
+                size={20}
+              />
             ) : (
-              <Repeat className="text-white" size={20} />
+              <Repeat
+                className={cn(
+                  isLightModeEnabled
+                    ? "text-black dark:text-white"
+                    : "text-white",
+                )}
+                size={20}
+              />
             )
           }
         />

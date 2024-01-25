@@ -34,13 +34,14 @@ const ArtistHeader = ({
     <>
       <div
         className={cn(
-          "flex gap-x-8 rounded-md bg-gradient-to-b from-primary-300 to-primary-900 p-2",
+          "mb-6 flex gap-8 rounded-md bg-gradient-to-b from-zinc-200 to-zinc-50 p-2 dark:from-primary-300 dark:to-primary-900 md:flex-row",
+          "flex-col items-center md:items-end",
           name ? "items-end" : "items-center",
         )}
       >
         <m.div
-          initial={{ opacity: 0, scale: 0.5, x: -100}}
-          animate={{ opacity: 1, scale: 1, x: 0}}
+          initial={{ opacity: 0, scale: 0.5, x: -100 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
           className="relative"
         >
           <Image
@@ -48,7 +49,7 @@ const ArtistHeader = ({
             height={250}
             alt="album image"
             src={image?.[2]?.link ?? "/vmusic.svg"}
-            className="h-auto min-w-[250px] rounded-md shadow-lg"
+            className="h-auto md:min-w-[250px] rounded-md shadow-lg"
           />
 
           {isVerified && (
@@ -75,21 +76,21 @@ const ArtistHeader = ({
           </div>
         </m.div>
         {name ? (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2 md:gap-4">
             <Typography
               variant="T_Bold_H1"
-              className="max-h-[120px] max-w-full truncate text-wrap"
+              className="max-h-[120px] max-w-full truncate text-wrap text-center md:text-left"
             >
               {decodeHTML(name)}
             </Typography>
             <div>
-              <Typography variant="T_Regular_H5" className="capitalize">
+              <Typography variant="T_Regular_H5" className="capitalize text-center md:text-left">
                 {dominantType} .{" "}
                 {getShortNumberRepresentation(Number(followerCount))} Followers
                 . {dominantLanguage}
               </Typography>
               <Typography
-                className="capitalize"
+                className="capitalize text-center md:text-left"
                 color="secondary"
                 variant="T_Regular_H6"
               >

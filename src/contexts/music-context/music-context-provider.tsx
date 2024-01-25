@@ -10,7 +10,7 @@ import React, {
 import MusicContext from "./music-context";
 
 import type NSMusic from "@/music";
-import { useLocalStorage } from "usehooks-ts";
+import { useLocalStorage, useMediaQuery } from "usehooks-ts";
 import { getMusicUrl } from "@/utils/common/helpers";
 
 const MusicContextProvider = ({ children }: PropsWithChildren) => {
@@ -22,6 +22,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
       shuffle: boolean;
       activeIndex: number;
       songs: NSMusic.IMusic[];
+      type: "album" | "playlist" | "artist";
     };
   }>("music", {
     currentMusic: null,
@@ -30,6 +31,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
       shuffle: false,
       activeIndex: 0,
       songs: [],
+      type: "album",
     },
   });
 
@@ -51,6 +53,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
         shuffle: false,
         songs: localMusic.queue.songs ?? [],
         activeIndex: localMusic.queue.activeIndex ?? 0,
+        type: localMusic.queue.type ?? "album",
       },
       data: {
         newReleases: [],
@@ -149,8 +152,10 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     songs?: NSMusic.IMusic[];
     shuffle?: boolean;
     activeIndex?: number;
+    type?: "album" | "playlist" | "artist";
   }) => {
-    if (!queue.songs && !queue.shuffle && !queue.activeIndex) return;
+    if (!queue.songs && !queue.shuffle && !queue.activeIndex && !queue.type)
+      return;
 
     setCurrentMusicDetails((prev) => ({
       ...prev,
@@ -226,15 +231,21 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     }
   }, [localMusic]);
 
-  // if queue changes, then update the localstorage as well
-  useEffect(() => {
-    setLocalMusic((prev) => ({
-      ...prev,
-      queue: currentMusicDetails.queue,
-    }));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentMusicDetails.queue]);
+  /**
+   * @description this is currently causing a problem, whenever the queue changes, the localstorage is updated
+   * and thus the the page re-renders and set the currentMusic back from localStorage, causing music restart on pagination
+   *
+   * TODO: fix this
+   *
+   * // if queue changes, then update the localstorage as well
+   * useEffect(() => {
+   *  setLocalMusic((prev) => ({
+   *      ...prev,
+   *  queue: currentMusicDetails.queue,
+   * }));
+   * // eslint-disable-next-line react-hooks/exhaustive-deps
+   * }, [currentMusicDetails.queue]);
+   */
 
   return (
     <MusicContext.Provider
@@ -262,6 +273,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
           activeIndex: currentMusicDetails.queue.activeIndex,
           songs: currentMusicDetails.queue.songs,
           shuffle: currentMusicDetails.queue.shuffle,
+          type: currentMusicDetails.queue.type,
         },
         setQueue,
         nextSong,

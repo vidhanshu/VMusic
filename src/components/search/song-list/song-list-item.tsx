@@ -4,7 +4,11 @@ import { Button, Tooltip, cn } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
 
-import { downloadSong, getArtistName, getMusicUrl } from "@/utils/common/helpers";
+import {
+  downloadSong,
+  getArtistName,
+  getMusicUrl,
+} from "@/utils/common/helpers";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
@@ -26,9 +30,9 @@ export const SongListItem = ({
   return (
     <div
       className={cn(
-        "group grid grid-cols-2 justify-between rounded-md bg-primary-500 p-2",
+        "group flex grid-cols-2 justify-between rounded-md bg-primary-500 p-2 md:grid",
         isCurrentSongPlaying &&
-          "bg-gradient-to-r from-primary-200 to-primary-300",
+          "bg-gradient-to-r from-slate-300 to-zinc-100 dark:from-primary-200 dark:to-primary-300",
       )}
     >
       <div className="flex items-center gap-x-2">
@@ -36,8 +40,9 @@ export const SongListItem = ({
           <div className="flex min-h-10 min-w-10 items-center justify-center">
             <Button
               className={cn(
-                isCurrentSongPlaying ? "flex" : "hidden group-hover:flex",
+                isCurrentSongPlaying ? "flex" : "md:hidden md:group-hover:flex",
               )}
+              size="sm"
               variant="solid"
               radius="full"
               color="success"
@@ -45,20 +50,22 @@ export const SongListItem = ({
               onClick={handleSongClick.bind(null, idx)}
               startContent={
                 isCurrentSongPlaying && isPlaying ? (
-                  <Pause size={20} className="fill-white text-white" />
+                  <Pause size={16} className="fill-white text-white" />
                 ) : (
-                  <Play size={20} className="fill-white text-white" />
+                  <Play size={16} className="fill-white text-white" />
                 )
               }
             />
-            {!isCurrentSongPlaying && (
-              <Typography
-                variant="T_SemiBold_H5"
-                className="block group-hover:hidden"
-              >
-                {idx + 1}
-              </Typography>
-            )}
+            <div className="hidden md:block">
+              {!isCurrentSongPlaying && (
+                <Typography
+                  variant="T_SemiBold_H5"
+                  className="block group-hover:hidden"
+                >
+                  {idx + 1}
+                </Typography>
+              )}
+            </div>
           </div>
         </Tooltip>
 
@@ -73,12 +80,12 @@ export const SongListItem = ({
           <div>
             <Typography
               variant="T_SemiBold_H6"
-              className="max-w-[300px] truncate"
+              className="max-w-[150px] truncate md:max-w-[300px]"
             >
               {song.name ?? song.title}
             </Typography>
             <Typography
-              className="max-w-[300px] truncate"
+              className="max-w-[150px] truncate md:max-w-[300px]"
               variant="T_Regular_H7"
               color={!isCurrentSongPlaying ? "secondary" : "primary"}
             >
@@ -92,6 +99,7 @@ export const SongListItem = ({
           variant="solid"
           radius="full"
           color="success"
+          size="sm"
           isIconOnly
           onClick={() => {
             downloadSong(getMusicUrl(song.downloadUrl));

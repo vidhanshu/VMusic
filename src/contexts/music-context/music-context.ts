@@ -35,6 +35,7 @@ const MusicContext = createContext<NSMusic.IMusicContext>({
     songs: [],
     activeIndex: 0,
     shuffle: false,
+    type: "album"
   },
   prevSong: () => false,
   nextSong: () => false,

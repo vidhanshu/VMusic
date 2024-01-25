@@ -50,7 +50,7 @@ const AlbumIdPage = async ({
         artistsId={data?.primaryArtistsId}
         songCount={data?.songCount ?? "0"}
       />
-      <SongsList listId={data?.id} songs={data?.songs ?? []} />
+      <SongsList type="album" listId={data?.id} songs={data?.songs ?? []} />
     </div>
   );
 };

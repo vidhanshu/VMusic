@@ -14,7 +14,11 @@ import AudioPlayer, { type IAudioPlayerProps } from "./audio-player";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import { RIGHT_SONG_PLAYER_ANIMATION } from "@/utils/common/constants";
-import { decodeHTML, getArtistName } from "@/utils/common/helpers";
+import {
+  decodeHTML,
+  getArtistName,
+  getLinkByQueueType,
+} from "@/utils/common/helpers";
 import RenderArtistsAsLinks from "./render-artists-as-link";
 
 const RightSideBar = (props: IAudioPlayerProps) => {
@@ -22,7 +26,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
     currentMusic,
     setIsRightSidebarOpen,
     isRightSidebarOpen,
-    queue: { songs, activeIndex, id: qId },
+    queue: { songs, activeIndex, id: qId, type },
     nextSong,
   } = useMusicContext();
 
@@ -36,7 +40,8 @@ const RightSideBar = (props: IAudioPlayerProps) => {
     <m.div
       {...RIGHT_SONG_PLAYER_ANIMATION}
       className={cn(
-        "h-[calc(100vh-65px-73px)] border-l-[2px] border-primary-500 bg-background/90 p-4 shadow-md backdrop-blur-md",
+        "h-[calc(100vh-65px-73px)] md:w-fit bg-background/90 p-4 shadow-md backdrop-blur-md md:border-l-[2px] md:border-primary-500",
+        "w-screen",
         isRightSidebarOpen && "h-[calc(100vh-73px)]",
       )}
     >
@@ -50,7 +55,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
             color="success"
             variant="solid"
             className="text-white"
-            href={isAlbum ? `/album/${qId}` : `/playlists/${qId}`}
+            href={getLinkByQueueType(type, qId)}
             startContent={<ListMusic size={16} />}
           />
         </Tooltip>
@@ -58,7 +63,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
           size="sm"
           isIconOnly
           className="bg-primary-50"
-          startContent={<X size={16} />}
+          startContent={<X className="text-white" size={16} />}
           onClick={() => setIsRightSidebarOpen(false)}
         />
       </div>
@@ -104,7 +109,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
           fullWidth
           onClick={nextSong}
           className="mt-4 flex justify-between gap-x-4 p-8"
-          endContent={<Play size={16} className="text-white" />}
+          endContent={<Play size={16} className="text-black dark:text-white" />}
           artist={getArtistName(NEXT_SONG?.primaryArtists) ?? "Unknown artist"}
           image={NEXT_SONG?.image?.[0]?.link}
           name={NEXT_SONG?.name}

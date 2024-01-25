@@ -19,11 +19,15 @@ export const SongListItem = ({
   idx,
   handleSongClick,
   showPlayCount = true,
+  pagination,
 }: {
   song: NSMusic.IMusic;
   idx: number;
   handleSongClick: (idx: number, id: string) => void;
   showPlayCount?: boolean;
+  pagination?: {
+    page: number;
+  };
 }) => {
   const { currentMusic, isPlaying } = useMusicContext();
 
@@ -32,9 +36,9 @@ export const SongListItem = ({
     <m.div
       {...SONG_LIST_ITEM_ANIMATION}
       className={cn(
-        "group grid grid-cols-2 justify-between rounded-md bg-primary-500 p-2",
+        "group flex justify-between rounded-md bg-primary-500 p-2 md:grid md:grid-cols-2",
         isCurrentSongPlaying &&
-          "bg-gradient-to-r from-primary-200 to-primary-300",
+          "bg-gradient-to-r from-slate-300 to-zinc-100 dark:from-primary-200 dark:to-primary-300",
         showPlayCount && "grid-cols-3",
       )}
     >
@@ -43,8 +47,9 @@ export const SongListItem = ({
           <div className="flex min-h-10 min-w-10 items-center justify-center">
             <Button
               className={cn(
-                isCurrentSongPlaying ? "flex" : "hidden group-hover:flex",
+                isCurrentSongPlaying ? "flex" : "md:hidden md:group-hover:flex",
               )}
+              size="sm"
               variant="solid"
               radius="full"
               color="success"
@@ -52,20 +57,22 @@ export const SongListItem = ({
               onClick={handleSongClick.bind(null, idx, song.id)}
               startContent={
                 isCurrentSongPlaying && isPlaying ? (
-                  <Pause size={20} className="fill-white text-white" />
+                  <Pause size={16} className="fill-white text-white" />
                 ) : (
-                  <Play size={20} className="fill-white text-white" />
+                  <Play size={16} className="fill-white text-white" />
                 )
               }
             />
-            {!isCurrentSongPlaying && (
-              <Typography
-                variant="T_SemiBold_H5"
-                className="block group-hover:hidden"
-              >
-                {idx + 1}
-              </Typography>
-            )}
+            <div className="hidden md:block">
+              {!isCurrentSongPlaying && (
+                <Typography
+                  variant="T_SemiBold_H5"
+                  className="block group-hover:hidden"
+                >
+                  {pagination ? (pagination.page - 1) * 10 + idx : idx + 1}
+                </Typography>
+              )}
+            </div>
           </div>
         </Tooltip>
 
@@ -80,12 +87,12 @@ export const SongListItem = ({
           <div>
             <Typography
               variant="T_SemiBold_H6"
-              className="max-w-[300px] truncate"
+              className="max-w-[150px] truncate md:max-w-[300px]"
             >
               {decodeHTML(song.name)}
             </Typography>
             <Typography
-              className="max-w-[300px] truncate"
+              className="max-w-[150px] truncate md:max-w-[300px]"
               variant="T_Regular_H7"
               color={!isCurrentSongPlaying ? "secondary" : "primary"}
             >
@@ -98,17 +105,18 @@ export const SongListItem = ({
         </div>
       </div>
       {showPlayCount && (
-        <div className="flex items-center justify-center">
+        <div className="hidden items-center justify-center md:flex">
           <Typography>
             {Number(song.playCount).toLocaleString("en-US")}
           </Typography>
         </div>
       )}
       <div className="flex items-center justify-end gap-x-4">
-        <Typography variant="T_SemiBold_H6">
+        <Typography className="mr-2 md:mr-0" variant="T_SemiBold_H6">
           {formattedTime(Number(song.duration))}
         </Typography>
         <Button
+          className="hidden"
           variant="solid"
           radius="full"
           color="success"

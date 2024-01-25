@@ -124,12 +124,14 @@ namespace NSMusic {
       songs: IMusic[];
       activeIndex: number;
       shuffle: boolean;
+      type: "artist" | "album" | "playlist";
     };
     setQueue: (queue: {
       id?: string;
       songs?: IMusic[];
       shuffle?: boolean;
       activeIndex?: number;
+      type?: "artist" | "album" | "playlist";
     }) => void;
     prevSong: () => boolean;
     nextSong: () => boolean;
@@ -149,6 +151,7 @@ namespace NSMusic {
       songs: IMusic[];
       activeIndex: number;
       shuffle: boolean;
+      type: "artist" | "album" | "playlist";
     };
     data: {
       newReleases: IMusic[];

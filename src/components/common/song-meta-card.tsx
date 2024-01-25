@@ -30,12 +30,12 @@ const SongMetaCard = ({
       {startContent}
       <User
         avatarProps={{
-          src: image ?? "/pahadon-mein.jpg",
+          src: image ?? "/vmusic.svg",
           className: "w-[40px] h-[40px] rounded-md",
         }}
         name={name}
         classNames={{
-          name: "text-white max-w-[180px] truncate",
+          name: "dark:text-white text-black max-w-[180px] truncate",
         }}
         description={
           <Typography

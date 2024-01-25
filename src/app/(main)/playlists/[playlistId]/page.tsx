@@ -48,7 +48,7 @@ const PlaylistIdPage = async ({
         songCount={data?.songCount ?? "0"}
         songs={data?.songs ?? []}
       />
-      <SongsList listId={data?.id} songs={data?.songs ?? []} />
+      <SongsList type="playlist" listId={data?.id} songs={data?.songs ?? []} />
     </div>
   );
 };

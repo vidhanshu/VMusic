@@ -6,6 +6,7 @@ import { NunitoSans } from "@/fonts";
 import "@/styles/globals.css";
 
 export const metadata = {
+  metadataBase: "http://localhost:3000",
   title: {
     template: "%s | VMusic",
     default: "VMusic",
@@ -20,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="purple-dark">
+    <html lang="en" className="light">
       <body className={`font-sans ${NunitoSans.variable} overflow-x-hidden`}>
         <Providers>
           <MusicContextProvider>{children}</MusicContextProvider>

@@ -26,12 +26,14 @@ const SongsList = ({
   handleSongClick: customHandleSongClick,
   showPlayCount = true,
   pagination: customPagination,
+  type,
 }: {
   songs: NSMusic.IMusic[];
   listId?: string;
   showListHeader?: boolean;
   handleSongClick?: (idx: number) => void;
   showPlayCount?: boolean;
+  type: "album" | "playlist" | "artist";
   pagination?: {
     total: number;
     initialPage: number;
@@ -54,13 +56,21 @@ const SongsList = ({
     if (isCurrentSongPlaying) {
       togglePlay();
     } else {
-      setQueue({
-        id: listId,
-        activeIndex: idx,
-        songs,
-        shuffle: queue.shuffle,
-      });
-      setCurrentMusic(songs[idx]!);
+      // set to the queue, iff the queue is empty or the song is not already in the queue
+      if (
+        !queue?.songs?.length ||
+        queue?.songs?.[0]?.id !== songList?.[0]?.id
+      ) {
+        setQueue({
+          id: listId,
+          activeIndex: idx,
+          songs: songList,
+          shuffle: queue.shuffle,
+          type,
+        });
+      }
+
+      setCurrentMusic(songList[idx]!);
     }
   };
 
@@ -68,6 +78,7 @@ const SongsList = ({
     setLoading(true);
     const data = await getSongsByArtistId(params.artistId, num);
     setsongList(data?.results ?? []);
+    setQueue({ songs: data?.results ?? [] });
     setPagination((prev) => ({ ...prev, page: num }));
     setLoading(false);
   };
@@ -98,7 +109,7 @@ const SongsList = ({
       {showListHeader && (
         <div
           className={cn(
-            "group grid grid-cols-2 justify-between rounded-md p-2",
+            "group flex md:grid md:grid-cols-2 justify-between md:rounded-md p-2",
             showPlayCount && "grid-cols-3",
           )}
         >
@@ -107,7 +118,7 @@ const SongsList = ({
           </Typography>
           {showPlayCount && (
             <Typography
-              className="justify-self-center"
+              className="hidden md:block md:justify-self-center"
               color="secondary"
               variant="T_Medium_H6"
             >
@@ -115,7 +126,7 @@ const SongsList = ({
             </Typography>
           )}
           <Clock
-            className="mr-20 justify-self-end text-primary-100"
+            className="md:mr-20 justify-self-end text-primary-100"
             size={20}
           />
         </div>
@@ -133,6 +144,8 @@ const SongsList = ({
                 showPlayCount={showPlayCount}
                 key={idx}
                 song={song}
+                // if customPagination prop is there then pass pagination else not
+                {...(!!customPagination ? pagination : {})}
                 idx={idx}
               />
             );

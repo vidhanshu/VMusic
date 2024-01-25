@@ -17,14 +17,14 @@ const CustomNavbar = ({ sidebar, setSidebar }: ICustomNavbarProps) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const pathname = usePathname();
 
-  // to close the side bar on route change, in mobile
+  // // to close the side bar on route change, in mobile
   useEffect(() => {
     if (isMobile && sidebar) {
       setSidebar(false);
       setDocumentOverflow(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile, pathname, sidebar]);
+  }, [isMobile, pathname]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b-[2px] border-primary-500 bg-background px-4 py-4">

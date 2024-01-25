@@ -1,12 +1,17 @@
-import { type Metadata } from "next";
 import React from "react";
+import { type Metadata } from "next";
+import TopPlaylists from "@/components/top-playlists/top-playlists";
 
 export const metadata: Metadata = {
   title: "Top Playlists",
   description: "Top playlists on VMusic",
 };
-const TopPlaylists = () => {
-  return <div>TopPlaylists</div>;
+const TopPlaylistsPage = () => {
+  return (
+    <div className="flex w-full flex-col">
+      <TopPlaylists />
+    </div>
+  );
 };
 
-export default TopPlaylists;
+export default TopPlaylistsPage;

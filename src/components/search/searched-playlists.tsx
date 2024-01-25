@@ -3,7 +3,7 @@
 import React from "react";
 import { ScrollShadow } from "@nextui-org/react";
 
-import AlbumCard from "@/components/discover/album-card";
+import AlbumPlaylistCard from "@/components/discover/album-playlist-card";
 
 import type NSMusic from "@/music";
 
@@ -18,7 +18,7 @@ const SearchedPlaylists = ({
       <ScrollShadow hideScrollBar orientation="horizontal">
         <div className="flex gap-x-10">
           {playlists.map((item, idx) => (
-            <AlbumCard
+            <AlbumPlaylistCard
               href={`/playlists/${item.id}/#`}
               name={item.title}
               image={item.image?.[1]?.link}

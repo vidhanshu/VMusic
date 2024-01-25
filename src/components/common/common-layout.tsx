@@ -15,6 +15,7 @@ import useOnline from "@/hooks/use-online";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
+import CustomBreadcrumbs from "./custom-breadcrumbs";
 
 const CommonLayout = ({
   children,
@@ -24,8 +25,7 @@ const CommonLayout = ({
 }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const { setData, setIsRightSidebarOpen } =
-    useMusicContext();
+  const { setData, setIsRightSidebarOpen } = useMusicContext();
 
   const [sidebar, setSidebar] = useState(true);
   const online = useOnline();
@@ -52,6 +52,7 @@ const CommonLayout = ({
         <div className={cn(sidebar ? "md:col-span-10" : "md:col-span-12")}>
           <Navbar sidebar={sidebar} setSidebar={setSidebar} />
           <div className="p-4 md:p-6 lg:p-8">
+            <CustomBreadcrumbs />
             <div className={cn(!online && "hidden")}>{children}</div>
             {!online && <NoInternet />}
           </div>

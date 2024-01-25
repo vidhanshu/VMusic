@@ -3,9 +3,10 @@
 import React from "react";
 import { ScrollShadow } from "@nextui-org/react";
 
-import AlbumCard from "./album-card";
+import AlbumPlaylistCard from "./album-playlist-card";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
+import ROUTES from "@/routes";
 
 const TopPlaylists = () => {
   const {
@@ -22,8 +23,8 @@ const TopPlaylists = () => {
       <ScrollShadow hideScrollBar orientation="horizontal">
         <div className="flex gap-x-10">
           {topPlaylists.map((item, idx) => (
-            <AlbumCard
-              href={`/playlists/${item.id}/#`}
+            <AlbumPlaylistCard
+              href={`${ROUTES.PLAYLISTS}/${item.id}/#`}
               name={item.title}
               image={item.image?.[1]?.link}
               key={idx}

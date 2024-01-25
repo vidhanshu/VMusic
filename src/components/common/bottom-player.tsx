@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@nextui-org/react";
@@ -8,10 +8,10 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { AnimatePresence, motion as m } from "framer-motion";
 
 import Typography from "./Typography";
-import RightSideBar from "./right-sidebar";
-import RenderArtistsAsLinks from "./render-artists-as-link";
 import AudioPlayer, { HiddenAudioElement } from "./audio-player";
+const RightSideBar = dynamic(() => import("./right-sidebar"));
 
+import RenderArtistsAsLinks from "./render-artists-as-link";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import {
@@ -19,9 +19,10 @@ import {
   RIGHT_SONG_PLAYER_ANIMATION,
 } from "@/utils/common";
 import { decodeHTML, getLinkByQueueType } from "@/utils/common";
+import dynamic from "next/dynamic";
 
 const BottomPlayer = () => {
-  const [volume, setVolume] = React.useState(80);
+  const [volume, setVolume] = useState(80);
   const [songProgress, setSongProgress] = React.useState(0);
 
   const { isRightSidebarOpen, currentMusic, setIsRightSidebarOpen, queue } =
@@ -34,7 +35,7 @@ const BottomPlayer = () => {
         {isRightSidebarOpen && (
           <m.div
             {...RIGHT_SONG_PLAYER_ANIMATION}
-            className="fixed right-0 top-[73px]"
+            className="fixed right-0 top-[73px] z-[51]"
           >
             <RightSideBar
               volume={volume}

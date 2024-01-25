@@ -13,10 +13,11 @@ const SongListItem = dynamic(
   { ssr: false },
 );
 
+import ROUTES from "@/routes";
 
 import type NSMusic from "@/music";
 
-const SearcedSongsList = ({
+const SearchedSongsList = ({
   songs,
   showListHeader = true,
   handleSongClick: customHandleSongClick,
@@ -73,7 +74,7 @@ const SearcedSongsList = ({
         {songs.map((song, idx) => {
           if (song.type === "artist")
             return (
-              <Link key={idx} href={`/artist/${song.id}`}>
+              <Link key={idx} href={`${ROUTES.ARTISTS}/${song.id}`}>
                 <ArtistListItem
                   name={song.title}
                   image={song.image?.[0]?.link}
@@ -94,4 +95,4 @@ const SearcedSongsList = ({
   );
 };
 
-export default SearcedSongsList;
+export default SearchedSongsList;

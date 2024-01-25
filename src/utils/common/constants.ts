@@ -109,7 +109,7 @@ export const SIDEBAR_MENU = [
       {
         title: "Top Artists",
         icon: UserSquareIcon,
-        link: "/top-artists",
+        link: "/artists",
       },
       {
         title: "Top Playlists",
@@ -141,6 +141,37 @@ export const SIDEBAR_MENU = [
 ];
 
 export const ARTISTS = [
+  {
+    id: "1992504",
+    name: "Elley Duhe",
+    url: "https://www.jiosaavn.com/artist/elley-duhe/djVy4zV9yTM_",
+    image: [
+      {
+        quality: "50x50",
+        link: "https://c.saavncdn.com/artists/Elley_Duhe_000_20230829065931_50x50.jpg",
+      },
+      {
+        quality: "150x150",
+        link: "https://c.saavncdn.com/artists/Elley_Duhe_000_20230829065931_150x150.jpg",
+      },
+      {
+        quality: "500x500",
+        link: "https://c.saavncdn.com/artists/Elley_Duhe_000_20230829065931_500x500.jpg",
+      },
+    ],
+    followerCount: "37289",
+    fanCount: "464903",
+    isVerified: false,
+    dominantLanguage: "english",
+    dominantType: "associatedperformer",
+    bio: [],
+    dob: "",
+    fb: "",
+    twitter: "",
+    wiki: "",
+    availableLanguages: ["english", "instrumental", "unknown", "spanish"],
+    isRadioPresent: true,
+  },
   {
     id: "8797744",
     name: "Mohammad Faiz",

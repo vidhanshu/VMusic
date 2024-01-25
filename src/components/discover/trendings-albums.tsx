@@ -2,7 +2,7 @@
 
 import { ScrollShadow } from "@nextui-org/react";
 
-import AlbumCard from "./album-card";
+import AlbumPlaylistCard from "./album-playlist-card";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
@@ -32,7 +32,7 @@ const TrendingAlbums = ({
       <ScrollShadow hideScrollBar orientation="horizontal">
         <div className="flex gap-x-10">
           {ALBUMS.map((item, idx) => (
-            <AlbumCard
+            <AlbumPlaylistCard
               href={`/album/${item.id}`}
               name={item.name}
               image={item.image?.[1]?.link}

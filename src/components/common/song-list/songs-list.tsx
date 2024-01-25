@@ -110,7 +110,7 @@ const SongsList = ({
       {showListHeader && (
         <div
           className={cn(
-            "group flex justify-between p-2 md:grid md:grid-cols-2 md:rounded-md",
+            "flex grid-cols-2 justify-between p-2 md:grid",
             showPlayCount && "grid-cols-3",
           )}
         >
@@ -146,14 +146,16 @@ const SongsList = ({
                 key={idx}
                 song={song}
                 // if customPagination prop is there then pass pagination else not
-                {...(!!customPagination ? pagination : {})}
+                pagination={
+                  customPagination ? { page: pagination.page } : undefined
+                }
                 idx={idx}
               />
             );
           })}
         </div>
       )}
-      {customPagination && (
+      {!!customPagination && (
         <div className="flex items-center justify-center">
           <Pagination
             onChange={handlePageChange}

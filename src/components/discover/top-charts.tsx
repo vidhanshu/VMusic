@@ -8,6 +8,7 @@ import { Button } from "@nextui-org/react";
 import Typography from "@/components/common/Typography";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
+import ROUTES from "@/routes";
 
 const TopCharts = () => {
   const {
@@ -50,7 +51,7 @@ export const TopChartCard = ({
   return (
     <Button
       as={Link}
-      href={`/playlists/${id}/#`}
+      href={`${ROUTES.PLAYLISTS}/${id}/#`}
       color="primary"
       className="bg-zinc-200 dark:bg-primary flex h-auto w-auto justify-between gap-x-4 p-2"
     >

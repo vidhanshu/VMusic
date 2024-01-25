@@ -168,7 +168,7 @@ const AudioPlayer = ({
               track: "cursor-pointer",
             }}
             size="sm"
-            value={songProgress ?? 0}
+            value={isNaN(songProgress) ? 0 : songProgress}
             color="secondary"
           />
           <div className="self-start">
@@ -208,7 +208,7 @@ const AudioPlayer = ({
             }
             endContent={<EndTime duration={Number(currentMusic?.duration)} />}
             size="sm"
-            value={songProgress ?? 0}
+            value={isNaN(songProgress) ? 0 : songProgress}
             color="secondary"
           />
           <div className="flex items-center gap-x-2">
@@ -358,7 +358,7 @@ export const SoundControls = ({
         )}
         color="success"
         size="sm"
-        value={volume ?? 0}
+        value={isNaN(volume) ? 0 : volume}
       />
     </div>
   );

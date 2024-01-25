@@ -2,8 +2,10 @@ import React from "react";
 import Link from "next/link";
 import { cn } from "@nextui-org/react";
 
-import type NSMusic from "@/music";
+import ROUTES from "@/routes";
 import { getArtistAndArtistIdArray } from "@/utils/common";
+
+import type NSMusic from "@/music";
 
 const RenderArtistsAsLinks = ({
   artists,
@@ -22,7 +24,7 @@ const RenderArtistsAsLinks = ({
         {artistMeta?.slice(0, 5)?.map((artist, index) => (
           <Link
             key={index}
-            href={`/artist/${artist.id}`}
+            href={`${ROUTES.ARTISTS}/${artist.id}`}
             className={cn("hover:underline", className)}
           >
             {artist.name}

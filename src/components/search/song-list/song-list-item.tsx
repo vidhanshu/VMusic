@@ -104,7 +104,7 @@ export const SongListItem = ({
           onClick={() => {
             downloadSong(getMusicUrl(song.downloadUrl));
           }}
-          startContent={<Download size={20} className="text-white" />}
+          startContent={<Download size={16} className="text-white" />}
         />
       </div>
     </div>

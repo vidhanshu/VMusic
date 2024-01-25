@@ -56,7 +56,7 @@ const ArtistHeader = ({
           {isVerified && (
             <Tooltip content="verified artist">
               <Verified
-                className="absolute right-2 top-2 fill-blue-500"
+                className="absolute right-2 top-2 fill-blue-500 text-white"
                 size={25}
               />
             </Tooltip>

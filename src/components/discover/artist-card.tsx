@@ -6,6 +6,7 @@ import { Button } from "@nextui-org/react";
 import Typography from "@/components/common/Typography";
 
 import { decodeHTML } from "@/utils/common";
+import ROUTES from "@/routes";
 
 interface IArtistCardProps {
   image?: string;
@@ -20,7 +21,7 @@ const ArtistCard = ({ image, name, id }: IArtistCardProps) => {
         as={Link}
         scroll={true}
         radius="full"
-        href={`/artist/${id}`}
+        href={`${ROUTES.ARTISTS}/${id}`}
         className="h-[150px] min-w-[150px] px-0"
       >
         <Image

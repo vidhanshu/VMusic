@@ -1,3 +1,4 @@
+import ROUTES from "@/routes";
 import type NSMusic from "@/music";
 
 export const getMusicUrl = (downloadUrl?: NSMusic.IMusic["downloadUrl"]) => {
@@ -76,7 +77,13 @@ export function getLinkByQueueType(
   type: "album" | "playlist" | "artist",
   id: string,
 ) {
-  return `${type === "playlist" ? "/playlists" : `/${type}`}/${id}/#`;
+  return `${
+    type === "playlist"
+      ? `${ROUTES.PLAYLISTS}/${id}/#`
+      : type === "album"
+        ? `${ROUTES.ALBUMS}/${id}/#`
+        : `${ROUTES.ARTISTS}/${id}/#`
+  }`;
 }
 
 export function setDocumentOverflow(val: boolean) {

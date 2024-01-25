@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="light">
+    <html lang="en">
       <body className={`font-sans ${NunitoSans.variable} overflow-x-hidden`}>
         <Providers>
           <MusicContextProvider>{children}</MusicContextProvider>

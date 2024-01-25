@@ -93,7 +93,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
           </Typography>
         </div>
         <Image
-          className="mx-auto aspect-square h-auto w-[300px] rounded-lg object-cover"
+          className="mx-auto aspect-square h-auto w-[200px] md:w-[300px] rounded-lg object-cover"
           src={currentMusic?.image?.[2]?.link ?? "/vmusic.svg"}
           width={300}
           height={300}

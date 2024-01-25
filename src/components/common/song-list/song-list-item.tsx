@@ -36,7 +36,7 @@ export const SongListItem = ({
     <m.div
       {...SONG_LIST_ITEM_ANIMATION}
       className={cn(
-        "group flex justify-between rounded-md bg-primary-500 p-2 md:grid md:grid-cols-2",
+        "group flex grid-cols-2 justify-between rounded-md bg-primary-500 p-2 md:grid",
         isCurrentSongPlaying &&
           "bg-gradient-to-r from-slate-300 to-zinc-100 dark:from-primary-200 dark:to-primary-300",
         showPlayCount && "grid-cols-3",
@@ -69,7 +69,9 @@ export const SongListItem = ({
                   variant="T_SemiBold_H5"
                   className="block group-hover:hidden"
                 >
-                  {pagination ? (pagination.page - 1) * 10 + idx : idx + 1}
+                  {pagination
+                    ? (pagination.page - 1) * 10 + (idx + 1)
+                    : idx + 1}
                 </Typography>
               )}
             </div>
@@ -116,15 +118,16 @@ export const SongListItem = ({
           {formattedTime(Number(song.duration))}
         </Typography>
         <Button
-          className="hidden"
+          className="hidden md:flex"
           variant="solid"
           radius="full"
           color="success"
+          size="sm"
           isIconOnly
           onClick={() => {
             downloadSong(getMusicUrl(song.downloadUrl));
           }}
-          startContent={<Download size={20} className="text-white" />}
+          startContent={<Download size={16} className="text-white" />}
         />
       </div>
     </m.div>

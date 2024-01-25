@@ -5,13 +5,13 @@ import { Button } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
 
-interface IAlbumCardProps {
+interface IAlbumPlaylistCardProps {
   image?: string;
   name: string;
   href: string;
 }
 
-const AlbumCard = ({ image, name, href }: IAlbumCardProps) => {
+const AlbumPlaylistCard = ({ image, name, href }: IAlbumPlaylistCardProps) => {
   return (
     <div className="p-0">
       <Button
@@ -39,4 +39,4 @@ const AlbumCard = ({ image, name, href }: IAlbumCardProps) => {
   );
 };
 
-export default AlbumCard;
+export default AlbumPlaylistCard;

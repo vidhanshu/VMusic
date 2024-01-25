@@ -1,7 +1,8 @@
+import React from "react";
+import Image from "next/image";
 import { Button } from "@nextui-org/react";
 import { Heart, Play } from "lucide-react";
-import Image from "next/image";
-import React from "react";
+
 import Typography from "@/components//common/Typography";
 
 interface IMusicCardProps {

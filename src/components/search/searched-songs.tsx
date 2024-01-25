@@ -1,10 +1,14 @@
 "use client";
 
-import type NSMusic from "@/music";
-import useMusicContext from "@/contexts/music-context/use-music-context";
-import { getSongById } from "@/actions/get-song-by-id";
-import SearcedSongsList from "./song-list/searched-songs-list";
 import { toast } from "sonner";
+
+import SearchedSongsList from "./song-list/searched-songs-list";
+
+import useMusicContext from "@/contexts/music-context/use-music-context";
+
+import { getSongById } from "@/actions";
+
+import type NSMusic from "@/music";
 
 const SearchedSongs = ({ songs }: { songs: NSMusic.IMusic[] }) => {
   const { setCurrentMusic, setIsPlaying } = useMusicContext();
@@ -14,13 +18,12 @@ const SearchedSongs = ({ songs }: { songs: NSMusic.IMusic[] }) => {
       setCurrentMusic(song[0]);
       setIsPlaying(true);
     } else {
-      // toast
       toast.error("Song not found");
     }
   };
   return (
     <div className="py-6">
-      <SearcedSongsList
+      <SearchedSongsList
         handleSongClick={handleSongClick}
         showListHeader={false}
         songs={songs}

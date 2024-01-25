@@ -8,17 +8,17 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { AnimatePresence, motion as m } from "framer-motion";
 
 import Typography from "./Typography";
-import AudioPlayer, { HiddenAudioElement } from "./audio-player";
 import RightSideBar from "./right-sidebar";
+import RenderArtistsAsLinks from "./render-artists-as-link";
+import AudioPlayer, { HiddenAudioElement } from "./audio-player";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import {
   BOTTOM_PLAYER_ANIMATION,
   RIGHT_SONG_PLAYER_ANIMATION,
-} from "@/utils/common/constants";
-import { decodeHTML, getLinkByQueueType } from "@/utils/common/helpers";
-import RenderArtistsAsLinks from "./render-artists-as-link";
+} from "@/utils/common";
+import { decodeHTML, getLinkByQueueType } from "@/utils/common";
 
 const BottomPlayer = () => {
   const [volume, setVolume] = React.useState(80);

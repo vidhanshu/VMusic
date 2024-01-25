@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-
 import { Button } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
-import { decodeHTML } from "@/utils/common/helpers";
+
+import { decodeHTML } from "@/utils/common";
 
 interface IArtistCardProps {
   image?: string;

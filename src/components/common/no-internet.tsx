@@ -1,10 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import React from "react";
-import Typography from "./Typography";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/react";
+
+import Typography from "./Typography";
 
 const NoInternet = () => {
   const router = useRouter();

@@ -1,4 +1,4 @@
-import { getHomeData } from "@/actions/get-home-data";
+import { getHomeData } from "@/actions";
 import CommonLayout from "@/components/common/common-layout";
 
 const MainLayout = async ({ children }: React.PropsWithChildren) => {

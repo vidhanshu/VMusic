@@ -1,18 +1,18 @@
 "use client";
 
 import Image from "next/image";
+import { motion as m } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { Heart, Music, PlayCircle } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
-import { motion as m } from "framer-motion";
 
 import Typography from "@/components/common/Typography";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
+import { useMediaQuery } from "usehooks-ts";
 
 import { HERO_CAROUSEL } from "@/utils/discover/constants";
-import { HERO_CARD_ANIMATION } from "@/utils/common/constants";
-import { useMediaQuery } from "usehooks-ts";
+import { HERO_CARD_ANIMATION } from "@/utils/common";
 
 const HeroCard = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");

@@ -3,6 +3,7 @@
 import { ScrollShadow } from "@nextui-org/react";
 
 import AlbumCard from "./album-card";
+
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 const LatestReleases = () => {

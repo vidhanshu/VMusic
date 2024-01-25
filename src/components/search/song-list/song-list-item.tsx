@@ -8,7 +8,7 @@ import {
   downloadSong,
   getArtistName,
   getMusicUrl,
-} from "@/utils/common/helpers";
+} from "@/utils/common";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 

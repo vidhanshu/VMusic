@@ -5,7 +5,7 @@ import { Button, User } from "@nextui-org/react";
 import { ChevronRight, Menu, Search, X } from "lucide-react";
 import { ThemeSwitcher } from "./theme-switcher";
 import { useMediaQuery } from "usehooks-ts";
-import { setDocumentOverflow } from "@/utils/common/helpers";
+import { setDocumentOverflow } from "@/utils/common";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { REVALIDATE } from "@/utils/common/constants";
+import { REVALIDATE } from "@/utils/common";
 
 interface ReturnType {
   data: null | {
@@ -9,7 +9,7 @@ interface ReturnType {
     copyright: string;
   };
 }
-export const getLyricsById = async (
+const getLyricsById = async (
   id: string,
 ): Promise<ReturnType["data"]> => {
   try {
@@ -22,3 +22,5 @@ export const getLyricsById = async (
     return null;
   }
 };
+
+export default getLyricsById;

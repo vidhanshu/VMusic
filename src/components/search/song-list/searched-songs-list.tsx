@@ -1,19 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, Clock } from "lucide-react";
 
+import { ArtistListItem } from "./artist-list-item";
 import Typography from "@/components/common/Typography";
 const SongListItem = dynamic(
   () => import("./song-list-item").then((mod) => mod.SongListItem),
   { ssr: false },
 );
 
+
 import type NSMusic from "@/music";
-import { ArtistListItem } from "./artist-list-item";
-import Link from "next/link";
 
 const SearcedSongsList = ({
   songs,

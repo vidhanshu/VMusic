@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import dynamic from "next/dynamic";
-import { Button, cn } from "@nextui-org/react";
-import { useParams, useRouter } from "next/navigation";
-import { ChevronLeft, Clock } from "lucide-react";
 import { Pagination } from "@nextui-org/react";
+import { Button, cn } from "@nextui-org/react";
+import { ChevronLeft, Clock } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 
+import SongListSkeleton from "./song-list-skeleton";
 import Typography from "@/components/common/Typography";
 const SongListItem = dynamic(
   () => import("./song-list-item").then((mod) => mod.SongListItem),
@@ -14,10 +16,9 @@ const SongListItem = dynamic(
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
+import { getSongsByArtistId } from "@/actions";
+
 import type NSMusic from "@/music";
-import { useState } from "react";
-import { getSongsByArtistId } from "@/actions/get-artist-songs";
-import SongListSkeleton from "./song-list-skeleton";
 
 const SongsList = ({
   songs,
@@ -109,7 +110,7 @@ const SongsList = ({
       {showListHeader && (
         <div
           className={cn(
-            "group flex md:grid md:grid-cols-2 justify-between md:rounded-md p-2",
+            "group flex justify-between p-2 md:grid md:grid-cols-2 md:rounded-md",
             showPlayCount && "grid-cols-3",
           )}
         >
@@ -126,7 +127,7 @@ const SongsList = ({
             </Typography>
           )}
           <Clock
-            className="md:mr-20 justify-self-end text-primary-100"
+            className="justify-self-end text-primary-100 md:mr-20"
             size={20}
           />
         </div>

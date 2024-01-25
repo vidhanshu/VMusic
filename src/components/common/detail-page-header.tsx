@@ -8,16 +8,17 @@ import { ChevronLeft, Pause, Play, Shuffle } from "lucide-react";
 import { motion as m } from "framer-motion";
 
 import Typography from "@/components/common/Typography";
+import RenderArtistsAsLinks from "./render-artists-as-link";
 
 import {
   decodeHTML,
   getShortNumberRepresentation,
   shuffleArray,
-} from "@/utils/common/helpers";
+} from "@/utils/common";
+
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
-import RenderArtistsAsLinks from "./render-artists-as-link";
 
 interface IDetailPageHeaderProps {
   id?: string;

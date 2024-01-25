@@ -1,12 +1,12 @@
 "use server";
 
 import type NSMusic from "@/music";
-import { REVALIDATE } from "@/utils/common/constants";
+import { REVALIDATE } from "@/utils/common";
 
 interface ReturnType {
   data: NSMusic.IMusic[];
 }
-export const getSongById = async (id: string): Promise<ReturnType["data"]> => {
+const getSongById = async (id: string): Promise<ReturnType["data"]> => {
   try {
     const data = await fetch(`https://saavn.me/songs?id=${id}`, {
       next: { revalidate: REVALIDATE },
@@ -17,3 +17,5 @@ export const getSongById = async (id: string): Promise<ReturnType["data"]> => {
     return [];
   }
 };
+
+export default getSongById;

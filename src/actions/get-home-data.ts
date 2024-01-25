@@ -1,7 +1,7 @@
 "use server";
 
 import type NSMusic from "@/music";
-import { REVALIDATE } from "@/utils/common/constants";
+import { REVALIDATE } from "@/utils/common";
 
 interface ReturnType {
   data: {
@@ -14,7 +14,7 @@ interface ReturnType {
     };
   };
 }
-export const getHomeData = async () => {
+const getHomeData = async () => {
   try {
     const data = await fetch(
       "https://saavn.me/modules?language=hindi,english,punjabi",
@@ -31,3 +31,5 @@ export const getHomeData = async () => {
     return {} as ReturnType["data"];
   }
 };
+
+export default getHomeData;

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { cn } from "@nextui-org/react";
 
 import type NSMusic from "@/music";
-import { getArtistAndArtistIdArray } from "@/utils/common/helpers";
+import { getArtistAndArtistIdArray } from "@/utils/common";
 
 const RenderArtistsAsLinks = ({
   artists,

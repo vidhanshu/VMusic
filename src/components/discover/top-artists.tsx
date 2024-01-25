@@ -1,6 +1,7 @@
-import { ARTISTS } from "@/utils/constants";
 import ArtistCard from "./artist-card";
 import Typography from "@/components/common/Typography";
+
+import { ARTISTS } from "@/utils/common";
 
 const TopArtists = () => {
   return (

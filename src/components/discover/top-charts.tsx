@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
+
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 const TopCharts = () => {

@@ -1,25 +1,25 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { ListMusic, Play, X } from "lucide-react";
+import Image from "next/image";
 import { motion as m } from "framer-motion";
+import { ListMusic, Play, X } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
 
 import Typography from "./Typography";
 import SongMetaCard from "./song-meta-card";
+import RenderArtistsAsLinks from "./render-artists-as-link";
 import AudioPlayer, { type IAudioPlayerProps } from "./audio-player";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
-import { RIGHT_SONG_PLAYER_ANIMATION } from "@/utils/common/constants";
+import { RIGHT_SONG_PLAYER_ANIMATION } from "@/utils/common";
 import {
   decodeHTML,
   getArtistName,
   getLinkByQueueType,
-} from "@/utils/common/helpers";
-import RenderArtistsAsLinks from "./render-artists-as-link";
+} from "@/utils/common";
 
 const RightSideBar = (props: IAudioPlayerProps) => {
   const {

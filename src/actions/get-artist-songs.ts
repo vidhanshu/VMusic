@@ -1,7 +1,7 @@
 "use server";
 
 import type NSMusic from "@/music";
-import { REVALIDATE } from "@/utils/common/constants";
+import { REVALIDATE } from "@/utils/common";
 
 interface ReturnType {
   data: {
@@ -10,7 +10,7 @@ interface ReturnType {
     results: NSMusic.IMusic[];
   };
 }
-export const getSongsByArtistId = async (
+const getSongsByArtistId = async (
   id: string,
   page = 1,
 ): Promise<ReturnType["data"]> => {
@@ -27,3 +27,5 @@ export const getSongsByArtistId = async (
     return {} as ReturnType["data"];
   }
 };
+
+export default getSongsByArtistId;

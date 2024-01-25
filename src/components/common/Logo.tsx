@@ -1,6 +1,6 @@
-import { cn } from "@nextui-org/react";
-import Image from "next/image";
 import React from "react";
+import Image from "next/image";
+import { cn } from "@nextui-org/react";
 
 interface ILogoProps {
   withName?: boolean;

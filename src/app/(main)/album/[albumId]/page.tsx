@@ -1,8 +1,8 @@
 import SongsList from "@/components/common/song-list/songs-list";
 import DetailPageHeader from "@/components/common/detail-page-header";
 
-import { getAlbumById } from "@/actions/get-album-by-id";
-import { decodeHTML, getArtistName } from "@/utils/common/helpers";
+import { getAlbumById } from "@/actions";
+import { decodeHTML, getArtistName } from "@/utils/common";
 import { type Metadata, type ResolvingMetadata } from "next";
 
 export async function generateMetadata(

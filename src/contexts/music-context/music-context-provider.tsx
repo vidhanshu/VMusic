@@ -9,9 +9,11 @@ import React, {
 
 import MusicContext from "./music-context";
 
+import { useLocalStorage } from "usehooks-ts";
+
+import { getMusicUrl } from "@/utils/common";
+
 import type NSMusic from "@/music";
-import { useLocalStorage, useMediaQuery } from "usehooks-ts";
-import { getMusicUrl } from "@/utils/common/helpers";
 
 const MusicContextProvider = ({ children }: PropsWithChildren) => {
   // to store the last playing music

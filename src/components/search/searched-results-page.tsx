@@ -8,7 +8,6 @@ import { Button } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-import search from "@/actions/search";
 import SearchedSongs from "./searched-songs";
 import SearchLoadingSkeleton from "./search-loading-skeleton";
 import SearchedAlbums from "./searched-albums";
@@ -16,7 +15,9 @@ import SearchedPlaylists from "./searched-playlists";
 import SearchedArtists from "./searched-artists";
 import Typography from "@/components/common/Typography";
 
-import { DEFAULT_SEARCH_ALL_VAL } from "@/utils/common/constants";
+import { searchByQuery } from "@/actions";
+
+import { DEFAULT_SEARCH_ALL_VAL } from "@/utils/common";
 
 const SearchedResults = () => {
   const [results, setResults] = useState<NSMusic.ISearchAllType>(
@@ -40,7 +41,7 @@ const SearchedResults = () => {
 
   const onSearch = async () => {
     setLoading(true);
-    const res = await search(q);
+    const res = await searchByQuery(q);
     setResults(res);
     setLoading(false);
   };

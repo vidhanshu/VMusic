@@ -1,21 +1,23 @@
 import { type Metadata, type ResolvingMetadata } from "next";
 
-import { getArtist } from "@/actions/get-artist-by-id";
-import { getSongsByArtistId } from "@/actions/get-artist-songs";
-import { getAlbumsByArtistId } from "@/actions/get-artist-albums";
+import {
+  getAlbumsByArtistId,
+  getArtistById,
+  getSongsByArtistId,
+} from "@/actions";
 
 import ArtistHeader from "@/components/common/detail-artist-header";
 import SongsList from "@/components/common/song-list/songs-list";
 import TrendingAlbums from "@/components/discover/trendings-albums";
 
-import { decodeHTML } from "@/utils/common/helpers";
+import { decodeHTML } from "@/utils/common";
 
 export async function generateMetadata(
   { params }: { params: { artistId: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   // fetch data
-  const album = await getArtist(params.artistId);
+  const album = await getArtistById(params.artistId);
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images ?? [];
@@ -42,7 +44,7 @@ const ArtistIdPage = async ({
   params: { artistId: string };
 }) => {
   const [artistData, songsData, artistAlbums] = await Promise.all([
-    getArtist(artistId),
+    getArtistById(artistId),
     getSongsByArtistId(artistId),
     getAlbumsByArtistId(artistId),
   ]);

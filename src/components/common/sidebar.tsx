@@ -1,19 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { motion as m } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { Button, cn } from "@nextui-org/react";
-import { motion as m } from "framer-motion";
 import { ChevronRight, X, type LucideIcon } from "lucide-react";
 
 import Logo from "./Logo";
 import Typography from "./Typography";
 
-import { SIDEBAR_MENU } from "@/utils/constants";
 import useMusicContext from "@/contexts/music-context/use-music-context";
-import { SIDEBAR_ANIMATION } from "@/utils/common/constants";
-import { setDocumentOverflow } from "@/utils/common/helpers";
-import { useMediaQuery } from "usehooks-ts";
+
+import { SIDEBAR_MENU } from "@/utils/common";
+import { SIDEBAR_ANIMATION } from "@/utils/common";
+import { setDocumentOverflow } from "@/utils/common";
 
 const Sidebar = ({
   setSidebar,

@@ -3,7 +3,7 @@
 import React from "react";
 import { ScrollShadow } from "@nextui-org/react";
 
-import AlbumCard from "../discover/album-card";
+import AlbumCard from "@/components/discover/album-card";
 
 import type NSMusic from "@/music";
 

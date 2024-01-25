@@ -1,9 +1,11 @@
 import React from "react";
 import { ScrollShadow } from "@nextui-org/react";
 
-import ArtistCard from "../discover/artist-card";
+import ArtistCard from "@/components/discover/artist-card";
+
+import { decodeHTML } from "@/utils/common";
+
 import type NSMusic from "@/music";
-import { decodeHTML } from "@/utils/common/helpers";
 
 const SearchedArtists = ({ artists }: { artists: NSMusic.IArtist[] }) => {
   return (

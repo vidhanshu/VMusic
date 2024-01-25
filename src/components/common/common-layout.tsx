@@ -1,6 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { Music2 } from "lucide-react";
+import { useMediaQuery } from "usehooks-ts";
 import { Button, cn } from "@nextui-org/react";
 import React, { type PropsWithChildren, useState, useEffect } from "react";
 
@@ -13,8 +15,6 @@ import useOnline from "@/hooks/use-online";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
-import { useMediaQuery } from "usehooks-ts";
-import { Music2 } from "lucide-react";
 
 const CommonLayout = ({
   children,
@@ -23,8 +23,7 @@ const CommonLayout = ({
   data: NSMusic.IMusicProviderState["data"];
 }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
-  // apply key shortcuts
-  // useMusicKeyboardControls();
+
   const { setData, setIsRightSidebarOpen } =
     useMusicContext();
 

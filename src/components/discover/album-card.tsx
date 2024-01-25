@@ -1,9 +1,9 @@
 import React from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@nextui-org/react";
 
-import Typography from "@/components//common/Typography";
-import Link from "next/link";
+import Typography from "@/components/common/Typography";
 
 interface IAlbumCardProps {
   image?: string;

@@ -2,17 +2,18 @@
 
 import React from "react";
 import Image from "next/image";
+import { motion as m } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Button, Tooltip, cn } from "@nextui-org/react";
 import { ChevronLeft, Verified } from "lucide-react";
-import { motion as m } from "framer-motion";
 
 import Typography from "@/components/common/Typography";
 
 import {
   decodeHTML,
   getShortNumberRepresentation,
-} from "@/utils/common/helpers";
+} from "@/utils/common";
+
 import type NSMusic from "@/music";
 
 const ArtistHeader = ({

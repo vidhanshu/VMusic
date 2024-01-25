@@ -25,11 +25,13 @@ import {
 } from "@nextui-org/react";
 import { Button, Slider, Tooltip } from "@nextui-org/react";
 
+import Typography from "./Typography";
+
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
-import { formattedTime, percentageToSeconds } from "@/utils/helpers";
-import { getLyricsById } from "@/actions/get-lyrics-by-id";
-import Typography from "./Typography";
+import { getLyricsById } from "@/actions";
+
+import { formattedTime, percentageToSeconds } from "@/utils/common";
 
 export interface IAudioPlayerProps {
   isSideBarPlayer?: boolean;

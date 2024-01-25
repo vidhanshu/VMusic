@@ -3,7 +3,7 @@ import { ScrollShadow } from "@nextui-org/react";
 
 import ArtistCard from "./artist-card";
 
-import { ARTISTS } from "@/utils/constants";
+import { ARTISTS } from "@/utils/common";
 
 const YouMayLike = () => {
   return (

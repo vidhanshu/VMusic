@@ -4,15 +4,12 @@ import { Button, Tooltip, cn } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
 
-import {
-  downloadSong,
-  getArtistName,
-  getMusicUrl,
-} from "@/utils/common";
+import { downloadSong, getArtistName, getMusicUrl } from "@/utils/common";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
+import { useMediaQuery } from "usehooks-ts";
 
 export const SongListItem = ({
   song,
@@ -23,6 +20,7 @@ export const SongListItem = ({
   idx: number;
   handleSongClick: (idx: number) => void;
 }) => {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const { currentMusic, isPlaying } = useMusicContext();
 
   const artists = getArtistName(song.primaryArtists ?? "Unknown");
@@ -42,11 +40,11 @@ export const SongListItem = ({
               className={cn(
                 isCurrentSongPlaying ? "flex" : "md:hidden md:group-hover:flex",
               )}
-              size="sm"
               variant="solid"
               radius="full"
               color="success"
               isIconOnly
+              size={isMobile ? "sm" : "md"}
               onClick={handleSongClick.bind(null, idx)}
               startContent={
                 isCurrentSongPlaying && isPlaying ? (

@@ -32,6 +32,7 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 import { getLyricsById } from "@/actions";
 
 import { formattedTime, percentageToSeconds } from "@/utils/common";
+import { useMediaQuery } from "usehooks-ts";
 
 export interface IAudioPlayerProps {
   isSideBarPlayer?: boolean;
@@ -47,6 +48,8 @@ const AudioPlayer = ({
   songProgress,
   volume,
 }: IAudioPlayerProps) => {
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   const [lyrics, setLyrics] = React.useState<{
     data: {
       lyrics: string;
@@ -221,8 +224,10 @@ const AudioPlayer = ({
                 variant="light"
                 radius="full"
                 isIconOnly
-                size="sm"
-                startContent={<Mic2 className="text-white" size={16} />}
+                size={isMobile ? "sm" : "md"}
+                startContent={
+                  <Mic2 className="h-4 w-4 text-white md:h-5 md:w-5" />
+                }
               />
             </Tooltip>
             <Tooltip content="Like">
@@ -230,8 +235,10 @@ const AudioPlayer = ({
                 variant="light"
                 radius="full"
                 isIconOnly
-                size="sm"
-                startContent={<Heart className="text-white" size={16} />}
+                size={isMobile ? "sm" : "md"}
+                startContent={
+                  <Heart className="h-4 w-4 text-white md:h-5 md:w-5" />
+                }
               />
             </Tooltip>
             <SoundControls
@@ -308,6 +315,8 @@ export const SoundControls = ({
   volume: number;
   isLightModeEnabled?: boolean;
 }) => {
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   return (
     <div className="flex min-w-[150px] items-center gap-x-2">
       <Button
@@ -315,34 +324,34 @@ export const SoundControls = ({
         variant="light"
         radius="full"
         isIconOnly
-        size="sm"
+        size={isMobile ? "sm" : "md"}
         startContent={
           mute || !volume ? (
             <VolumeX
               className={cn(
+                "h-4 w-4 md:h-5 md:w-5",
                 isLightModeEnabled
                   ? "text-black dark:text-white"
                   : "text-white",
               )}
-              size={16}
             />
           ) : volume <= 50 ? (
             <Volume1
               className={cn(
+                "h-4 w-4 md:h-5 md:w-5",
                 isLightModeEnabled
                   ? "text-black dark:text-white"
                   : "text-white",
               )}
-              size={16}
             />
           ) : (
             <Volume2
               className={cn(
+                "h-4 w-4 md:h-5 md:w-5",
                 isLightModeEnabled
                   ? "text-black dark:text-white"
                   : "text-white",
               )}
-              size={16}
             />
           )
         }

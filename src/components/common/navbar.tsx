@@ -8,6 +8,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { setDocumentOverflow } from "@/utils/common";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Logo from "./Logo";
 
 interface ICustomNavbarProps {
   sidebar: boolean;
@@ -30,6 +31,7 @@ const CustomNavbar = ({ sidebar, setSidebar }: ICustomNavbarProps) => {
     <header className="sticky top-0 z-50 w-full border-b-[2px] border-primary-500 bg-background px-4 py-4">
       <nav className="flex justify-between gap-x-6">
         <div className="flex flex-grow items-center gap-x-4">
+          <Logo className="lg:hidden" />
           <Button
             isIconOnly
             radius="full"

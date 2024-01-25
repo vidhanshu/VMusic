@@ -17,6 +17,8 @@ const AlbumPlaylistCard = ({ image, name, href }: IAlbumPlaylistCardProps) => {
       <Button
         as={Link}
         href={href}
+        variant="flat"
+        color="secondary"
         className="h-[150px] w-[150px] px-0"
       >
         <div className="group relative overflow-hidden rounded-lg">

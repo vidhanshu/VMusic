@@ -7,6 +7,7 @@ import AlbumPlaylistCard from "./album-playlist-card";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
+import ROUTES from "@/routes";
 
 const TrendingAlbums = ({
   albums,
@@ -33,7 +34,7 @@ const TrendingAlbums = ({
         <div className="flex gap-x-10">
           {ALBUMS.map((item, idx) => (
             <AlbumPlaylistCard
-              href={`/album/${item.id}`}
+              href={`${ROUTES.ALBUMS}/${item.id}`}
               name={item.name}
               image={item.image?.[1]?.link}
               key={idx}

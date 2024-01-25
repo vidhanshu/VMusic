@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { motion as m } from "framer-motion";
-import { Download, Pause, Play } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
@@ -10,9 +10,11 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import { formattedTime } from "@/utils/common";
 import { SONG_LIST_ITEM_ANIMATION } from "@/utils/common";
-import { decodeHTML, downloadSong, getMusicUrl } from "@/utils/common";
+import { decodeHTML } from "@/utils/common";
 
 import type NSMusic from "@/music";
+import SongDownloader from "@/components/song-downloader/song-downloader";
+import { useMediaQuery } from "usehooks-ts";
 
 export const SongListItem = ({
   song,
@@ -29,6 +31,7 @@ export const SongListItem = ({
     page: number;
   };
 }) => {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const { currentMusic, isPlaying } = useMusicContext();
 
   const isCurrentSongPlaying = currentMusic?.id === song.id;
@@ -49,7 +52,7 @@ export const SongListItem = ({
               className={cn(
                 isCurrentSongPlaying ? "flex" : "md:hidden md:group-hover:flex",
               )}
-              size="sm"
+              size={isMobile ? "sm" : "md"}
               variant="solid"
               radius="full"
               color="success"
@@ -117,18 +120,7 @@ export const SongListItem = ({
         <Typography className="mr-2 md:mr-0" variant="T_SemiBold_H6">
           {formattedTime(Number(song.duration))}
         </Typography>
-        <Button
-          className="hidden md:flex"
-          variant="solid"
-          radius="full"
-          color="success"
-          size="sm"
-          isIconOnly
-          onClick={() => {
-            downloadSong(getMusicUrl(song.downloadUrl));
-          }}
-          startContent={<Download size={16} className="text-white" />}
-        />
+        <SongDownloader song={song} />
       </div>
     </m.div>
   );

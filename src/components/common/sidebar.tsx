@@ -26,15 +26,29 @@ const Sidebar = ({
     <m.aside
       {...SIDEBAR_ANIMATION}
       className={cn(
-        "bg-primary-700 py-4 md:sticky md:top-0 md:z-[50] md:col-span-2 md:flex md:h-[calc(100vh-65px)] md:flex-grow md:flex-col md:justify-between md:border-r-[2px] md:border-primary-500",
-        "fixed inset-0 z-[51]",
+        "bg-primary-700 py-4 lg:sticky lg:top-0 lg:z-[50] lg:col-span-2 lg:flex lg:h-[calc(100vh-65px)] lg:flex-grow lg:flex-col lg:justify-between lg:border-r-[2px] lg:border-primary-500",
+        "fixed inset-0 z-[52]",
         isRightSidebarOpen && "h-screen",
       )}
     >
       <div>
-        <div className="flex items-center justify-between gap-x-4 px-4 py-0 md:justify-center md:px-0 md:py-6">
+        <div className="px-4 flex lg:hidden flex-grow items-center gap-x-4">
+          <Logo className="lg:hidden" />
           <Button
-            className="flex md:hidden"
+            isIconOnly
+            radius="full"
+            variant="flat"
+            color="secondary"
+            startContent={<X size={16} />}
+            onClick={() => {
+              setSidebar(false);
+              setDocumentOverflow(false);
+            }}
+          />
+        </div>
+        <div className="hidden lg:flex items-center justify-between gap-x-4 px-4 py-0 lg:justify-center lg:px-0 lg:py-6">
+          <Button
+            className="flex lg:hidden"
             isIconOnly
             radius="full"
             variant="flat"

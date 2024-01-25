@@ -5,6 +5,8 @@ export const getMusicUrl = (downloadUrl?: NSMusic.IMusic["downloadUrl"]) => {
   if (!downloadUrl) return "";
 
   return (
+    downloadUrl?.[4]?.link ??
+    downloadUrl?.[3]?.link ??
     downloadUrl?.[2]?.link ??
     downloadUrl?.[1]?.link ??
     downloadUrl?.[0]?.link ??

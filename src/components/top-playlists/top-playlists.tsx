@@ -14,7 +14,7 @@ import ROUTES from "@/routes";
 const TopPlaylists = () => {
   const tabs = [
     { name: "Hindi", data: HINDI_PLAYLISTS },
-    { name: "Englihs", data: ENGLISH_PLAYLISTS },
+    { name: "English", data: ENGLISH_PLAYLISTS },
     { name: "Punjabi", data: PUNJABI_PLAYLISTS },
   ];
 

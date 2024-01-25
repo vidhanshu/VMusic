@@ -5,6 +5,7 @@ import { ScrollShadow } from "@nextui-org/react";
 import AlbumPlaylistCard from "./album-playlist-card";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
+import ROUTES from "@/routes";
 
 const LatestReleases = () => {
   const {
@@ -24,7 +25,7 @@ const LatestReleases = () => {
             .filter((item) => item.type === "album")
             .map((item, idx) => (
               <AlbumPlaylistCard
-                href={`/album/${item.id}`}
+                href={`${ROUTES.ALBUMS}/${item.id}`}
                 name={item.name}
                 image={item.image?.[1]?.link}
                 key={idx}

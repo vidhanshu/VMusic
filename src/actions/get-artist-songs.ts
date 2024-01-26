@@ -1,7 +1,7 @@
 "use server";
 
 import type NSMusic from "@/music";
-import { REVALIDATE } from "@/utils/common";
+import { BASE_API_URL, REVALIDATE } from "@/utils/common";
 
 interface ReturnType {
   data: {
@@ -16,7 +16,7 @@ const getSongsByArtistId = async (
 ): Promise<ReturnType["data"]> => {
   try {
     const data = await fetch(
-      `https://saavn.me/artists/${id}/songs?page=${page}`,
+      `${BASE_API_URL}/artists/${id}/songs?page=${page}`,
       {
         next: { revalidate: REVALIDATE },
       },

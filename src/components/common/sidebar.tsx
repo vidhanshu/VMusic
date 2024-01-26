@@ -84,6 +84,8 @@ const Sidebar = ({
       </div>
       <div className="w-full px-4">
         <Button
+          href="/sign-in"
+          as={Link}
           endContent={<ChevronRight size={16} />}
           fullWidth
           variant="bordered"

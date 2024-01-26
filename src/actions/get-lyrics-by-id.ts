@@ -1,6 +1,6 @@
 "use server";
 
-import { REVALIDATE } from "@/utils/common";
+import { BASE_API_URL, REVALIDATE } from "@/utils/common";
 
 interface ReturnType {
   data: null | {
@@ -13,7 +13,7 @@ const getLyricsById = async (
   id: string,
 ): Promise<ReturnType["data"]> => {
   try {
-    const data = await fetch(`https://saavn.me/lyrics?id=${id}`, {
+    const data = await fetch(`${BASE_API_URL}/lyrics?id=${id}`, {
       next: { revalidate: REVALIDATE },
     });
     const json = (await data.json()) as ReturnType;

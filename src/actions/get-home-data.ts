@@ -1,7 +1,7 @@
 "use server";
 
 import type NSMusic from "@/music";
-import { REVALIDATE } from "@/utils/common";
+import { BASE_API_URL, REVALIDATE } from "@/utils/common";
 
 interface ReturnType {
   data: {
@@ -17,7 +17,7 @@ interface ReturnType {
 const getHomeData = async () => {
   try {
     const data = await fetch(
-      "https://saavn.me/modules?language=hindi,english,punjabi",
+      `${BASE_API_URL}/modules?language=hindi,english,punjabi`,
       {
         next: {
           // revalidate every 12 hours

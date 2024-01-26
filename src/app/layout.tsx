@@ -5,6 +5,7 @@ import { Providers } from "@/components/common/nextui-provider";
 import { NunitoSans } from "@/fonts";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import AudioPlayerContextProvider from "@/contexts/audio-player-context/audio-player-context-provider";
 
 export const metadata = {
@@ -32,6 +33,7 @@ export default function RootLayout({
         </Providers>
         <Toaster />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

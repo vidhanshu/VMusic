@@ -5,20 +5,19 @@ import { createContext } from "react";
 import NSMusic from "@/music";
 
 const MusicContext = createContext<NSMusic.IMusicContext>({
-  isPlaying: false,
-  setIsPlaying: () => {},
   currentMusic: null,
-  audioRef: null,
-  isRightSidebarOpen: false,
-  loop: false,
-  mute: false,
   setCurrentMusic: () => {},
-  setIsRightSidebarOpen: () => {},
-  setMute: () => {},
-  setPlayPause: () => {},
-  toggleLoop: () => {},
-  toggleMute: () => {},
-  togglePlay: () => {},
+  localMusic: {
+    currentMusic: null,
+    queue: {
+      activeIndex: 0,
+      id: "",
+      shuffle: false,
+      songs: [],
+      type: "album",
+    },
+  },
+  setLocalMusic: () => {},
   data: {
     newReleases: [],
     topCharts: [],
@@ -35,10 +34,8 @@ const MusicContext = createContext<NSMusic.IMusicContext>({
     songs: [],
     activeIndex: 0,
     shuffle: false,
-    type: "album"
+    type: "album",
   },
-  prevSong: () => false,
-  nextSong: () => false,
   setQueue: () => {},
 });
 

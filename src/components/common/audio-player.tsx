@@ -8,6 +8,7 @@ import {
   Play,
   Repeat,
   Repeat1,
+  Share2,
   SkipBack,
   SkipForward,
   ThumbsUp,
@@ -32,7 +33,9 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 import { getLyricsById } from "@/actions";
 
 import { formattedTime, percentageToSeconds } from "@/utils/common";
-import { useMediaQuery } from "usehooks-ts";
+import { useCopyToClipboard, useMediaQuery } from "usehooks-ts";
+import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
+import { toast } from "sonner";
 
 export interface IAudioPlayerProps {
   isSideBarPlayer?: boolean;
@@ -48,6 +51,8 @@ const AudioPlayer = ({
   songProgress,
   volume,
 }: IAudioPlayerProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, copyFn] = useCopyToClipboard();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const [lyrics, setLyrics] = React.useState<{
@@ -63,8 +68,9 @@ const AudioPlayer = ({
     loading: false,
     noLyrics: false,
   });
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { mute, toggleMute, currentMusic, audioRef } = useMusicContext();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { currentMusic } = useMusicContext();
+  const { mute, toggleMute, audioRef } = useAudioPlayerContext();
 
   const onUpdateMusicProgress = (val: number | number[]) => {
     const val1 = val as number;
@@ -215,11 +221,34 @@ const AudioPlayer = ({
             color="secondary"
           />
           <div className="flex items-center gap-x-2">
+            {currentMusic?.id ? (
+              <Tooltip content="Share">
+                <Button
+                  onClick={async () => {
+                    await copyFn(
+                      `${window.location.origin}?song=${currentMusic?.id}`,
+                    );
+                    toast.success("Link copied!");
+                  }}
+                  variant="light"
+                  radius="full"
+                  isIconOnly
+                  size={isMobile ? "sm" : "md"}
+                  startContent={
+                    <Share2 className="h-4 w-4 text-white md:h-5 md:w-5" />
+                  }
+                />
+              </Tooltip>
+            ) : null}
             <Tooltip content="Lyrics">
               <Button
                 onClick={async () => {
-                  onOpen();
-                  await handleGetLyrics();
+                  if (isOpen) {
+                    onClose();
+                  } else {
+                    onOpen();
+                    await handleGetLyrics();
+                  }
                 }}
                 variant="light"
                 radius="full"
@@ -378,15 +407,9 @@ export const EssentialControls = ({
 }: {
   isLightModeEnabled?: boolean;
 }) => {
-  const {
-    loop,
-    toggleLoop,
-    currentMusic,
-    togglePlay,
-    isPlaying,
-    nextSong,
-    prevSong,
-  } = useMusicContext();
+  const { currentMusic } = useMusicContext();
+  const { loop, toggleLoop, togglePlay, isPlaying, nextSong, prevSong } =
+    useAudioPlayerContext();
 
   return (
     <div className="flex items-center gap-x-2">
@@ -525,8 +548,9 @@ export const HiddenAudioElement = ({
 }: {
   setSongProgress: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const { audioRef, currentMusic, mute, loop, nextSong, setIsPlaying } =
-    useMusicContext();
+  const { currentMusic } = useMusicContext();
+  const { loop, mute, audioRef, nextSong, setIsPlaying } =
+    useAudioPlayerContext();
 
   return (
     <audio

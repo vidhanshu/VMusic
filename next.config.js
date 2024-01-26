@@ -9,10 +9,7 @@ const config = {
   images: {
     remotePatterns: [
       {
-        hostname: "static.saavncdn.com",
-      },
-      {
-        hostname: "c.saavncdn.com",
+        hostname: "*.saavncdn.com",
       },
       {
         hostname: "www.jiosaavn.com",

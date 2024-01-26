@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion as m } from "framer-motion";
-import { ListMusic, Play, X } from "lucide-react";
+import { ListMusic, Play, Share2, X } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
 
 import Typography from "./Typography";
@@ -15,20 +15,20 @@ import AudioPlayer, { type IAudioPlayerProps } from "./audio-player";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import { RIGHT_SONG_PLAYER_ANIMATION } from "@/utils/common";
-import {
-  decodeHTML,
-  getArtistName,
-  getLinkByQueueType,
-} from "@/utils/common";
+import { decodeHTML, getArtistName, getLinkByQueueType } from "@/utils/common";
+import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
+import { useCopyToClipboard } from "usehooks-ts";
+import { toast } from "sonner";
 
 const RightSideBar = (props: IAudioPlayerProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, copyFn] = useCopyToClipboard();
   const {
     currentMusic,
-    setIsRightSidebarOpen,
-    isRightSidebarOpen,
     queue: { songs, activeIndex, id: qId, type },
-    nextSong,
   } = useMusicContext();
+  const { setIsRightSidebarOpen, isRightSidebarOpen, nextSong } =
+    useAudioPlayerContext();
 
   const NEXT_SONG = songs?.length
     ? songs[(activeIndex + 1) % songs.length]
@@ -40,25 +40,46 @@ const RightSideBar = (props: IAudioPlayerProps) => {
     <m.div
       {...RIGHT_SONG_PLAYER_ANIMATION}
       className={cn(
-        "h-[calc(100vh-65px-73px)] md:w-fit bg-background/90 p-4 shadow-md backdrop-blur-md md:border-l-[2px] md:border-primary-500",
+        "h-[calc(100vh-65px-73px)] bg-background/90 p-4 shadow-md backdrop-blur-md md:w-fit md:border-l-[2px] md:border-primary-500",
         "w-screen",
         isRightSidebarOpen && "h-[calc(100vh-73px)]",
       )}
     >
       <div className="flex justify-between">
-        <Tooltip content={`Got to ${isAlbum ? "album" : "playlist"}`}>
-          <Button
-            size="sm"
-            as={Link}
-            isIconOnly
-            radius="full"
-            color="success"
-            variant="solid"
-            className="text-white"
-            href={getLinkByQueueType(type, qId)}
-            startContent={<ListMusic size={16} />}
-          />
-        </Tooltip>
+        <div className="flex items-center gap-x-2">
+          <Tooltip content={`Got to ${isAlbum ? "album" : "playlist"}`}>
+            <Button
+              size="sm"
+              as={Link}
+              isIconOnly
+              radius="full"
+              color="success"
+              variant="solid"
+              className="text-white"
+              href={getLinkByQueueType(type, qId)}
+              startContent={<ListMusic size={16} />}
+            />
+          </Tooltip>
+          {currentMusic?.id ? (
+            <Tooltip content={`Share this song`}>
+              <Button
+                size="sm"
+                isIconOnly
+                radius="full"
+                color="secondary"
+                variant="solid"
+                className="text-white"
+                onClick={async () => {
+                  await copyFn(
+                    `${window.location.origin}?song=${currentMusic?.id}`,
+                  );
+                  toast.success("Link copied!");
+                }}
+                startContent={<Share2 size={16} />}
+              />
+            </Tooltip>
+          ) : null}
+        </div>
         <Button
           size="sm"
           isIconOnly
@@ -93,7 +114,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
           </Typography>
         </div>
         <Image
-          className="mx-auto aspect-square h-auto w-[200px] md:w-[300px] rounded-lg object-cover"
+          className="mx-auto aspect-square h-auto w-[200px] rounded-lg object-cover md:w-[300px]"
           src={currentMusic?.image?.[2]?.link ?? "/vmusic.svg"}
           width={300}
           height={300}

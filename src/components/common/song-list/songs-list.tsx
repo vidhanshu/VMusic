@@ -19,6 +19,7 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 import { getSongsByArtistId } from "@/actions";
 
 import type NSMusic from "@/music";
+import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 
 const SongsList = ({
   songs,
@@ -48,11 +49,12 @@ const SongsList = ({
     page: 1,
   });
   const router = useRouter();
-  const { currentMusic, togglePlay, setCurrentMusic, queue, setQueue } =
-    useMusicContext();
+  const { currentMusic, queue, setQueue } = useMusicContext();
+  const { togglePlay, playThisSong } = useAudioPlayerContext();
 
   const handleSongClick = (idx: number, id: string) => {
     const isCurrentSongPlaying = currentMusic?.id === id;
+
     // if current song is already playing, then pause other wise set current song
     if (isCurrentSongPlaying) {
       togglePlay();
@@ -66,12 +68,11 @@ const SongsList = ({
           id: listId,
           activeIndex: idx,
           songs: songList,
-          shuffle: queue.shuffle,
           type,
         });
       }
 
-      setCurrentMusic(songList[idx]!);
+      playThisSong(songList[idx]!);
     }
   };
 

@@ -9,7 +9,7 @@ import { ChevronRight, X, type LucideIcon } from "lucide-react";
 import Logo from "./Logo";
 import Typography from "./Typography";
 
-import useMusicContext from "@/contexts/music-context/use-music-context";
+import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 
 import { SIDEBAR_MENU } from "@/utils/common";
 import { SIDEBAR_ANIMATION } from "@/utils/common";
@@ -20,7 +20,7 @@ const Sidebar = ({
 }: {
   setSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { isRightSidebarOpen } = useMusicContext();
+  const { isRightSidebarOpen } = useAudioPlayerContext();
 
   return (
     <m.aside
@@ -28,11 +28,11 @@ const Sidebar = ({
       className={cn(
         "bg-primary-700 py-4 lg:sticky lg:top-0 lg:z-[50] lg:col-span-2 lg:flex lg:h-[calc(100vh-65px)] lg:flex-grow lg:flex-col lg:justify-between lg:border-r-[2px] lg:border-primary-500",
         "fixed inset-0 z-[52]",
-        isRightSidebarOpen && "h-screen",
+        isRightSidebarOpen && "h-screen lg:h-screen",
       )}
     >
       <div>
-        <div className="px-4 flex lg:hidden flex-grow items-center gap-x-4">
+        <div className="flex flex-grow items-center gap-x-4 px-4 lg:hidden">
           <Logo className="lg:hidden" />
           <Button
             isIconOnly
@@ -46,7 +46,7 @@ const Sidebar = ({
             }}
           />
         </div>
-        <div className="hidden lg:flex items-center justify-between gap-x-4 px-4 py-0 lg:justify-center lg:px-0 lg:py-6">
+        <div className="hidden items-center justify-between gap-x-4 px-4 py-0 lg:flex lg:justify-center lg:px-0 lg:py-6">
           <Button
             className="flex lg:hidden"
             isIconOnly

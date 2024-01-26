@@ -5,16 +5,15 @@ import Image from "next/image";
 import { motion as m } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Button, Tooltip, cn } from "@nextui-org/react";
-import { ChevronLeft, Verified } from "lucide-react";
+import { ChevronLeft, Share2, Verified } from "lucide-react";
 
 import Typography from "@/components/common/Typography";
 
-import {
-  decodeHTML,
-  getShortNumberRepresentation,
-} from "@/utils/common";
+import { decodeHTML, getShortNumberRepresentation } from "@/utils/common";
 
 import type NSMusic from "@/music";
+import { useCopyToClipboard } from "usehooks-ts";
+import { toast } from "sonner";
 
 const ArtistHeader = ({
   artist: {
@@ -29,6 +28,8 @@ const ArtistHeader = ({
 }: {
   artist: NSMusic.IDetailedArtist;
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, copyFn] = useCopyToClipboard();
   const router = useRouter();
 
   return (
@@ -50,7 +51,7 @@ const ArtistHeader = ({
             height={250}
             alt="album image"
             src={image?.[2]?.link ?? "/vmusic.svg"}
-            className="h-auto md:min-w-[250px] rounded-md shadow-lg"
+            className="h-auto rounded-md shadow-lg md:min-w-[250px]"
           />
 
           {isVerified && (
@@ -85,19 +86,36 @@ const ArtistHeader = ({
               {decodeHTML(name)}
             </Typography>
             <div>
-              <Typography variant="T_Regular_H5" className="capitalize text-center md:text-left">
+              <Typography
+                variant="T_Regular_H5"
+                className="text-center capitalize md:text-left"
+              >
                 {dominantType} .{" "}
                 {getShortNumberRepresentation(Number(followerCount))} Followers
                 . {dominantLanguage}
               </Typography>
               <Typography
-                className="capitalize text-center md:text-left"
+                className="text-center capitalize md:text-left"
                 color="secondary"
                 variant="T_Regular_H6"
               >
                 {availableLanguages?.slice(0, 5)?.join(", ")}....
               </Typography>
             </div>
+            <Tooltip content="Share">
+              <Button
+                variant="solid"
+                radius="full"
+                color="secondary"
+                size="lg"
+                isIconOnly
+                onClick={async () => {
+                  await copyFn(window.location.href);
+                  toast.success("Copied to clipboard!");
+                }}
+                startContent={<Share2 size={20} className="text-white" />}
+              />
+            </Tooltip>
           </div>
         ) : (
           <Typography variant="T_Bold_H1">Sorry No Artist found!</Typography>

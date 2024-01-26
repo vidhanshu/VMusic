@@ -34,8 +34,10 @@ export const getArtistAndArtistIdArray = (
   artists?: string,
   artistsId?: string,
 ) => {
+  if(!artists || !artistsId) return ([] as NSMusic.IArtist[]);
+  
   const artistMeta = [];
-  const ARTISTS = artists?.split(",").map((artist) => artist.trim()) ?? [];
+  const ARTISTS = decodeHTML(artists)?.split(",").map((artist) => artist.trim()) ?? [];
   const ARTISTS_ID =
     artistsId?.split(",").map((artistId) => artistId.trim()) ?? [];
 
@@ -102,4 +104,21 @@ export const formattedTime = (seconds: number) => {
 
 export const percentageToSeconds = (percentage: number, duration: number) => {
   return (percentage * duration) / 100;
+};
+
+/**
+ * @description This way we can avoid-> domexception: The play() request was interrupted by a new load request
+ * @param audioRef
+ * @returns boolean
+ */
+export const isAudioPlaying = (audio: HTMLAudioElement) => {
+  if (audio) {
+    return (
+      audio.currentTime > 0 &&
+      !audio.paused &&
+      !audio.ended &&
+      audio.readyState > audio.HAVE_CURRENT_DATA
+    );
+  }
+  return false;
 };

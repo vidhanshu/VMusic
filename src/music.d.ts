@@ -37,6 +37,7 @@ namespace NSMusic {
   interface IAlbum {
     id: string;
     name: string;
+    title?: string;
     year: string;
     type: string;
     playCount: string;
@@ -104,21 +105,9 @@ namespace NSMusic {
   }
 
   interface IMusicContext {
-    isPlaying: boolean;
-    setIsPlaying: (isPlaying: boolean) => void;
     setCurrentMusic: (music: IMusic | null) => void;
-    togglePlay: () => void;
-    setPlayPause: (isPlaying: boolean) => void;
     currentMusic: IMusic | null;
-    audioRef: React.RefObject<HTMLAudioElement> | null;
-    isRightSidebarOpen: boolean;
-    setIsRightSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    toggleLoop: () => void;
-    loop: boolean;
-    mute: boolean;
-    toggleMute: () => void;
-    setMute: (mute: boolean) => void;
-    // music queue
+
     queue: {
       id: string;
       songs: IMusic[];
@@ -126,6 +115,7 @@ namespace NSMusic {
       shuffle: boolean;
       type: "artist" | "album" | "playlist";
     };
+
     setQueue: (queue: {
       id?: string;
       songs?: IMusic[];
@@ -133,19 +123,29 @@ namespace NSMusic {
       activeIndex?: number;
       type?: "artist" | "album" | "playlist";
     }) => void;
-    prevSong: () => boolean;
-    nextSong: () => boolean;
 
     // home page stuffs
     data: IMusicProviderState["data"];
     setData: (data: IMusicProviderState["data"]) => void;
+
+    // local storage
+    localMusic: ILocalStorageMusic;
+    setLocalMusic: React.Dispatch<React.SetStateAction<ILocalStorageMusic>>;
+  }
+
+  interface ILocalStorageMusic {
+    currentMusic: NSMusic.IMusic | null;
+    queue: {
+      id: string;
+      shuffle: boolean;
+      activeIndex: number;
+      songs: NSMusic.IMusic[];
+      type: "album" | "playlist" | "artist";
+    };
   }
 
   interface IMusicProviderState {
-    isPlaying: boolean;
     music: null | IMusic;
-    loop: boolean;
-    mute: boolean;
     queue: {
       id: string;
       songs: IMusic[];

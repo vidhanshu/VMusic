@@ -1,18 +1,19 @@
 import React from "react";
-import { ScrollShadow } from "@nextui-org/react";
+import { Button, ScrollShadow } from "@nextui-org/react";
 
 import ArtistCard from "./artist-card";
 
 import { ARTISTS } from "@/utils/common";
+import Link from "next/link";
 
 const YouMayLike = () => {
   return (
     <div className="py-6">
       <div className="flex justify-between">
         <h1 className="mb-6 text-xl font-semibold">Top Artists</h1>
-        <span className="cursor-pointer truncate text-center text-primary-100">
+        <Button size="sm" as={Link} href="/artists" variant="light">
           See all
-        </span>
+        </Button>
       </div>
       <ScrollShadow hideScrollBar orientation="horizontal">
         <div className="flex gap-x-10">

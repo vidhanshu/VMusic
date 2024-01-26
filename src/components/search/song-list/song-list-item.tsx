@@ -10,6 +10,7 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
 import { useMediaQuery } from "usehooks-ts";
+import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 
 export const SongListItem = ({
   song,
@@ -21,7 +22,8 @@ export const SongListItem = ({
   handleSongClick: (idx: number) => void;
 }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const { currentMusic, isPlaying } = useMusicContext();
+  const { currentMusic } = useMusicContext();
+  const { isPlaying } = useAudioPlayerContext();
 
   const artists = getArtistName(song.primaryArtists ?? "Unknown");
   const isCurrentSongPlaying = currentMusic?.id === song.id;

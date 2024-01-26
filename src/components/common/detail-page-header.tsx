@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button, Tooltip, cn } from "@nextui-org/react";
-import { ChevronLeft, Pause, Play, Shuffle } from "lucide-react";
+import { ChevronLeft, Pause, Play, Share2, Shuffle } from "lucide-react";
 import { motion as m } from "framer-motion";
 
 import Typography from "@/components/common/Typography";
@@ -19,6 +19,9 @@ import {
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
+import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
+import { useCopyToClipboard } from "usehooks-ts";
+import { toast } from "sonner";
 
 interface IDetailPageHeaderProps {
   id?: string;
@@ -44,14 +47,15 @@ const DetailPageHeader = ({
   songs: ORIGINAL_SONGS,
   isAlbumHeader = false,
 }: IDetailPageHeaderProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, copyFn] = useCopyToClipboard();
+  const router = useRouter();
+
   const {
     setQueue,
-    isPlaying,
     queue: { shuffle, id: qListId },
-    setCurrentMusic,
-    togglePlay,
   } = useMusicContext();
-  const router = useRouter();
+  const { isPlaying, togglePlay, playThisSong } = useAudioPlayerContext();
 
   const handleShuffle = () => {
     // if the current playlist/album is not in queue add it
@@ -66,7 +70,7 @@ const DetailPageHeader = ({
         type: isAlbumHeader ? "album" : "playlist",
       });
       // automatically start the first song in shuffled array
-      setCurrentMusic(shuffledArray?.[0] ?? null);
+      playThisSong(shuffledArray?.[0] ?? null);
     }
     // the current playlist/album is already in the queue
     else {
@@ -79,7 +83,7 @@ const DetailPageHeader = ({
           type: isAlbumHeader ? "album" : "playlist",
         });
         // automatically start the first song in ORINGAL_ARRAY
-        setCurrentMusic(ORIGINAL_SONGS?.[0] ?? null);
+        playThisSong(ORIGINAL_SONGS?.[0] ?? null);
       } else {
         const shuffledArray = shuffleArray(ORIGINAL_SONGS);
         // this also means that, the shuffle is inactive
@@ -90,7 +94,7 @@ const DetailPageHeader = ({
           type: isAlbumHeader ? "album" : "playlist",
         });
         // automatically start the first song in shuffled array
-        setCurrentMusic(shuffledArray?.[0] ?? null);
+        playThisSong(shuffledArray?.[0] ?? null);
       }
     }
   };
@@ -107,7 +111,7 @@ const DetailPageHeader = ({
         id: originalListId,
         type: isAlbumHeader ? "album" : "playlist",
       });
-      setCurrentMusic(ORIGINAL_SONGS?.[0] ?? null);
+      playThisSong(ORIGINAL_SONGS?.[0] ?? null);
     }
   };
 
@@ -130,7 +134,7 @@ const DetailPageHeader = ({
             width={250}
             height={250}
             alt="album image"
-            className="h-auto md:min-w-[250px] rounded-md shadow-lg"
+            className="h-auto rounded-md shadow-lg md:min-w-[250px]"
           />
 
           <div className="absolute left-4 top-4">
@@ -155,7 +159,10 @@ const DetailPageHeader = ({
             >
               {decodeHTML(name)}
             </Typography>
-            <Typography className="text-center md:text-left" variant="T_Regular_H5">
+            <Typography
+              className="text-center md:text-left"
+              variant="T_Regular_H5"
+            >
               {isAlbumHeader ? (
                 <>
                   <RenderArtistsAsLinks
@@ -171,7 +178,7 @@ const DetailPageHeader = ({
               )}{" "}
               . {songCount} song(s)
             </Typography>
-            <div className="flex items-center gap-x-4 justify-center md:justify-normal">
+            <div className="flex items-center justify-center gap-x-4 md:justify-normal">
               <Tooltip content="Play/Pause">
                 <Button
                   variant="solid"
@@ -202,6 +209,20 @@ const DetailPageHeader = ({
                   isIconOnly
                   onClick={handleShuffle}
                   startContent={<Shuffle size={20} className="text-white" />}
+                />
+              </Tooltip>
+              <Tooltip content="Share">
+                <Button
+                  variant="solid"
+                  radius="full"
+                  color="secondary"
+                  size="lg"
+                  isIconOnly
+                  onClick={async () => {
+                    await copyFn(window.location.href);
+                    toast.success("Copied to clipboard!");
+                  }}
+                  startContent={<Share2 size={20} className="text-white" />}
                 />
               </Tooltip>
             </div>

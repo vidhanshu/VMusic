@@ -2,6 +2,7 @@ import React from "react";
 import { Button, type ButtonProps, User, cn } from "@nextui-org/react";
 
 import Typography from "./Typography";
+import { decodeHTML } from "@/utils/common";
 
 interface ISongMetaCardProps extends ButtonProps {
   image?: string;
@@ -43,7 +44,7 @@ const SongMetaCard = ({
             color="secondary"
             variant="T_Regular_H8"
           >
-            {artist}
+            {decodeHTML(artist)}
           </Typography>
         }
       />

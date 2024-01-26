@@ -5,6 +5,8 @@ import { Providers } from "@/components/common/nextui-provider";
 import { NunitoSans } from "@/fonts";
 import "@/styles/globals.css";
 
+import AudioPlayerContextProvider from "@/contexts/audio-player-context/audio-player-context-provider";
+
 export const metadata = {
   metadataBase: "http://localhost:3000",
   title: {
@@ -24,7 +26,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${NunitoSans.variable} overflow-x-hidden`}>
         <Providers>
-          <MusicContextProvider>{children}</MusicContextProvider>
+          <MusicContextProvider>
+            <AudioPlayerContextProvider>{children}</AudioPlayerContextProvider>
+          </MusicContextProvider>
         </Providers>
         <Toaster />
       </body>

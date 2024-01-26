@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
+import { decodeHTML } from "@/utils/common";
 
 interface IAlbumPlaylistCardProps {
   image?: string;
@@ -34,7 +35,7 @@ const AlbumPlaylistCard = ({ image, name, href }: IAlbumPlaylistCardProps) => {
       </Button>
       <div className="mt-1">
         <Typography className="w-[150px] truncate text-center">
-          {name}
+          {decodeHTML(name)}
         </Typography>
       </div>
     </div>

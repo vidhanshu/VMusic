@@ -20,13 +20,14 @@ import {
 } from "@/utils/common";
 import { decodeHTML, getLinkByQueueType } from "@/utils/common";
 import dynamic from "next/dynamic";
+import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 
 const BottomPlayer = () => {
   const [volume, setVolume] = useState(80);
   const [songProgress, setSongProgress] = React.useState(0);
 
-  const { isRightSidebarOpen, currentMusic, setIsRightSidebarOpen, queue } =
-    useMusicContext();
+  const { currentMusic, queue } = useMusicContext();
+  const { isRightSidebarOpen, setIsRightSidebarOpen } = useAudioPlayerContext();
 
   return (
     <>
@@ -47,7 +48,7 @@ const BottomPlayer = () => {
           </m.div>
         )}
       </AnimatePresence>
-      <div className="hidden lg:block">
+      <div className="hidden lg:block z-[51]">
         <AnimatePresence>
           {!isRightSidebarOpen && (
             <div className="relative h-[65px]">
@@ -80,9 +81,7 @@ const BottomPlayer = () => {
                           <ChevronUp size={20} className="text-white" />
                         )
                       }
-                      onClick={() => {
-                        setIsRightSidebarOpen((prev) => !prev);
-                      }}
+                      onClick={() => setIsRightSidebarOpen(!isRightSidebarOpen)}
                     />
                   </div>
                   <div>

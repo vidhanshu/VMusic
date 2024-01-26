@@ -15,6 +15,7 @@ import { decodeHTML } from "@/utils/common";
 import type NSMusic from "@/music";
 import SongDownloader from "@/components/song-downloader/song-downloader";
 import { useMediaQuery } from "usehooks-ts";
+import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 
 export const SongListItem = ({
   song,
@@ -32,7 +33,8 @@ export const SongListItem = ({
   };
 }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const { currentMusic, isPlaying } = useMusicContext();
+  const { currentMusic } = useMusicContext();
+  const { isPlaying } = useAudioPlayerContext();
 
   const isCurrentSongPlaying = currentMusic?.id === song.id;
   return (
@@ -92,12 +94,12 @@ export const SongListItem = ({
           <div>
             <Typography
               variant="T_SemiBold_H6"
-              className="max-w-[150px] truncate md:max-w-[300px]"
+              className="max-w-[100px] sm:max-w-[150px] truncate md:max-w-[300px]"
             >
               {decodeHTML(song.name)}
             </Typography>
             <Typography
-              className="max-w-[150px] truncate md:max-w-[300px]"
+              className="max-w-[100px] sm:max-w-[150px] truncate md:max-w-[300px]"
               variant="T_Regular_H7"
               color={!isCurrentSongPlaying ? "secondary" : "primary"}
             >

@@ -42,6 +42,8 @@ const CustomNavbar = ({ sidebar, setSidebar }: ICustomNavbarProps) => {
               setSidebar((prev) => !prev);
               if (isMobile) {
                 setDocumentOverflow(!sidebar);
+              } else {
+                setDocumentOverflow(false);
               }
             }}
           />

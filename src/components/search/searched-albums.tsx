@@ -16,7 +16,7 @@ const SearchedAlbums = ({ albums }: { albums: NSMusic.IAlbum[] }) => {
           {albums.map((item, idx) => (
             <AlbumPlaylistCard
               href={`${ROUTES.ALBUMS}/${item.id}`}
-              name={item.name}
+              name={item?.title ?? item.name}
               image={item.image?.[1]?.link}
               key={idx}
             />

@@ -13,11 +13,12 @@ import { useMediaQuery } from "usehooks-ts";
 
 import { HERO_CAROUSEL } from "@/utils/discover/constants";
 import { HERO_CARD_ANIMATION } from "@/utils/common";
+import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 
 const HeroCard = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const { setCurrentMusic, currentMusic, setIsPlaying, isPlaying } =
-    useMusicContext();
+  const { currentMusic } = useMusicContext();
+  const { setIsPlaying, isPlaying, playThisSong } = useAudioPlayerContext();
 
   const [active, setActive] = useState(2);
   const [autSlide, setAutSlide] = useState(true);
@@ -44,8 +45,8 @@ const HeroCard = () => {
         key={idx}
         {...HERO_CARD_ANIMATION}
         className="flex h-[351px] justify-between gap-x-16 overflow-hidden rounded-xl
-            md:bg-[linear-gradient(90deg,_#332F4C_22.46%_22.46%,_#4A456B_47.75%_47.75%,_#958CDD_100%_100%)] px-8 pt-4
-            bg-[linear-gradient(to_right,rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url('/vmusic.svg')] bg-center bg-cover bg-no-repeat
+            bg-[linear-gradient(to_right,rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url('/vmusic.svg')] bg-cover bg-center
+            bg-no-repeat px-8 pt-4 md:bg-[linear-gradient(90deg,_#332F4C_22.46%_22.46%,_#4A456B_47.75%_47.75%,_#958CDD_100%_100%)]
             "
       >
         <div className="flex flex-grow items-stretch justify-between">
@@ -80,7 +81,7 @@ const HeroCard = () => {
                   )}
                   onClick={() => {
                     if (!isCurrentSong && !!HERO_CAROUSEL[active]?.music)
-                      setCurrentMusic(HERO_CAROUSEL[active]?.music ?? null);
+                      playThisSong(HERO_CAROUSEL[active]?.music ?? null);
                     else {
                       setIsPlaying(!isPlaying);
                     }

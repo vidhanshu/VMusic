@@ -17,13 +17,8 @@ const TopCharts = () => {
 
   return (
     <div className="py-6">
-      <div className="flex justify-between">
-        <h1 className="mb-6 text-xl font-semibold">Top Charts</h1>
-        <span className="cursor-pointer truncate text-center text-primary-100">
-          See all
-        </span>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <h1 className="mb-6 text-xl font-semibold">Top Charts</h1>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {topCharts.map((item, idx) => (
           <TopChartCard
             key={idx}
@@ -53,7 +48,7 @@ export const TopChartCard = ({
       as={Link}
       href={`${ROUTES.PLAYLISTS}/${id}/#`}
       color="primary"
-      className="bg-zinc-200 dark:bg-primary flex h-auto w-auto justify-between gap-x-4 p-2"
+      className="flex h-auto w-auto justify-between gap-x-4 bg-zinc-200 p-2 dark:bg-primary"
     >
       <Image
         className="rounded-md"

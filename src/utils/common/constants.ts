@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 export const REVALIDATE = 43200;
-export const BASE_API_URL = "https://saavn.me";
+export const BASE_API_URL = process.env.BASE_API_URL
 
 // Animation constants
 export const SIDEBAR_ANIMATION = {

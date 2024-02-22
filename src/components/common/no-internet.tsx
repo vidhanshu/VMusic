@@ -12,7 +12,7 @@ const NoInternet = () => {
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-300px)]">
       <div className="flex flex-col items-center gap-4">
-        <Image
+        <img
           src="/no-internet.svg"
           alt="no-internet"
           width={180}

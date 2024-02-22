@@ -46,7 +46,7 @@ const ArtistHeader = ({
           animate={{ opacity: 1, scale: 1, x: 0 }}
           className="relative"
         >
-          <Image
+          <img
             width={250}
             height={250}
             alt="album image"

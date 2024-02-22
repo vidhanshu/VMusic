@@ -110,7 +110,7 @@ const HeroCard = () => {
               />
             </div>
           </div>
-          <Image
+          <img
             className="-mb-1 hidden aspect-square w-auto md:block"
             src={image}
             width={300}

@@ -129,7 +129,7 @@ const DetailPageHeader = ({
           animate={{ opacity: 1, scale: 1, x: 0 }}
           className="relative"
         >
-          <Image
+          <img
             src={image ?? "/vmusic.svg"}
             width={250}
             height={250}

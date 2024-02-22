@@ -106,14 +106,14 @@ export default function SignupForm() {
           fullWidth
           className="bg-primary-500"
           startContent={
-            <Image src="/google.svg" alt="google" width={24} height={24} />
+            <img src="/google.svg" alt="google" width={24} height={24} />
           }
         />
         <Button
           fullWidth
           className="bg-primary-500"
           startContent={
-            <Image src="/github.svg" alt="google" width={24} height={24} />
+            <img src="/github.svg" alt="google" width={24} height={24} />
           }
         />
       </CardFooter>

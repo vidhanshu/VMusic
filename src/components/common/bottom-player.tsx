@@ -62,7 +62,7 @@ const BottomPlayer = () => {
               >
                 <div className="flex items-center justify-center gap-x-4 rounded-sm px-6">
                   <div className="group relative overflow-hidden rounded-md">
-                    <Image
+                    <img
                       width={55}
                       height={55}
                       alt="current-music-image"

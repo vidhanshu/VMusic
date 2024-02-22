@@ -50,7 +50,7 @@ export const TopChartCard = ({
       color="primary"
       className="flex h-auto w-auto justify-between gap-x-4 bg-zinc-200 p-2 dark:bg-primary"
     >
-      <Image
+      <img
         className="rounded-md"
         alt="playlist-image"
         width={100}

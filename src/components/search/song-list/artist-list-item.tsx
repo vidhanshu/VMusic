@@ -14,7 +14,7 @@ export const ArtistListItem = ({
     <div className={cn("justify-between rounded-md bg-primary-500 p-2")}>
       <div className="flex items-center gap-x-2">
         <div className="flex gap-x-2">
-          <Image
+          <img
             className="rounded-sm object-cover"
             src={image ?? "/vmusic.svg"}
             width={50}

@@ -24,7 +24,7 @@ const ArtistCard = ({ image, name, id }: IArtistCardProps) => {
         href={`${ROUTES.ARTISTS}/${id}`}
         className="h-[150px] min-w-[150px] px-0"
       >
-        <Image
+        <img
           width={150}
           height={150}
           alt="music image"

@@ -23,12 +23,11 @@ const AlbumPlaylistCard = ({ image, name, href }: IAlbumPlaylistCardProps) => {
         className="h-[150px] w-[150px] px-0"
       >
         <div className="group relative overflow-hidden rounded-lg">
-          <Image
+          <img
             width={150}
             height={150}
             alt="music image"
             src={image ?? "/pahadon-mein.jpg"}
-            quality={100}
             className="mx-auto min-h-[150px] min-w-[150px]"
           />
         </div>

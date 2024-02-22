@@ -113,7 +113,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
             {getArtistName(currentMusic?.primaryArtists) ?? "Unknown"}
           </Typography>
         </div>
-        <Image
+        <img
           className="mx-auto aspect-square h-auto w-[200px] rounded-lg object-cover md:w-[300px]"
           src={currentMusic?.image?.[2]?.link ?? "/vmusic.svg"}
           width={300}

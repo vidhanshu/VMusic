@@ -84,7 +84,7 @@ export const SongListItem = ({
         </Tooltip>
 
         <div className="flex gap-x-2">
-          <Image
+          <img
             className="h-[50px] w-[50px] rounded-sm object-cover"
             src={song.image?.[0]?.link ?? "/vmusic.svg"}
             width={50}

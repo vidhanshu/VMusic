@@ -90,7 +90,7 @@ const AudioPlayer = ({
   };
 
   const handleGetLyrics = async () => {
-    if (!currentMusic?.id || lyrics?.data) return;
+    if (!currentMusic?.id) return;
 
     setLyrics((prev) => ({ ...prev, loading: true, noLyrics: false }));
     const l = await getLyricsById(currentMusic.id);

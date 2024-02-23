@@ -1,6 +1,6 @@
 "use client";
 
-import React, { type PropsWithChildren, useState } from "react";
+import React, { type PropsWithChildren, useState, useEffect } from "react";
 
 import MusicContext from "./music-context";
 
@@ -10,6 +10,7 @@ import type NSMusic from "@/music";
 
 const MusicContextProvider = ({ children }: PropsWithChildren) => {
   // to store the last playing music
+  const [inQueueMap, setInQueueMap] = useState<Record<string, boolean>>({}); // to keep track of which song is in queue
   const [localMusic, setLocalMusic] =
     useLocalStorage<NSMusic.ILocalStorageMusic>("music", {
       currentMusic: null,
@@ -71,21 +72,46 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     }));
   };
 
-  /**
-   * @description this is currently causing a problem, whenever the queue changes, the localstorage is updated
-   * and thus the the page re-renders and set the currentMusic back from localStorage, causing music restart on pagination
-   *
-   * TODO: fix this
-   *
-   * // if queue changes, then update the localstorage as well
-   * useEffect(() => {
-   *  setLocalMusic((prev) => ({
-   *      ...prev,
-   *  queue: currentMusicDetails.queue,
-   * }));
-   * // eslint-disable-next-line react-hooks/exhaustive-deps
-   * }, [currentMusicDetails.queue]);
-   */
+  const addToQueue = (song: NSMusic.IMusic) => {
+    // it should set song to just next to the current song
+    // if current song is not present, then add it to the end
+    const newQueue = [...currentMusicDetails.queue.songs];
+    const activeIndex = currentMusicDetails.queue.activeIndex;
+    // check if already in queue
+    if (newQueue[activeIndex + 1]?.id === song.id) return false;
+    newQueue.splice(activeIndex + 1, 0, song);
+    setQueue({ songs: newQueue });
+    return true;
+  };
+  const removeFromQueye = (songId: string) => {
+    if (currentMusicDetails.queue.songs.length === 0) {
+      return false;
+    } else if (
+      currentMusicDetails.queue.songs.find((song) => song.id === songId)
+    ) {
+      const newQueue = currentMusicDetails.queue.songs.filter(
+        (song) => song.id !== songId,
+      );
+      setQueue({ songs: newQueue });
+      return true;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    const newInQueueMap: Record<string, boolean> = {};
+    currentMusicDetails.queue.songs.forEach((song) => {
+      newInQueueMap[song.id] = true;
+    });
+    setInQueueMap(newInQueueMap);
+  }, [currentMusicDetails.queue.songs]);
+
+  useEffect(() => {
+    setLocalMusic((prev) => ({
+      ...prev,
+      queue: currentMusicDetails.queue,
+    }));
+  }, [currentMusicDetails.queue]);
 
   return (
     <MusicContext.Provider
@@ -109,6 +135,9 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
           type: currentMusicDetails.queue.type,
         },
         setQueue,
+        addToQueue,
+        removeFromQueye,
+        inQueueMap,
       }}
     >
       {children}

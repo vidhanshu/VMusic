@@ -9,6 +9,7 @@ import { setDocumentOverflow } from "@/utils/common";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
+import SongQueueModal from "./song-queue-modal";
 
 interface ICustomNavbarProps {
   sidebar: boolean;
@@ -49,6 +50,7 @@ const CustomNavbar = ({ sidebar, setSidebar }: ICustomNavbarProps) => {
           />
         </div>
         <div className="flex items-center gap-x-4">
+          <SongQueueModal />
           <ThemeSwitcher />
           <Button
             as={Link}

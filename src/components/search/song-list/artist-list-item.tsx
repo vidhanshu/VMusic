@@ -1,4 +1,4 @@
-import Image from "next/image";
+ 
 import { cn } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";

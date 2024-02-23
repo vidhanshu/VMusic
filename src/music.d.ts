@@ -123,6 +123,9 @@ namespace NSMusic {
       activeIndex?: number;
       type?: "artist" | "album" | "playlist";
     }) => void;
+    addToQueue: (song: IMusic) => boolean;
+    removeFromQueye: (songId: string) => boolean;
+    inQueueMap: Record<string, boolean>;
 
     // home page stuffs
     data: IMusicProviderState["data"];

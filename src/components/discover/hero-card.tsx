@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+ 
 import { motion as m } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { Heart, Music, PlayCircle } from "lucide-react";

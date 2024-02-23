@@ -29,3 +29,5 @@ export const AudioPlayerContext = createContext<NSAudio.IAudioPlayerContext>({
   prevSong: () => false,
   nextSong: () => false,
 });
+
+AudioPlayerContext.displayName = "AudioPlayerContext";

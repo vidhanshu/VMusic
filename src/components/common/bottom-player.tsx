@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@nextui-org/react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { AnimatePresence, motion as m } from "framer-motion";

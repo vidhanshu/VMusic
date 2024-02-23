@@ -1,7 +1,25 @@
-import Image from "next/image";
 import { motion as m } from "framer-motion";
-import { Pause, Play } from "lucide-react";
-import { Button, Tooltip, cn } from "@nextui-org/react";
+import {
+  Download,
+  ListMinus,
+  ListPlus,
+  Minus,
+  MoreVertical,
+  Pause,
+  Play,
+  Plus,
+  Share2,
+} from "lucide-react";
+import {
+  Button,
+  Tooltip,
+  cn,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownSection,
+  DropdownItem,
+} from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
 import RenderArtistsAsLinks from "../render-artists-as-link";
@@ -13,32 +31,51 @@ import { SONG_LIST_ITEM_ANIMATION } from "@/utils/common";
 import { decodeHTML } from "@/utils/common";
 
 import type NSMusic from "@/music";
-import SongDownloader from "@/components/song-downloader/song-downloader";
-import { useMediaQuery } from "usehooks-ts";
+const SongDownloader = dynamic(
+  () => import("@/components/song-downloader/song-downloader"),
+);
+import { useCopyToClipboard, useMediaQuery } from "usehooks-ts";
 import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
+import dynamic from "next/dynamic";
+import { toast } from "sonner";
+import React from "react";
 
 export const SongListItem = ({
   song,
   idx,
   handleSongClick,
   showPlayCount = true,
+  showAddToQueue = true,
+  showSongDownloader = true,
+  showShareSongButton = true,
+  showDuration = true,
+  animate = true,
   pagination,
 }: {
   song: NSMusic.IMusic;
   idx: number;
   handleSongClick: (idx: number, id: string) => void;
   showPlayCount?: boolean;
+  showAddToQueue?: boolean;
+  showSongDownloader?: boolean;
+  showDuration?: boolean;
+  animate?: boolean;
+  showShareSongButton?: boolean;
   pagination?: {
     page: number;
   };
 }) => {
+  const [_, copyFn] = useCopyToClipboard();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const { currentMusic } = useMusicContext();
+  const { currentMusic, addToQueue, removeFromQueye, inQueueMap } =
+    useMusicContext();
   const { isPlaying } = useAudioPlayerContext();
 
   const isCurrentSongPlaying = currentMusic?.id === song.id;
+  const inQ = inQueueMap[song.id];
+  const Component = animate ? m.div : "div";
   return (
-    <m.div
+    <Component
       {...SONG_LIST_ITEM_ANIMATION}
       className={cn(
         "group flex grid-cols-2 justify-between rounded-md bg-primary-500 p-2 md:grid",
@@ -48,7 +85,7 @@ export const SongListItem = ({
       )}
     >
       <div className="flex items-center gap-x-2">
-        <Tooltip content="Play/Pause">
+        <Tooltip className="hidden" content="Play/Pause">
           <div className="flex min-h-10 min-w-10 items-center justify-center">
             <Button
               className={cn(
@@ -94,12 +131,12 @@ export const SongListItem = ({
           <div>
             <Typography
               variant="T_SemiBold_H6"
-              className="max-w-[100px] sm:max-w-[150px] truncate md:max-w-[300px]"
+              className="max-w-[100px] truncate sm:max-w-[150px] md:max-w-[300px]"
             >
               {decodeHTML(song.name)}
             </Typography>
             <Typography
-              className="max-w-[100px] sm:max-w-[150px] truncate md:max-w-[300px]"
+              className="max-w-[100px] truncate sm:max-w-[150px] md:max-w-[300px]"
               variant="T_Regular_H7"
               color={!isCurrentSongPlaying ? "secondary" : "primary"}
             >
@@ -118,12 +155,158 @@ export const SongListItem = ({
           </Typography>
         </div>
       )}
-      <div className="flex items-center justify-end gap-x-4">
-        <Typography className="mr-2 md:mr-0" variant="T_SemiBold_H6">
-          {formattedTime(Number(song.duration))}
-        </Typography>
-        <SongDownloader song={song} />
+      <div className="hidden items-center justify-end md:flex">
+        <div className="flex items-center justify-end gap-x-4">
+          {showAddToQueue && (
+            <Tooltip content={inQ ? "Already in queue" : "Add to queue"}>
+              <Button
+                size="sm"
+                isIconOnly
+                disabled={inQ}
+                radius="full"
+                variant={inQ ? "solid" : "bordered"}
+                color={inQ ? "success" : "default"}
+                className={inQ ? "text-white" : ""}
+                onClick={() => {
+                  if (inQ) return;
+                  addToQueue(song);
+                }}
+                startContent={<Plus size={16} />}
+              />
+            </Tooltip>
+          )}
+          {inQ && (
+            <Tooltip content={"Remove from Queue"}>
+              <Button
+                size="sm"
+                isIconOnly
+                radius="full"
+                variant="solid"
+                color="danger"
+                className={inQ ? "text-white" : ""}
+                onClick={() => {
+                  if (!inQ) return;
+                  removeFromQueye(song.id);
+                }}
+                startContent={<Minus size={16} />}
+              />
+            </Tooltip>
+          )}
+          {showDuration && (
+            <Typography className="mr-2 md:mr-0" variant="T_SemiBold_H6">
+              {formattedTime(Number(song.duration))}
+            </Typography>
+          )}
+          {showShareSongButton && (
+            <Tooltip content={`Share this song`}>
+              <Button
+                size="sm"
+                isIconOnly
+                radius="full"
+                color="secondary"
+                variant="solid"
+                className="text-white"
+                onClick={async () => {
+                  await copyFn(
+                    `${window.location.origin}?song=${currentMusic?.id}`,
+                  );
+                  toast.success("Link copied!");
+                }}
+                startContent={<Share2 size={16} />}
+              />
+            </Tooltip>
+          )}
+          {showSongDownloader && <SongDownloader song={song} />}
+        </div>
       </div>
-    </m.div>
+      <div className="block md:hidden">
+        <Dropdown>
+          <DropdownTrigger>
+            <Button
+              isIconOnly
+              radius="full"
+              variant="light"
+              endContent={<MoreVertical size={16} />}
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Static Actions">
+            {DropDownItems({
+              showAddToQueue,
+              inQ,
+              song,
+              addToQueue: () => addToQueue(song),
+              removeFromQueue: () => removeFromQueye(song.id),
+            })}
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+    </Component>
   );
+};
+
+const DropDownItems = ({
+  showAddToQueue,
+  inQ,
+  song,
+  showSongDownloader = true,
+  addToQueue,
+  removeFromQueue,
+}: {
+  showAddToQueue: boolean;
+  inQ?: boolean;
+  showSongDownloader?: boolean;
+  addToQueue: () => void;
+  removeFromQueue: () => void;
+  song: NSMusic.IMusic;
+}) => {
+  const [_, cypFn] = useCopyToClipboard();
+  const dropDownItems = [
+    <DropdownItem
+      key="share"
+      onClick={async () => {
+        await cypFn(`${window.location.origin}?song=${song.id}`);
+        toast.success("Link copied!");
+      }}
+      endContent={<Share2 size={16} />}
+    >
+      Share
+    </DropdownItem>,
+  ];
+  if (showAddToQueue && !inQ) {
+    dropDownItems.push(
+      <DropdownItem
+        onClick={addToQueue}
+        key="new"
+        endContent={<ListPlus size={16} />}
+      >
+        Add to queue
+      </DropdownItem>,
+    );
+  }
+  if (showSongDownloader) {
+    dropDownItems.push(
+      <DropdownItem key="download">
+        <SongDownloader song={song}>
+          <div className="flex items-center justify-between">
+            Download
+            <Download size={16} />
+          </div>
+        </SongDownloader>
+      </DropdownItem>,
+    );
+  }
+  if (inQ) {
+    dropDownItems.push(
+      <DropdownItem
+        endContent={<ListMinus size={16} />}
+        key="delete"
+        className="text-danger"
+        color="danger"
+        onClick={removeFromQueue}
+      >
+        Remove from queue
+      </DropdownItem>,
+    );
+  }
+  return dropDownItems;
 };

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+ 
 import { motion as m } from "framer-motion";
 import { ListMusic, Play, Share2, X } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
@@ -110,7 +110,6 @@ const RightSideBar = (props: IAudioPlayerProps) => {
                 artistsIds={currentMusic?.primaryArtistsId ?? ""}
               />
             )}
-            {getArtistName(currentMusic?.primaryArtists) ?? "Unknown"}
           </Typography>
         </div>
         <img

@@ -51,7 +51,7 @@ const ArtistIdPage = async ({
 
   return (
     <div className="space-y-8">
-      <ArtistHeader artist={artistData} />
+      <ArtistHeader songs={songsData?.results ?? []} artist={artistData} />
       <SongsList
         type="artist"
         pagination={{

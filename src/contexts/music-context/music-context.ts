@@ -37,6 +37,10 @@ const MusicContext = createContext<NSMusic.IMusicContext>({
     type: "album",
   },
   setQueue: () => {},
+  addToQueue: () => false,
+  removeFromQueye: () => false,
+  inQueueMap: {},
 });
 
 export default MusicContext;
+MusicContext.displayName = "MusicContext";

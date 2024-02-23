@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+ 
 import { cn } from "@nextui-org/react";
 import Link from "next/link";
 

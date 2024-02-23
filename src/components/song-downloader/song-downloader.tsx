@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { Download } from "lucide-react";
-import React, { useState } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import { Button, CircularProgress, Tooltip } from "@nextui-org/react";
 
 import { getMusicUrl } from "@/utils/common";
@@ -10,7 +10,10 @@ import { getMusicUrl } from "@/utils/common";
 import type NSMusic from "@/music";
 import { useMediaQuery } from "usehooks-ts";
 
-const SongDownloader = ({ song }: { song: NSMusic.IMusic }) => {
+const SongDownloader = ({
+  song,
+  children,
+}: { song: NSMusic.IMusic } & PropsWithChildren) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [downloading, setDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -56,11 +59,13 @@ const SongDownloader = ({ song }: { song: NSMusic.IMusic }) => {
           <CircularProgress
             aria-label="download-progress"
             showValueLabel
-            size={isMobile ? "sm" : "md"}
+            size="sm"
             color="success"
             value={downloadProgress}
           />
         </div>
+      ) : children ? (
+        <div onClick={handleDownload}>{children}</div>
       ) : (
         <Tooltip content={downloading ? "downloading" : "download"}>
           <Button
@@ -68,7 +73,7 @@ const SongDownloader = ({ song }: { song: NSMusic.IMusic }) => {
             radius="full"
             color="success"
             disabled={downloading}
-            size={isMobile ? "sm" : "md"}
+            size="sm"
             isIconOnly
             onClick={handleDownload}
             startContent={<Download size={16} className="text-white" />}

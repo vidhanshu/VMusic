@@ -9,11 +9,10 @@ import {
   Divider,
 } from "@nextui-org/react";
 import Typography from "@/components/common/Typography";
-import Image from "next/image";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import Link from "next/link";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInSchema } from "@/zod-schemas/auth";
@@ -22,7 +21,6 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<z.infer<typeof SignInSchema>>({
     defaultValues: {

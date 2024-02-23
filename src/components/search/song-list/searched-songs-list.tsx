@@ -16,6 +16,7 @@ const SongListItem = dynamic(
 import ROUTES from "@/routes";
 
 import type NSMusic from "@/music";
+import AlbumPlaylistCard from "@/components/discover/album-playlist-card";
 
 const SearchedSongsList = ({
   songs,
@@ -81,6 +82,26 @@ const SearchedSongsList = ({
                 />
               </Link>
             );
+          if (song.type === "album") {
+            return (
+              <AlbumPlaylistCard
+                href={`${ROUTES.ALBUMS}/${song.id}`}
+                name={song?.title ?? song.name}
+                image={song.image?.[1]?.link}
+                key={idx}
+              />
+            );
+          }
+          if (song.type === "playlist") {
+            return (
+              <AlbumPlaylistCard
+                href={`${ROUTES.PLAYLISTS}/${song.id}`}
+                name={song?.title ?? song.name}
+                image={song.image?.[1]?.link}
+                key={idx}
+              />
+            );
+          }
           return (
             <SongListItem
               handleSongClick={customHandleSongClick?.bind(null, idx)}

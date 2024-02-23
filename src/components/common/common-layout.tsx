@@ -20,6 +20,7 @@ import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-pla
 import { useSearchParams } from "next/navigation";
 import { getSongById } from "@/actions";
 import { toast } from "sonner";
+import useKeyControls from "@/hooks/use-key-controls";
 
 const CommonLayout = ({
   children,
@@ -27,6 +28,7 @@ const CommonLayout = ({
 }: PropsWithChildren & {
   data: NSMusic.IMusicProviderState["data"];
 }) => {
+  useKeyControls();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const searchParams = useSearchParams();
   const songId = searchParams.get("song");

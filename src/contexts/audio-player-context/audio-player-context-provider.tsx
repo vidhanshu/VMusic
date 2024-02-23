@@ -1,6 +1,6 @@
 "use client";
 
-import { type PropsWithChildren, useRef, useState } from "react";
+import { type PropsWithChildren, useRef, useState, useEffect } from "react";
 
 import { getMusicUrl, isAudioPlaying } from "@/utils/common";
 

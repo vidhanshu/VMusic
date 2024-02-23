@@ -4,7 +4,17 @@
 
 import type NSMusic from "@/music";
 import { Search } from "lucide-react";
-import { Button } from "@nextui-org/react";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
@@ -18,8 +28,14 @@ import Typography from "@/components/common/Typography";
 import { searchByQuery } from "@/actions";
 
 import { DEFAULT_SEARCH_ALL_VAL } from "@/utils/common";
+import { useLocalStorage } from "usehooks-ts";
 
 const SearchedResults = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [recentSearches, setRecentSearches] = useLocalStorage<string[]>(
+    "recentSearches",
+    [],
+  );
   const [results, setResults] = useState<NSMusic.ISearchAllType>(
     DEFAULT_SEARCH_ALL_VAL,
   );
@@ -40,10 +56,17 @@ const SearchedResults = () => {
   }
 
   const onSearch = async () => {
+    if (!q || !q.length) return;
     setLoading(true);
     const res = await searchByQuery(q);
     setResults(res);
     setLoading(false);
+    setRecentSearches((prev) => {
+      if (prev.includes(q)) {
+        return prev;
+      }
+      return [q, ...prev];
+    });
   };
 
   useEffect(() => {
@@ -56,25 +79,42 @@ const SearchedResults = () => {
 
   return (
     <div>
-      <div className="flex items-center">
-        <input
-          defaultValue={q}
-          onChange={(e) => {
-            handleSearchChange(e.target.value);
-          }}
-          onKeyDown={async (e) => {
-            if (e.key === "Enter") {
-              await onSearch();
-            }
-          }}
-          className="flex-grow self-stretch rounded-md bg-secondary/20 px-4 focus:outline-none"
-          placeholder="Search song, artist, album...."
-        />
+      <div className="flex items-center gap-x-4">
+        <div className="relative flex-grow">
+          <Autocomplete
+            size="sm"
+            color="default"
+            fullWidth
+            className="rounded-md border border-primary"
+            placeholder="Search song, artist, album...."
+            allowsCustomValue
+            onInputChange={(e) => {
+              handleSearchChange(e);
+            }}
+            onKeyDown={async (e) => {
+              if (e.key === "Enter") {
+                await onSearch();
+              }
+            }}
+          >
+            {recentSearches.map((search) => (
+              <AutocompleteItem key={search} value={search}>
+                {search}
+              </AutocompleteItem>
+            ))}
+          </Autocomplete>
+          <button
+            onClick={onOpen}
+            className="absolute -bottom-6 left-0 text-xs font-thin underline"
+          >
+            clear history
+          </button>
+        </div>
         <Button
           isIconOnly
           startContent={<Search size={16} />}
           onClick={onSearch}
-          className="ml-4"
+          className="h-12 w-12"
           color="secondary"
           variant="flat"
         />
@@ -116,6 +156,39 @@ const SearchedResults = () => {
           ) : null}
         </>
       )}
+
+      {/* confirm clear history modal */}
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="top-center"
+        backdrop="blur"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Confirm</ModalHeader>
+              <ModalBody>
+                Are you sure you want to clear search history?
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="flat" onPress={onClose}>
+                  Close
+                </Button>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    setRecentSearches([]);
+                    onClose();
+                  }}
+                >
+                  Yes
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Heart,
   Mic2,
@@ -30,12 +30,14 @@ import Typography from "./Typography";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
-import { getLyricsById } from "@/actions";
+import { getLyricsById } from "@/actions/saavn";
 
 import { formattedTime, percentageToSeconds } from "@/utils/common";
 import { useCopyToClipboard, useMediaQuery } from "usehooks-ts";
 import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 import { toast } from "sonner";
+import LikeUnlikeSong from "@/actions/backend/like-unlike-song";
+import NSMusic from "@/music";
 
 export interface IAudioPlayerProps {
   isSideBarPlayer?: boolean;
@@ -68,8 +70,8 @@ const AudioPlayer = ({
     loading: false,
     noLyrics: false,
   });
+  const { currentMusic, likedSongIdsMap } = useMusicContext();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { currentMusic } = useMusicContext();
   const { mute, toggleMute, audioRef } = useAudioPlayerContext();
 
   const onUpdateMusicProgress = (val: number | number[]) => {
@@ -242,6 +244,7 @@ const AudioPlayer = ({
             ) : null}
             <Tooltip content="Lyrics">
               <Button
+                disabled={!currentMusic}
                 onClick={async () => {
                   if (isOpen) {
                     onClose();
@@ -259,17 +262,7 @@ const AudioPlayer = ({
                 }
               />
             </Tooltip>
-            <Tooltip content="Like">
-              <Button
-                variant="light"
-                radius="full"
-                isIconOnly
-                size={isMobile ? "sm" : "md"}
-                startContent={
-                  <Heart className="h-4 w-4 text-white md:h-5 md:w-5" />
-                }
-              />
-            </Tooltip>
+            <LikeButton isMobile={isMobile} />
             <SoundControls
               mute={mute}
               toggleMute={toggleMute}
@@ -308,6 +301,49 @@ export const StartTime = ({
         percentageToSeconds(completedPercentage, Number(duration)),
       )}
     </p>
+  );
+};
+
+export const LikeButton = ({ isMobile }: { isMobile: boolean }) => {
+  const { setLikedSongsIdsMap, currentMusic, likedSongIdsMap } =
+    useMusicContext();
+  console.log("<LIKESONG_IDS>", likedSongIdsMap);
+  const [liked, setLiked] = useState(
+    currentMusic?.id ? likedSongIdsMap[currentMusic.id] : false,
+  );
+
+  useEffect(() => {
+    if (currentMusic?.id) {
+      setLiked(likedSongIdsMap[currentMusic.id]);
+    }
+  }, [currentMusic?.id]);
+
+  const handleLikeUnlike = async () => {
+    if (currentMusic) {
+      setLiked((prev) => !prev);
+      const { error, message } = await LikeUnlikeSong(currentMusic);
+      if (error) {
+        setLiked((prev) => !prev);
+        toast.error(message);
+      } else {
+        toast.success(message);
+      }
+    }
+  };
+
+  return (
+    <Tooltip content="Like">
+      <Button
+        onClick={handleLikeUnlike}
+        disabled={!currentMusic}
+        variant={liked ? "solid" : "light"}
+        color={liked ? "success" : "default"}
+        radius="full"
+        isIconOnly
+        size={isMobile ? "sm" : "md"}
+        startContent={<Heart className="h-4 w-4 text-white md:h-5 md:w-5" />}
+      />
+    </Tooltip>
   );
 };
 
@@ -413,26 +449,6 @@ export const EssentialControls = ({
 
   return (
     <div className="flex items-center gap-x-2">
-      <Tooltip content="Like/Dislike">
-        <Button
-          disabled={!currentMusic}
-          disableAnimation={!currentMusic}
-          variant="light"
-          radius="full"
-          color="secondary"
-          isIconOnly
-          startContent={
-            <ThumbsUp
-              size={20}
-              className={cn(
-                isLightModeEnabled
-                  ? "text-black dark:text-white"
-                  : "text-white",
-              )}
-            />
-          }
-        />
-      </Tooltip>
       <Tooltip content="Previous">
         <Button
           disabled={!currentMusic}

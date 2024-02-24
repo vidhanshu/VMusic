@@ -16,6 +16,7 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 import {
   BOTTOM_PLAYER_ANIMATION,
   RIGHT_SONG_PLAYER_ANIMATION,
+  getMusicImageUrl,
 } from "@/utils/common";
 import { decodeHTML, getLinkByQueueType } from "@/utils/common";
 import dynamic from "next/dynamic";
@@ -47,7 +48,7 @@ const BottomPlayer = () => {
           </m.div>
         )}
       </AnimatePresence>
-      <div className="hidden lg:block z-[51]">
+      <div className="z-[51] hidden lg:block">
         <AnimatePresence>
           {!isRightSidebarOpen && (
             <div className="relative h-[65px]">
@@ -65,7 +66,9 @@ const BottomPlayer = () => {
                       width={55}
                       height={55}
                       alt="current-music-image"
-                      src={currentMusic?.image?.[1]?.link ?? "/vmusic.svg"}
+                      src={
+                        getMusicImageUrl(currentMusic?.image) ?? "/vmusic.svg"
+                      }
                     />
                     <Button
                       className="absolute right-3 top-3 bg-primary opacity-0 group-hover:opacity-100"

@@ -25,7 +25,7 @@ import SearchedPlaylists from "./searched-playlists";
 import SearchedArtists from "./searched-artists";
 import Typography from "@/components/common/Typography";
 
-import { searchByQuery } from "@/actions";
+import { searchByQuery } from "@/actions/saavn";
 
 import { DEFAULT_SEARCH_ALL_VAL } from "@/utils/common";
 import { useLocalStorage } from "usehooks-ts";

@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Button, User } from "@nextui-org/react";
-import { ChevronRight, Menu, Search, X } from "lucide-react";
+import { Button, Tooltip, User } from "@nextui-org/react";
+import { ChevronRight, LogIn, Menu, Search, X } from "lucide-react";
 import { ThemeSwitcher } from "./theme-switcher";
 import { useMediaQuery } from "usehooks-ts";
 import { setDocumentOverflow } from "@/utils/common";
@@ -10,12 +10,14 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
 import SongQueueModal from "./song-queue-modal";
+import { useSession } from "next-auth/react";
 
 interface ICustomNavbarProps {
   sidebar: boolean;
   setSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const CustomNavbar = ({ sidebar, setSidebar }: ICustomNavbarProps) => {
+  const { data } = useSession();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const pathname = usePathname();
 
@@ -69,12 +71,24 @@ const CustomNavbar = ({ sidebar, setSidebar }: ICustomNavbarProps) => {
             >
               Login
             </Button>
+          ) : !data?.user ? (
+            <Tooltip content="Sign in">
+              <Button
+                as={Link}
+                href="/sign-in"
+                isIconOnly
+                color="success"
+                radius="full"
+                className="text-white"
+                startContent={<LogIn size={16} />}
+              />
+            </Tooltip>
           ) : (
             <User
               className="hidden md:flex"
-              name="John Doe"
+              name={data?.user?.name}
               avatarProps={{
-                src: "/pahadon-mein.jpg",
+                src: data?.user?.image ?? "/pahadon-mein.jpg",
               }}
             />
           )}

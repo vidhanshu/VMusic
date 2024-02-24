@@ -5,8 +5,9 @@ import { Providers } from "@/components/common/nextui-provider";
 import { NunitoSans } from "@/fonts";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import AudioPlayerContextProvider from "@/contexts/audio-player-context/audio-player-context-provider";
+import NextAuthSessionProvider from "@/components/auth/session-provider";
 
 export const metadata = {
   metadataBase: "http://localhost:3000",
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body className={`font-sans ${NunitoSans.variable} overflow-x-hidden`}>
         <Providers>
           <MusicContextProvider>
-            <AudioPlayerContextProvider>{children}</AudioPlayerContextProvider>
+            <AudioPlayerContextProvider>
+              <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
+            </AudioPlayerContextProvider>
           </MusicContextProvider>
         </Providers>
         <Toaster />

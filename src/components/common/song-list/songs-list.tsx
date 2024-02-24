@@ -16,7 +16,7 @@ const SongListItem = dynamic(
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
-import { getSongsByArtistId } from "@/actions";
+import { getSongsByArtistId } from "@/actions/saavn";
 
 import type NSMusic from "@/music";
 import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";

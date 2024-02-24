@@ -4,7 +4,7 @@ import {
   getAlbumsByArtistId,
   getArtistById,
   getSongsByArtistId,
-} from "@/actions";
+} from "@/actions/saavn";
 
 import ArtistHeader from "@/components/common/detail-artist-header";
 import SongsList from "@/components/common/song-list/songs-list";

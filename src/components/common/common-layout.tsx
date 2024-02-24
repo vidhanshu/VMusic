@@ -18,7 +18,7 @@ import type NSMusic from "@/music";
 import CustomBreadcrumbs from "./custom-breadcrumbs";
 import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 import { useSearchParams } from "next/navigation";
-import { getSongById } from "@/actions";
+import { getSongById } from "@/actions/saavn";
 import { toast } from "sonner";
 import useKeyControls from "@/hooks/use-key-controls";
 

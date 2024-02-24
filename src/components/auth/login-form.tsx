@@ -16,6 +16,9 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInSchema } from "@/zod-schemas/auth";
+// import { signInAction } from "@/actions";
+import { toast } from "sonner";
+import { signIn } from "next-auth/react";
 
 export default function LoginForm() {
   const {
@@ -30,15 +33,20 @@ export default function LoginForm() {
     resolver: zodResolver(SignInSchema),
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof SignInSchema>> = ({
-    password,
-    email,
-  }) => {
-    console.log(password, email);
+  const onSubmit: SubmitHandler<z.infer<typeof SignInSchema>> = async (val) => {
+    // const { error, message } = await signInAction(val);
+    // if (error) {
+    //   toast.error(message);
+    // } else {
+    //   toast.success(message);
+    // }
   };
 
   return (
-    <Card className="w-[500px] bg-primary-800 p-8 shadow-md">
+    <Card className="relative w-[500px] bg-primary-800 p-8 shadow-md">
+      <div className="absolute inset-x-0 top-0 text-center bg-success px-2 py-1 text-sm text-white">
+        Only google sign in works for now!
+      </div>
       <CardHeader className="block space-y-4">
         <Logo withName className="mx-auto w-fit" />
         <div className="flex items-center  gap-x-4">
@@ -102,6 +110,11 @@ export default function LoginForm() {
       <Divider />
       <CardFooter className="items-center gap-x-4">
         <Button
+          onClick={async () => {
+            await signIn("google", {
+              callbackUrl: window.location.href,
+            });
+          }}
           fullWidth
           className="bg-primary-500"
           startContent={

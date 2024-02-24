@@ -1,6 +1,6 @@
 import LoginForm from "@/components/auth/login-form";
 
-const SignInPage = () => {
+const SignInPage = async () => {
   return (
     <div>
       <LoginForm />

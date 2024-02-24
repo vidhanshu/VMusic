@@ -38,7 +38,10 @@ export default function SignupForm() {
   };
 
   return (
-    <Card className="w-[500px] bg-primary-800 p-8 shadow-md">
+    <Card className="w-[500px] bg-primary-800 p-8 shadow-md relative">
+      <div className="absolute inset-x-0 top-0 text-center bg-success px-2 py-1 text-sm text-white">
+        Only google sign in works for now!
+      </div>
       <CardHeader className="block space-y-4">
         <Logo withName className="mx-auto w-fit" />
         <div className="flex items-center  gap-x-4">

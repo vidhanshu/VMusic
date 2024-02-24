@@ -27,6 +27,7 @@ const MusicContext = createContext<NSMusic.IMusicContext>({
       albums: [],
       songs: [],
     },
+    likedSongIdsMap: {},
   },
   setData: () => {},
   queue: {
@@ -40,6 +41,8 @@ const MusicContext = createContext<NSMusic.IMusicContext>({
   addToQueue: () => false,
   removeFromQueye: () => false,
   inQueueMap: {},
+  likedSongIdsMap: {},
+  setLikedSongsIdsMap: () => {},
 });
 
 export default MusicContext;

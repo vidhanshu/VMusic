@@ -1,4 +1,6 @@
 import { type Metadata } from "next";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import React, { type PropsWithChildren } from "react";
 
 export const metadata: Metadata = {
@@ -8,9 +10,16 @@ export const metadata: Metadata = {
   },
   description: "VMusic",
 };
-const AuthLayout = ({ children }: PropsWithChildren) => {
+const AuthLayout = async ({ children }: PropsWithChildren) => {
+  const session = await getServerSession();
+
+  if (session) {
+    return redirect("/");
+  }
   return (
-    <div className="flex h-screen items-center justify-center">{children}</div>
+    <div className="flex h-screen items-center justify-center">
+      {children}
+    </div>
   );
 };
 

@@ -1,5 +1,6 @@
 import ROUTES from "@/routes";
 import type NSMusic from "@/music";
+import { Song } from "@prisma/client";
 
 export const getMusicUrl = (downloadUrl?: NSMusic.IMusic["downloadUrl"]) => {
   if (!downloadUrl) return "";
@@ -13,6 +14,49 @@ export const getMusicUrl = (downloadUrl?: NSMusic.IMusic["downloadUrl"]) => {
     ""
   );
 };
+export const getMusicImageUrl = (image?: NSMusic.IMusic["image"]) => {
+  if (!image) return "";
+
+  return (
+    image?.[4]?.link ??
+    image?.[3]?.link ??
+    image?.[2]?.link ??
+    image?.[1]?.link ??
+    image?.[0]?.link ??
+    ""
+  );
+};
+
+export const getSongFromLikedSong = (song: Song) => ({
+  ...song,
+  explicitContent: 0,
+  copyright: "",
+  image: [
+    {
+      quality: "",
+      link: song.image,
+    },
+  ],
+  downloadUrl: [
+    {
+      quality: "",
+      link: song.downloadUrl,
+    },
+  ],
+  hasLyrics: false,
+  url: "",
+  title: song.title ?? "",
+  type: "song",
+  duration: song.duration ?? "0",
+  label: song.label ?? "",
+  primaryArtists: song.primaryArtists ?? "",
+  primaryArtistsId: song.primaryArtistsId ?? "",
+  year: song.year ?? "",
+  featuredArtists: song.featuredArtists ?? "",
+  featuredArtistsId: song.featuredArtistsId ?? "",
+  playCount: song.playCount ?? "0",
+  language: song.language ?? "",
+});
 
 export const downloadSong = (downloadUrl: string) => {
   if (!!downloadUrl) {
@@ -34,10 +78,13 @@ export const getArtistAndArtistIdArray = (
   artists?: string,
   artistsId?: string,
 ) => {
-  if(!artists || !artistsId) return ([] as NSMusic.IArtist[]);
-  
+  if (!artists || !artistsId) return [] as NSMusic.IArtist[];
+
   const artistMeta = [];
-  const ARTISTS = decodeHTML(artists)?.split(",").map((artist) => artist.trim()) ?? [];
+  const ARTISTS =
+    decodeHTML(artists)
+      ?.split(",")
+      .map((artist) => artist.trim()) ?? [];
   const ARTISTS_ID =
     artistsId?.split(",").map((artistId) => artistId.trim()) ?? [];
 

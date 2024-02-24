@@ -7,6 +7,7 @@ import MusicContext from "./music-context";
 import { useLocalStorage } from "usehooks-ts";
 
 import type NSMusic from "@/music";
+import getLikedSongIds from "@/actions/backend/get-liked-song-ids";
 
 const MusicContextProvider = ({ children }: PropsWithChildren) => {
   // to store the last playing music
@@ -43,6 +44,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
           albums: [],
           songs: [],
         },
+        likedSongIdsMap: {},
       },
     });
 
@@ -51,7 +53,13 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
   };
 
   const setData = (data: NSMusic.IMusicProviderState["data"]) => {
-    setCurrentMusicDetails((prev) => ({ ...prev, data }));
+    setCurrentMusicDetails((prev) => ({
+      ...prev,
+      data: {
+        ...data,
+        likedSongIdsMap: prev.data.likedSongIdsMap,
+      },
+    }));
   };
 
   const setQueue = (queue: {
@@ -98,6 +106,19 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     return false;
   };
 
+  const setLikedSongsIdsMap = (id: string) => {
+    setCurrentMusicDetails((prev) => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        likedSongIdsMap: {
+          ...prev.data.likedSongIdsMap,
+          [id]: true,
+        },
+      },
+    }));
+  };
+
   useEffect(() => {
     const newInQueueMap: Record<string, boolean> = {};
     currentMusicDetails.queue.songs.forEach((song) => {
@@ -112,6 +133,25 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
       queue: currentMusicDetails.queue,
     }));
   }, [currentMusicDetails.queue]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    getLikedSongIds().then((res) => {
+      if (!res.error) {
+        const likedMap: Record<string, boolean> = {};
+        res.data.map((id) => {
+          likedMap[id] = true;
+        });
+        setCurrentMusicDetails((prev) => ({
+          ...prev,
+          data: {
+            ...prev.data,
+            likedSongIdsMap: likedMap,
+          },
+        }));
+      }
+    });
+  }, []);
 
   return (
     <MusicContext.Provider
@@ -138,6 +178,9 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
         addToQueue,
         removeFromQueye,
         inQueueMap,
+
+        likedSongIdsMap: currentMusicDetails.data.likedSongIdsMap ?? {},
+        setLikedSongsIdsMap,
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import { getHomeData } from "@/actions";
+import { getHomeData } from "@/actions/saavn";
 import CommonLayout from "@/components/common/common-layout";
 import { Suspense } from "react";
 
@@ -13,6 +13,7 @@ const MainLayout = async ({ children }: React.PropsWithChildren) => {
           topCharts: data?.charts ?? [],
           topArtists: [],
           topPlaylists: data?.playlists ?? [],
+          likedSongIdsMap: {},
           trending: {
             songs: data?.trending?.songs ?? [],
             albums: data?.trending?.albums ?? [],

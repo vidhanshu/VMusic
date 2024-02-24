@@ -134,6 +134,10 @@ namespace NSMusic {
     // local storage
     localMusic: ILocalStorageMusic;
     setLocalMusic: React.Dispatch<React.SetStateAction<ILocalStorageMusic>>;
+
+    // liked songs
+    likedSongIdsMap: Record<string, boolean>;
+    setLikedSongsIdsMap: (id: string) => void;
   }
 
   interface ILocalStorageMusic {
@@ -161,6 +165,7 @@ namespace NSMusic {
       topCharts: IChart[];
       topPlaylists: IPlaylist[];
       topArtists: IArtist[];
+      likedSongIdsMap: Record<string, boolean>;
       trending: {
         songs: IMusic[];
         albums: IAlbum[];

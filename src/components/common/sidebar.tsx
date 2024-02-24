@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion as m } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { Button, cn } from "@nextui-org/react";
-import { ChevronRight, X, type LucideIcon } from "lucide-react";
+import { ChevronRight, X, type LucideIcon, LogOut } from "lucide-react";
 
 import Logo from "./Logo";
 import Typography from "./Typography";
@@ -14,12 +14,14 @@ import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-pla
 import { SIDEBAR_MENU } from "@/utils/common";
 import { SIDEBAR_ANIMATION } from "@/utils/common";
 import { setDocumentOverflow } from "@/utils/common";
+import { signOut, useSession } from "next-auth/react";
 
 const Sidebar = ({
   setSidebar,
 }: {
   setSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const { status } = useSession();
   const { isRightSidebarOpen } = useAudioPlayerContext();
 
   return (
@@ -83,16 +85,28 @@ const Sidebar = ({
         </div>
       </div>
       <div className="w-full px-4">
-        <Button
-          href="/sign-in"
-          as={Link}
-          endContent={<ChevronRight size={16} />}
-          fullWidth
-          variant="bordered"
-          className="border-primary-100 text-white"
-        >
-          Login
-        </Button>
+        {status === "authenticated" ? (
+          <Button
+            onClick={() => signOut()}
+            endContent={<LogOut size={16} />}
+            fullWidth
+            variant="bordered"
+            className="border-primary-100 text-white"
+          >
+            Sign out
+          </Button>
+        ) : (
+          <Button
+            href="/sign-in"
+            as={Link}
+            endContent={<ChevronRight size={16} />}
+            fullWidth
+            variant="bordered"
+            className="border-primary-100 text-white"
+          >
+            Login
+          </Button>
+        )}
       </div>
     </m.aside>
   );

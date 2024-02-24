@@ -77,7 +77,6 @@ const SongQueueModal = () => {
 
       <Modal
         size="4xl"
-        isDismissable={false}
         backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}

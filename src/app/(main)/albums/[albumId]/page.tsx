@@ -1,7 +1,7 @@
 import SongsList from "@/components/common/song-list/songs-list";
 import DetailPageHeader from "@/components/common/detail-page-header";
 
-import { getAlbumById } from "@/actions";
+import { getAlbumById } from "@/actions/saavn";
 import { decodeHTML, getArtistName } from "@/utils/common";
 import { type Metadata, type ResolvingMetadata } from "next";
 

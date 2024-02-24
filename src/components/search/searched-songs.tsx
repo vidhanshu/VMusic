@@ -6,7 +6,7 @@ import SearchedSongsList from "./song-list/searched-songs-list";
 
 import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 
-import { getSongById } from "@/actions";
+import { getSongById } from "@/actions/saavn";
 
 import type NSMusic from "@/music";
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
- 
+
 import { motion as m } from "framer-motion";
 import { ListMusic, Play, Share2, X } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
@@ -14,7 +14,7 @@ import AudioPlayer, { type IAudioPlayerProps } from "./audio-player";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
-import { RIGHT_SONG_PLAYER_ANIMATION } from "@/utils/common";
+import { RIGHT_SONG_PLAYER_ANIMATION, getMusicImageUrl } from "@/utils/common";
 import { decodeHTML, getArtistName, getLinkByQueueType } from "@/utils/common";
 import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 import { useCopyToClipboard } from "usehooks-ts";
@@ -114,7 +114,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
         </div>
         <img
           className="mx-auto aspect-square h-auto w-[200px] rounded-lg object-cover md:w-[300px]"
-          src={currentMusic?.image?.[2]?.link ?? "/vmusic.svg"}
+          src={getMusicImageUrl(currentMusic?.image) ?? "/vmusic.svg"}
           width={300}
           height={300}
           alt="music image"

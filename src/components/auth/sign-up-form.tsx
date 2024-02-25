@@ -29,7 +29,7 @@ export default function SignupForm() {
     },
     resolver: zodResolver(SignInSchema),
   });
-  // eslint-disable-next-line
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const onSubmit: SubmitHandler<z.infer<typeof SignInSchema>> = ({
     password,
     email,

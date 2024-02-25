@@ -12,8 +12,8 @@ import Typography from "@/components/common/Typography";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import Link from "next/link";
-import { type SubmitHandler, useForm } from "react-hook-form";
-import * as z from "zod";
+import { useForm } from "react-hook-form";
+import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInSchema } from "@/zod-schemas/auth";
 
@@ -29,16 +29,10 @@ export default function SignupForm() {
     },
     resolver: zodResolver(SignInSchema),
   });
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const onSubmit: SubmitHandler<z.infer<typeof SignInSchema>> = ({
-    password,
-    email,
-  }) => {
-  };
 
   return (
-    <Card className="w-[500px] bg-primary-800 p-8 shadow-md relative">
-      <div className="absolute inset-x-0 top-0 text-center bg-success px-2 py-1 text-sm text-white">
+    <Card className="relative w-[500px] bg-primary-800 p-8 shadow-md">
+      <div className="absolute inset-x-0 top-0 bg-success px-2 py-1 text-center text-sm text-white">
         Only google sign in works for now!
       </div>
       <CardHeader className="block space-y-4">
@@ -54,7 +48,13 @@ export default function SignupForm() {
         </div>
       </CardHeader>
       <CardBody>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 py-8">
+        <form
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+          onSubmit={handleSubmit(function () {
+            console.log("Hello world!")
+          })}
+          className="space-y-6 py-8"
+        >
           <div className="flex flex-col gap-1">
             <label htmlFor="email-sign-in">Email</label>
             <input

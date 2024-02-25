@@ -29,12 +29,11 @@ export default function SignupForm() {
     },
     resolver: zodResolver(SignInSchema),
   });
-
+  // eslint-disable-next-line
   const onSubmit: SubmitHandler<z.infer<typeof SignInSchema>> = ({
     password,
     email,
   }) => {
-    console.log(password, email);
   };
 
   return (

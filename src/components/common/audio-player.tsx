@@ -307,7 +307,6 @@ export const StartTime = ({
 export const LikeButton = ({ isMobile }: { isMobile: boolean }) => {
   const { setLikedSongsIdsMap, currentMusic, likedSongIdsMap } =
     useMusicContext();
-  console.log("<LIKESONG_IDS>", likedSongIdsMap);
   const [liked, setLiked] = useState(
     currentMusic?.id ? likedSongIdsMap[currentMusic.id] : false,
   );

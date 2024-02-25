@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import AudioPlayerContextProvider from "@/contexts/audio-player-context/audio-player-context-provider";
 import NextAuthSessionProvider from "@/components/auth/session-provider";
+import PrintLogo from "@/components/common/print-logo";
 
 export const metadata = {
   metadataBase: "http://localhost:3000",
@@ -37,6 +38,7 @@ export default function RootLayout({
         <Toaster />
         <Analytics />
         <SpeedInsights />
+        <PrintLogo/>
       </body>
     </html>
   );

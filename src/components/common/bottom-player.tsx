@@ -36,7 +36,7 @@ const BottomPlayer = () => {
         {isRightSidebarOpen && (
           <m.div
             {...RIGHT_SONG_PLAYER_ANIMATION}
-            className="fixed right-0 top-[73px] z-[51]"
+            className="fixed right-0 top-0 z-[51]"
           >
             <RightSideBar
               volume={volume}

@@ -43,6 +43,7 @@ const MusicContext = createContext<NSMusic.IMusicContext>({
   inQueueMap: {},
   likedSongIdsMap: {},
   setLikedSongsIdsMap: () => {},
+  unsetLikedSongsIdsMap: () => {},
 });
 
 export default MusicContext;

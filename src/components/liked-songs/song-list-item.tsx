@@ -1,7 +1,6 @@
 "use client";
 
-import { motion as m } from "framer-motion";
-import { HeartOff, Minus, Pause, Play, Share2 } from "lucide-react";
+import { HeartOff, Pause, Play, Share2 } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
@@ -18,15 +17,13 @@ import { toast } from "sonner";
 import React from "react";
 import RenderArtistsAsLinks from "../common/render-artists-as-link";
 import { Song } from "@prisma/client";
-import NSMusic from "@/music";
+import { useSession } from "next-auth/react";
 
 export const LikedSongListItem = ({
   song,
-  idx,
   showShareSongButton = true,
   handleUnLike,
   showDuration = true,
-  animate = true,
 }: {
   song: Song;
   idx: number;
@@ -42,7 +39,6 @@ export const LikedSongListItem = ({
 
   const isCurrentSongPlaying = currentMusic?.id === song.id;
   const inQ = inQueueMap[song.id];
-  const Component = animate ? m.div : "div";
 
   const handlePlay = async () => {
     if (isCurrentSongPlaying) {
@@ -52,7 +48,7 @@ export const LikedSongListItem = ({
     playThisSong(getSongFromLikedSong(song));
   };
   return (
-    <Component
+    <div
       {...SONG_LIST_ITEM_ANIMATION}
       className={cn(
         "group flex grid-cols-2 justify-between rounded-md bg-primary-500 p-2 md:grid",
@@ -154,6 +150,6 @@ export const LikedSongListItem = ({
           )}
         </div>
       </div>
-    </Component>
+    </div>
   );
 };

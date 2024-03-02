@@ -119,6 +119,19 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     }));
   };
 
+  const unsetLikedSongsIdsMap = (id: string) => {
+    setCurrentMusicDetails((prev) => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        likedSongIdsMap: {
+          ...prev.data.likedSongIdsMap,
+          [id]: false,
+        },
+      },
+    }));
+  };
+
   useEffect(() => {
     const newInQueueMap: Record<string, boolean> = {};
     currentMusicDetails.queue.songs.forEach((song) => {
@@ -134,7 +147,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     }));
   }, [currentMusicDetails.queue]);
 
-  useEffect(() => {
+  const refetchLikedSongs = () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getLikedSongIds().then((res) => {
       if (!res.error) {
@@ -151,6 +164,10 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
         }));
       }
     });
+  };
+
+  useEffect(() => {
+    refetchLikedSongs();
   }, []);
 
   return (
@@ -181,6 +198,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
 
         likedSongIdsMap: currentMusicDetails.data.likedSongIdsMap ?? {},
         setLikedSongsIdsMap,
+        unsetLikedSongsIdsMap,
       }}
     >
       {children}

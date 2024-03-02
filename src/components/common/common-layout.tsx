@@ -63,6 +63,7 @@ const CommonLayout = ({
   useEffect(() => {
     if (!songId) return;
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getSongById(songId)
       .then((songs) => {
         const song = songs?.[0];
@@ -99,7 +100,7 @@ const CommonLayout = ({
         color="success"
         isIconOnly
         radius="full"
-        className="fixed bottom-4 right-4 text-white md:hidden"
+        className="fixed bottom-4 right-4 z-[51] text-white md:hidden"
       />
     </main>
   );

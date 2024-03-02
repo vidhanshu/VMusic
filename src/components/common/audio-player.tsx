@@ -305,8 +305,12 @@ export const StartTime = ({
 };
 
 export const LikeButton = ({ isMobile }: { isMobile: boolean }) => {
-  const { setLikedSongsIdsMap, currentMusic, likedSongIdsMap } =
-    useMusicContext();
+  const {
+    setLikedSongsIdsMap,
+    currentMusic,
+    likedSongIdsMap,
+    unsetLikedSongsIdsMap,
+  } = useMusicContext();
   const [liked, setLiked] = useState(
     currentMusic?.id ? likedSongIdsMap[currentMusic.id] : false,
   );
@@ -319,10 +323,26 @@ export const LikeButton = ({ isMobile }: { isMobile: boolean }) => {
 
   const handleLikeUnlike = async () => {
     if (currentMusic) {
-      setLiked((prev) => !prev);
+      setLiked((prev) => {
+        const current = !prev;
+        if (current) {
+          setLikedSongsIdsMap(currentMusic.id);
+        } else {
+          unsetLikedSongsIdsMap(currentMusic.id);
+        }
+        return current;
+      });
       const { error, message } = await LikeUnlikeSong(currentMusic);
       if (error) {
-        setLiked((prev) => !prev);
+        setLiked((prev) => {
+          const current = !prev;
+          if (current) {
+            setLikedSongsIdsMap(currentMusic.id);
+          } else {
+            unsetLikedSongsIdsMap(currentMusic.id);
+          }
+          return current;
+        });
         toast.error(message);
       } else {
         toast.success(message);

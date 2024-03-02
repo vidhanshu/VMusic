@@ -9,21 +9,21 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 import SongListSkeleton from "../common/song-list/song-list-skeleton";
 
-const LikedSongs = () => {
-  const { currentMusic } = useMusicContext();
+const LikedSongs = ({ userId }: { userId?: string }) => {
+  const { likedSongIdsMap, currentMusic } = useMusicContext();
   const { togglePlay, playThisSong } = useAudioPlayerContext();
   const [songs, setSongs] = useState<Song[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getLikedSongs()
+    getLikedSongs(userId)
       .then((res) => {
         if (!res.error) {
           setSongs(res.data);
         }
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [likedSongIdsMap, userId]);
 
   const handleSongClick = (idx: number, id: string) => {
     const isCurrentSongPlaying = currentMusic?.id === id;

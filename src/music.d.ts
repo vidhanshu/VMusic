@@ -138,6 +138,7 @@ namespace NSMusic {
     // liked songs
     likedSongIdsMap: Record<string, boolean>;
     setLikedSongsIdsMap: (id: string) => void;
+    unsetLikedSongsIdsMap: (id: string) => void;
   }
 
   interface ILocalStorageMusic {

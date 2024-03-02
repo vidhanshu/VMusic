@@ -42,7 +42,7 @@ const RightSideBar = (props: IAudioPlayerProps) => {
       className={cn(
         "h-[calc(100vh-65px-73px)] bg-background/90 p-4 shadow-md backdrop-blur-md md:w-fit md:border-l-[2px] md:border-primary-500",
         "w-screen",
-        isRightSidebarOpen && "h-[calc(100vh-73px)]",
+        isRightSidebarOpen && "h-screen",
       )}
     >
       <div className="flex justify-between">

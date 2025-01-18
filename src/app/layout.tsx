@@ -17,7 +17,19 @@ export const metadata = {
     default: "VMusic",
   },
   description: "VMusic - Music streaming platform built with Next.js",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  generator: "Next.js",
+  manifest: "/manifest.json",
+  keywords: ["spotify", "vmusic", "music app", "songs", "music streaming"],
+  authors: [
+    {
+      name: "imvinojanv",
+      url: "https://www.linkedin.com/in/imvinojanv/",
+    },
+  ],
+  icons: [
+    { rel: "apple-touch-icon", url: "/vmusic-512x512.png" },
+    { rel: "icon", url: "/favicon.ico" },
+  ],
 };
 
 export default function RootLayout({

@@ -166,7 +166,12 @@ export const songToMusicTransform = (song: Song): NSMusic.IMusic => {
     explicitContent: song.explicitContent,
     hasLyrics: song.hasLyrics,
     duration: song.duration,
-    image: [],
+    image: [
+      {
+        quality: "500x500",
+        url: song.image,
+      },
+    ],
     label: song.label,
     language: song.language,
     lyricsId: song.lyricsId,
@@ -185,7 +190,12 @@ export const songToMusicTransform = (song: Song): NSMusic.IMusic => {
       featured: [],
     },
     copyright: song.copyright,
-    downloadUrl: [],
+    downloadUrl: [
+      {
+        quality: "72kbps",
+        url: song.downloadUrl,
+      },
+    ],
   };
   return music;
 };

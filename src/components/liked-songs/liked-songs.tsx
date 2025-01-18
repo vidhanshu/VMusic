@@ -41,6 +41,7 @@ const LikedSongs = ({ userId }: { userId?: string }) => {
         <SongListSkeleton />
       ) : (
         songs.map((song, idx) => {
+          console.log(song);
           return (
             <SongListItem
               key={idx}

@@ -1,16 +1,21 @@
- 
 import { Download, Pause, Play } from "lucide-react";
 import { Button, Tooltip, cn } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
 
-import { downloadSong, getArtistName, getMusicUrl } from "@/utils/common";
+import {
+  downloadSong,
+  getArtistsNames,
+  getMusicImageUrl,
+  getMusicUrl,
+} from "@/utils/common";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import type NSMusic from "@/music";
 import { useMediaQuery } from "usehooks-ts";
 import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
+import Image from "next/image";
 
 export const SongListItem = ({
   song,
@@ -25,8 +30,11 @@ export const SongListItem = ({
   const { currentMusic } = useMusicContext();
   const { isPlaying } = useAudioPlayerContext();
 
-  const artists = getArtistName(song.primaryArtists ?? "Unknown");
+  const artists = song.artists
+    ? getArtistsNames(song.artists)
+    : song.primaryArtists;
   const isCurrentSongPlaying = currentMusic?.id === song.id;
+
   return (
     <div
       className={cn(
@@ -70,9 +78,9 @@ export const SongListItem = ({
         </Tooltip>
 
         <div className="flex gap-x-2">
-          <img
+          <Image
             className="rounded-sm object-cover"
-            src={song.image?.[0]?.link ?? "/vmusic.svg"}
+            src={getMusicImageUrl(song.image)}
             width={50}
             height={50}
             alt={song.name ?? song.title}

@@ -9,12 +9,16 @@ import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-pla
 import { getSongById } from "@/actions/saavn";
 
 import type NSMusic from "@/music";
+import useMusicContext from "@/contexts/music-context/use-music-context";
 
 const SearchedSongs = ({ songs }: { songs: NSMusic.IMusic[] }) => {
-  const { setIsPlaying, playThisSong } = useAudioPlayerContext();
-  
+  const { setIsPlaying, playThisSong, togglePlay } = useAudioPlayerContext();
+  const { currentMusic } = useMusicContext();
+
   const handleSongClick = async (idx: number) => {
     const song = await getSongById(songs[idx]?.id ?? "");
+    if (currentMusic?.id === song?.[0]?.id) return togglePlay();
+
     if (song?.length && song?.[0]) {
       playThisSong(song[0]);
       setIsPlaying(true);

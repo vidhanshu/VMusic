@@ -15,7 +15,7 @@ import AudioPlayer, { type IAudioPlayerProps } from "./audio-player";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
 import { RIGHT_SONG_PLAYER_ANIMATION, getMusicImageUrl } from "@/utils/common";
-import { decodeHTML, getArtistName, getLinkByQueueType } from "@/utils/common";
+import { decodeHTML, getLinkByQueueType } from "@/utils/common";
 import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 import { useCopyToClipboard } from "usehooks-ts";
 import { toast } from "sonner";
@@ -101,13 +101,16 @@ const RightSideBar = (props: IAudioPlayerProps) => {
             variant="T_Regular_H7"
             color="secondary"
           >
-            {!currentMusic?.primaryArtists &&
-            !currentMusic?.primaryArtistsId ? (
+            {!currentMusic?.artists?.all ? (
               "Unknown"
             ) : (
               <RenderArtistsAsLinks
-                artists={currentMusic?.primaryArtists ?? ""}
-                artistsIds={currentMusic?.primaryArtistsId ?? ""}
+                artists={currentMusic?.artists.all
+                  .map(({ name }) => name)
+                  .join(", ")}
+                artistsIds={currentMusic?.artists.all
+                  .map(({ id }) => id)
+                  .join(", ")}
               />
             )}
           </Typography>
@@ -130,8 +133,8 @@ const RightSideBar = (props: IAudioPlayerProps) => {
           onClick={nextSong}
           className="mt-4 flex justify-between gap-x-4 p-8"
           endContent={<Play size={16} className="text-black dark:text-white" />}
-          artist={getArtistName(NEXT_SONG?.primaryArtists) ?? "Unknown artist"}
-          image={NEXT_SONG?.image?.[0]?.link}
+          artist={NEXT_SONG?.artists?.primary?.[0]?.name ?? "Unknown artist"}
+          image={getMusicImageUrl(NEXT_SONG?.image)}
           name={NEXT_SONG?.name}
         />
       </div>

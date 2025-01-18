@@ -3,7 +3,7 @@
 import { getServerSession } from "next-auth";
 import { getUserByEmail } from "..";
 import { db } from "@/server/db";
-import { Song } from "@prisma/client";
+import type { Song } from "@prisma/client";
 
 export default async function getLikedSongs(userId?: string): Promise<{
   error: boolean;

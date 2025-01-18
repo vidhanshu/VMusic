@@ -71,7 +71,6 @@ const SongsList = ({
           type,
         });
       }
-
       playThisSong(songList[idx]!);
     }
   };
@@ -79,8 +78,8 @@ const SongsList = ({
   const handlePageChange = async (num: number) => {
     setLoading(true);
     const data = await getSongsByArtistId(params.artistId, num);
-    setsongList(data?.results ?? []);
-    setQueue({ songs: data?.results ?? [] });
+    setsongList(data?.songs ?? []);
+    setQueue({ songs: data?.songs ?? [] });
     setPagination((prev) => ({ ...prev, page: num }));
     setLoading(false);
   };
@@ -161,7 +160,7 @@ const SongsList = ({
           <Pagination
             onChange={handlePageChange}
             className="mt-4"
-            total={Math.floor(customPagination.total / 10)}
+            total={Math.floor(customPagination.total / 10) - 1}
             initialPage={1}
             page={pagination.page}
           />

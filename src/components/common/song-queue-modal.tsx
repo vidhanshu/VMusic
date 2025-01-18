@@ -22,12 +22,12 @@ import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-pla
 
 const SongQueueModal = () => {
   const {
-    queue: { songs, activeIndex },
+    queue: { songs },
     currentMusic,
     setQueue,
   } = useMusicContext();
   const { togglePlay, playThisSong } = useAudioPlayerContext();
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleSongClick = (idx: number, id: string) => {
     const isCurrentSongPlaying = currentMusic?.id === id;

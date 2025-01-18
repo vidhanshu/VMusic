@@ -9,11 +9,9 @@ interface ReturnType {
     copyright: string;
   };
 }
-const getLyricsById = async (
-  id: string,
-): Promise<ReturnType["data"]> => {
+const getLyricsById = async (id: string): Promise<ReturnType["data"]> => {
   try {
-    const data = await fetch(`${BASE_API_URL}/lyrics?id=${id}`, {
+    const data = await fetch(`${BASE_API_URL}/songs/${id}/lyrics`, {
       next: { revalidate: REVALIDATE },
     });
     const json = (await data.json()) as ReturnType;

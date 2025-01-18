@@ -20,6 +20,7 @@ const useKeyControls = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDownEvents);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 

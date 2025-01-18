@@ -5,7 +5,6 @@ import NeedAuthToAccess from "@/components/auth/need-auth-to-access";
 import Typography from "@/components/common/Typography";
 import { Button } from "@nextui-org/react";
 import { Heart, Share2 } from "lucide-react";
-import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";

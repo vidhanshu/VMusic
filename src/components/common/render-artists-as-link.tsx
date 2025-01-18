@@ -5,15 +5,13 @@ import { cn } from "@nextui-org/react";
 import ROUTES from "@/routes";
 import { getArtistAndArtistIdArray } from "@/utils/common";
 
-import type NSMusic from "@/music";
-
 const RenderArtistsAsLinks = ({
   artists,
   artistsIds,
   className,
 }: {
-  artists: NSMusic.IMusic["primaryArtists"];
-  artistsIds: NSMusic.IMusic["primaryArtistsId"];
+  artists: string;
+  artistsIds: string;
   className?: string;
 }) => {
   if (typeof artists === "string" && typeof artistsIds === "string") {

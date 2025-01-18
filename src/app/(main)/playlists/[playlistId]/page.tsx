@@ -3,7 +3,7 @@ import DetailPageHeader from "@/components/common/detail-page-header";
 import { type Metadata, type ResolvingMetadata } from "next";
 
 import { getPlaylistById } from "@/actions/saavn";
-import { decodeHTML } from "@/utils/common";
+import { decodeHTML, getMusicImageUrl } from "@/utils/common";
 
 export async function generateMetadata(
   { params }: { params: { playlistId: string } },
@@ -15,7 +15,7 @@ export async function generateMetadata(
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images ?? [];
 
-  const currentImage = playlist?.image?.[1]?.link ?? "/vmusic.svg";
+  const currentImage = getMusicImageUrl(playlist?.image) ?? "/vmusic.svg";
 
   return {
     title: decodeHTML(playlist?.name ?? "Unknown Playlist"),
@@ -41,10 +41,9 @@ const PlaylistIdPage = async ({
     <div>
       <DetailPageHeader
         id={data?.id}
-        image={data?.image?.[2]?.link}
+        image={getMusicImageUrl(data?.image)}
         name={data?.name}
         year={data?.type}
-        followers={data?.followerCount}
         songCount={data?.songCount ?? "0"}
         songs={data?.songs ?? []}
       />

@@ -16,6 +16,8 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 import {
   BOTTOM_PLAYER_ANIMATION,
   RIGHT_SONG_PLAYER_ANIMATION,
+  getArtistIdsString,
+  getArtistsNames,
   getMusicImageUrl,
 } from "@/utils/common";
 import { decodeHTML, getLinkByQueueType } from "@/utils/common";
@@ -109,8 +111,16 @@ const BottomPlayer = () => {
                       color="secondary"
                     >
                       <RenderArtistsAsLinks
-                        artists={currentMusic?.primaryArtists ?? ""}
-                        artistsIds={currentMusic?.primaryArtistsId ?? ""}
+                        artists={
+                          currentMusic?.artists
+                            ? getArtistsNames(currentMusic?.artists)
+                            : ""
+                        }
+                        artistsIds={
+                          currentMusic?.artists
+                            ? getArtistIdsString(currentMusic?.artists)
+                            : ""
+                        }
                       />
                     </Typography>
                   </div>

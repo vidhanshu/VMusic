@@ -1,8 +1,13 @@
 "use server";
 
-import NSMusic from "@/music";
-import { getMusicImageUrl, getMusicUrl } from "@/utils/common";
-import { Song } from "@prisma/client";
+import type NSMusic from "@/music";
+import {
+  getArtistIdsString,
+  getArtistsNames,
+  getMusicImageUrl,
+  getMusicUrl,
+} from "@/utils/common";
+import type { Song } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { getUserByEmail } from "..";
 import { db } from "@/server/db";
@@ -42,30 +47,26 @@ export default async function LikeUnlikeSong(song: NSMusic.IMusic) {
       id: song.id,
       downloadUrl: getMusicUrl(song.downloadUrl),
       image: getMusicImageUrl(song.image),
-      duration: song.duration,
-      year: song.year,
+      duration: song.duration?.toString() ?? null,
+      year: song.year.toString(),
       hasLyrics: !!song.hasLyrics,
-      playCount: song.playCount?.toString(),
-      featuredArtists: song.featuredArtists,
+      playCount: song.playCount?.toString() ?? null,
       releaseDate: song.releaseDate,
       language: song.language,
       label: song.label,
       name: song.name,
-      title: song.title ?? null,
+      title: song.name,
       type: song.type,
       userId: user.id,
       albumId: song.album?.id ?? null,
-      featuredArtistsId:
-        typeof song.featuredArtistsId === "string"
-          ? song.featuredArtistsId
-          : null,
-      primaryArtistsId:
-        typeof song.primaryArtistsId === "string"
-          ? song.primaryArtistsId
-          : null,
-      primaryArtists:
-        typeof song.primaryArtists === "string" ? song.primaryArtists : null,
+      primaryArtistsId: getArtistIdsString(song.artists),
+      primaryArtists: getArtistsNames(song?.artists),
+      copyright: song.copyright,
+      explicitContent: song.explicitContent,
+      lyricsId: song.lyricsId,
+      url: song.url,
     };
+
     await db.song.create({ data });
     return {
       error: false,

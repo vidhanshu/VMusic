@@ -9,6 +9,7 @@ import useMusicContext from "@/contexts/music-context/use-music-context";
 import type NSMusic from "@/music";
 import ROUTES from "@/routes";
 import Link from "next/link";
+import { getMusicImageUrl } from "@/utils/common";
 
 const TrendingAlbums = ({
   albums,
@@ -27,6 +28,8 @@ const TrendingAlbums = ({
 
   const ALBUMS = albums ?? trending.albums;
 
+  if (!ALBUMS) return null;
+
   return (
     <div className="py-6">
       {showHeader && (
@@ -43,7 +46,7 @@ const TrendingAlbums = ({
             <AlbumPlaylistCard
               href={`${ROUTES.ALBUMS}/${item.id}`}
               name={item.name}
-              image={item.image?.[1]?.link}
+              image={getMusicImageUrl(item.image)}
               key={idx}
             />
           ))}
@@ -55,7 +58,7 @@ const TrendingAlbums = ({
               <AlbumPlaylistCard
                 href={`${ROUTES.ALBUMS}/${item.id}`}
                 name={item.name}
-                image={item.image?.[1]?.link}
+                image={getMusicImageUrl(item.image)}
                 key={idx}
               />
             ))}

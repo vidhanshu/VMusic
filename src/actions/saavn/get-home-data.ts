@@ -1,7 +1,10 @@
+/* eslint-disable */
+
 "use server";
 
 import type NSMusic from "@/music";
-import { BASE_API_URL, REVALIDATE } from "@/utils/common";
+import { BASE_API_URL } from "@/utils/common";
+import axios from "axios";
 
 interface ReturnType {
   data: {
@@ -16,16 +19,27 @@ interface ReturnType {
 }
 const getHomeData = async () => {
   try {
-    const data = await fetch(
-      `${BASE_API_URL}/modules?language=hindi,english,punjabi`,
-      {
-        next: {
-          // revalidate every 12 hours
-          revalidate: REVALIDATE,
+    const [latestPlaylists, latestAlbums, topPlaylists, trendingAlbums] =
+      await Promise.all([
+        axios(`${BASE_API_URL}/search/playlists?query=hindi`),
+        axios(`${BASE_API_URL}/search/albums?query=latest`),
+        axios(`${BASE_API_URL}/search/playlists?query=top`),
+        axios(
+          `${BASE_API_URL}/search/albums?query=${new Date().getFullYear()}`,
+        ),
+      ]);
+
+    const json: { data: ReturnType["data"] } = {
+      data: {
+        playlists: latestPlaylists.data.data.results,
+        charts: topPlaylists.data.data.results,
+        albums: latestAlbums.data.data.results,
+        trending: {
+          songs: [],
+          albums: trendingAlbums.data.data.results,
         },
       },
-    );
-    const json = (await data.json()) as { data: ReturnType["data"] };
+    };
     return json.data ?? null;
   } catch (error) {
     return {} as ReturnType["data"];

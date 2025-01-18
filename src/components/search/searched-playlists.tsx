@@ -6,6 +6,7 @@ import { ScrollShadow } from "@nextui-org/react";
 import AlbumPlaylistCard from "@/components/discover/album-playlist-card";
 
 import type NSMusic from "@/music";
+import { getMusicImageUrl } from "@/utils/common";
 
 const SearchedPlaylists = ({
   playlists,
@@ -20,8 +21,8 @@ const SearchedPlaylists = ({
           {playlists.map((item, idx) => (
             <AlbumPlaylistCard
               href={`/playlists/${item.id}/#`}
-              name={item.title}
-              image={item.image?.[1]?.link}
+              name={item.name ?? item.title}
+              image={getMusicImageUrl(item.image)}
               key={idx}
             />
           ))}

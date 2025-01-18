@@ -2,19 +2,17 @@
 
 import axios from "axios";
 import { Download } from "lucide-react";
-import React, { PropsWithChildren, useState } from "react";
+import React, { type PropsWithChildren, useState } from "react";
 import { Button, CircularProgress, Tooltip } from "@nextui-org/react";
 
-import { getMusicUrl } from "@/utils/common";
+import { getArtistsNames, getMusicUrl } from "@/utils/common";
 
 import type NSMusic from "@/music";
-import { useMediaQuery } from "usehooks-ts";
 
 const SongDownloader = ({
   song,
   children,
 }: { song: NSMusic.IMusic } & PropsWithChildren) => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
   const [downloading, setDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
 
@@ -34,11 +32,7 @@ const SongDownloader = ({
       .then((response) => {
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(response.data);
-        link.download = `${song.name}-${
-          song.primaryArtists instanceof Array
-            ? song.primaryArtists.join(", ")
-            : song.primaryArtists
-        }`;
+        link.download = `${song.name}-${getArtistsNames(song.artists)}`;
         link.click();
       })
       .catch((error) => {

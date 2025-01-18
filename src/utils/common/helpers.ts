@@ -1,62 +1,31 @@
 import ROUTES from "@/routes";
 import type NSMusic from "@/music";
-import { Song } from "@prisma/client";
+import type { Song } from "@prisma/client";
 
 export const getMusicUrl = (downloadUrl?: NSMusic.IMusic["downloadUrl"]) => {
   if (!downloadUrl) return "";
 
   return (
-    downloadUrl?.[4]?.link ??
-    downloadUrl?.[3]?.link ??
-    downloadUrl?.[2]?.link ??
-    downloadUrl?.[1]?.link ??
-    downloadUrl?.[0]?.link ??
+    downloadUrl?.[4]?.url ??
+    downloadUrl?.[3]?.url ??
+    downloadUrl?.[2]?.url ??
+    downloadUrl?.[1]?.url ??
+    downloadUrl?.[0]?.url ??
     ""
   );
 };
 export const getMusicImageUrl = (image?: NSMusic.IMusic["image"]) => {
-  if (!image) return "";
+  if (!image) return "/vmusic.svg";
 
   return (
-    image?.[4]?.link ??
-    image?.[3]?.link ??
-    image?.[2]?.link ??
-    image?.[1]?.link ??
-    image?.[0]?.link ??
+    image?.[4]?.url ??
+    image?.[3]?.url ??
+    image?.[2]?.url ??
+    image?.[1]?.url ??
+    image?.[0]?.url ??
     ""
   );
 };
-
-export const getSongFromLikedSong = (song: Song) => ({
-  ...song,
-  explicitContent: 0,
-  copyright: "",
-  image: [
-    {
-      quality: "",
-      link: song.image,
-    },
-  ],
-  downloadUrl: [
-    {
-      quality: "",
-      link: song.downloadUrl,
-    },
-  ],
-  hasLyrics: false,
-  url: "",
-  title: song.title ?? "",
-  type: "song",
-  duration: song.duration ?? "0",
-  label: song.label ?? "",
-  primaryArtists: song.primaryArtists ?? "",
-  primaryArtistsId: song.primaryArtistsId ?? "",
-  year: song.year ?? "",
-  featuredArtists: song.featuredArtists ?? "",
-  featuredArtistsId: song.featuredArtistsId ?? "",
-  playCount: song.playCount ?? "0",
-  language: song.language ?? "",
-});
 
 export const downloadSong = (downloadUrl: string) => {
   if (!!downloadUrl) {
@@ -124,6 +93,24 @@ export function getArtistName(artist: string | NSMusic.IArtist[] | undefined) {
   return artist instanceof Array ? artist.join(", ") : artist;
 }
 
+export const getDummyArtistByIdAndName = ({
+  id,
+  name,
+}: {
+  id: string;
+  name: string;
+}) => ({ id, name, role: "singer", image: [], type: "artist", url: "" });
+
+export const getArtistsNames = (artists: NSMusic.IMusic["artists"]) => {
+  if (!artists) return "Unknown Artist";
+  return artists.all.map(({ name }) => name).join(", ");
+};
+
+export const getArtistIdsString = (artist: NSMusic.IMusic["artists"]) => {
+  if (!artist) return "";
+  return artist.all.map(({ id }) => id).join(", ");
+};
+
 export function getLinkByQueueType(
   type: "album" | "playlist" | "artist",
   id: string,
@@ -168,4 +155,37 @@ export const isAudioPlaying = (audio: HTMLAudioElement) => {
     );
   }
   return false;
+};
+
+export const songToMusicTransform = (song: Song): NSMusic.IMusic => {
+  const names = song.primaryArtists?.split(", ") ?? [];
+  const ids = song.primaryArtistsId?.split(", ") ?? [];
+
+  const music: NSMusic.IMusic = {
+    id: song.id,
+    explicitContent: song.explicitContent,
+    hasLyrics: song.hasLyrics,
+    duration: song.duration,
+    image: [],
+    label: song.label,
+    language: song.language,
+    lyricsId: song.lyricsId,
+    name: song.name,
+    playCount: song.playCount,
+    releaseDate: song.releaseDate,
+    type: song.type,
+    url: song.url,
+    year: song.year,
+    album: song.albumId ? { id: song.albumId, name: "", url: "" } : undefined,
+    artists: {
+      all: names.map((name, idx) =>
+        getDummyArtistByIdAndName({ name, id: ids[idx]! }),
+      ),
+      primary: [],
+      featured: [],
+    },
+    copyright: song.copyright,
+    downloadUrl: [],
+  };
+  return music;
 };

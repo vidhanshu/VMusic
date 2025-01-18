@@ -54,25 +54,28 @@ model VerificationToken {
 }
 
 model Song {
-    id                String   @id @default(cuid())
-    name              String
-    title             String?
-    type              String?
-    albumId           String?
-    year              String
-    releaseDate       String?
-    duration          String?
-    label             String?
-    primaryArtists    String?
-    primaryArtistsId  String?
-    featuredArtists   String?
-    featuredArtistsId String?
-    playCount         String?
-    language          String?
-    hasLyrics         Boolean?
-    image             String
-    downloadUrl       String
+    id               String   @id @default(cuid())
+    name             String
+    title            String?
+    type             String?
+    albumId          String?
+    year             String
+    releaseDate      String?
+    duration         String?
+    label            String?
+    primaryArtists   String?
+    primaryArtistsId String?
+    playCount        String?
+    language         String?
+    hasLyrics        Boolean?
+    image            String
+    downloadUrl      String
+    explicitContent  Boolean
+    lyricsId         String?
+    url              String
+    copyright        String?
+
     // 
-    user              User?    @relation(fields: [userId], references: [id])
-    userId            String?
+    user   User?   @relation(fields: [userId], references: [id])
+    userId String?
 }

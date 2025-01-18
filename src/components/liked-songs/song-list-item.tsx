@@ -7,7 +7,7 @@ import Typography from "@/components/common/Typography";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
-import { formattedTime, getSongFromLikedSong } from "@/utils/common";
+import { formattedTime, songToMusicTransform } from "@/utils/common";
 import { SONG_LIST_ITEM_ANIMATION } from "@/utils/common";
 import { decodeHTML } from "@/utils/common";
 
@@ -17,7 +17,6 @@ import { toast } from "sonner";
 import React from "react";
 import RenderArtistsAsLinks from "../common/render-artists-as-link";
 import { Song } from "@prisma/client";
-import { useSession } from "next-auth/react";
 
 export const LikedSongListItem = ({
   song,
@@ -45,8 +44,9 @@ export const LikedSongListItem = ({
       setIsPlaying(false);
       return;
     }
-    playThisSong(getSongFromLikedSong(song));
+    playThisSong(songToMusicTransform(song));
   };
+
   return (
     <div
       {...SONG_LIST_ITEM_ANIMATION}

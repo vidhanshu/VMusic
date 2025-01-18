@@ -3,105 +3,112 @@
 namespace NSMusic {
   interface IImageSong {
     quality: string;
-    link: string;
+    url: string;
   }
 
   interface IMusic {
     id: string;
     name: string;
     title?: string;
-    type: string;
+    type: string | null;
+    year: string;
+    releaseDate: string | null;
+    duration: string | null;
+    label: string | null;
+    explicitContent: boolean;
+    playCount: string | null;
+    language: string | null;
+    hasLyrics: boolean | null;
+    lyricsId: string | null;
+    url: string;
+    copyright: string | null;
     album?: {
       id: string;
       name: string;
       url: string;
     };
-    year: string;
-    releaseDate: null | string;
-    duration: string;
-    label: string;
-    primaryArtists: string | IArtist[];
-    primaryArtistsId?: string;
-    featuredArtists: string;
-    featuredArtistsId?: string | IArtist[];
-    explicitContent: number;
-    playCount: string | number;
-    language: string;
-    hasLyrics: boolean | string;
-    url: string;
-    copyright: string;
+    artists: {
+      primary: IArtist[];
+      featured: IArtist[];
+      all: IArtist[];
+    };
     image: IImageSong[];
-    downloadUrl?: IImageSong[];
+    downloadUrl: IImageSong[];
+    primaryArtists?: string;
   }
 
   interface IAlbum {
     id: string;
     name: string;
-    title?: string;
-    year: string;
+    title?: title;
+    description: string;
     type: string;
-    playCount: string;
-    language: string;
-    explicitContent: string;
+    year: string;
+    playCount: string | null;
+    language: string | null;
+    explicitContent: boolean;
     url: string;
-    primaryArtists: IArtist[] | string;
-    primaryArtistsId?: string;
-    songCount?: string;
-    featuredArtists: IArtist[];
-    artists: IArtist[];
+    songCount: string;
+    artists: {
+      primary: IArtist[];
+      featured: IArtist[];
+      all: IArtist[];
+    };
     image: IImageSong[];
-    songs: [];
+    songs: IMusic[];
   }
 
   interface IPlaylist {
     id: string;
-    userId: string;
-    title: string;
-    name?: string;
-    subtitle: string;
+    name: string;
+    title?: string;
+    description: string;
     type: string;
-    image: IImageSong[];
+    year: null | string;
+    playCount: null | string;
+    language: null | string;
+    explicitContent: boolean;
     url: string;
-    songCount: string;
-    firstname: string;
-    followerCount: string;
-    lastUpdated: string;
-    explicitContent: string;
-    songs?: IMusic[];
+    songCount: string | null;
+    artists: IArtist[];
+    image: IImageSong[];
+    songs: IMusic[];
   }
 
-  type IChart = { language: string } & Omit<
-    IPlaylist,
-    "songCount" | "userId" | "followerCount" | "lastUpdated"
-  >;
+  type IChart = IPlaylist;
 
   interface IArtist {
     id: string;
     name: string;
     title?: string;
-    url: string;
     role: string;
     image: IImageSong[];
-    isRadioPresent: boolean;
+    type: string;
+    url: string;
   }
 
   interface IDetailedArtist {
     id: string;
     name: string;
     url: string;
-    image: IImageSong[];
-    followerCount: string;
+    type: string;
+    followerCount: number;
     fanCount: string;
-    isVerified: true;
+    isVerified: boolean;
     dominantLanguage: string;
     dominantType: string;
-    bio: [];
-    dob: string;
-    fb: string;
-    twitter: string;
-    wiki: string;
+    bio: string[];
+    dob: string | null;
+    fb: string | null;
+    twitter: string | null;
+    wiki: string | null;
     availableLanguages: string[];
-    isRadioPresent: true;
+    isRadioPresent: boolean;
+    image: IImageSong[];
+    topSongs: IMusic[];
+    topAlbums: IAlbum[];
+    singles: IMusic[];
+    similarArtists: IArtist[];
   }
 
   interface IMusicContext {
@@ -124,7 +131,7 @@ namespace NSMusic {
       type?: "artist" | "album" | "playlist";
     }) => void;
     addToQueue: (song: IMusic) => boolean;
-    removeFromQueye: (songId: string) => boolean;
+    removeFromQueue: (songId: string) => boolean;
     inQueueMap: Record<string, boolean>;
 
     // home page stuffs

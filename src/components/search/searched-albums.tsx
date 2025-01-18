@@ -6,6 +6,7 @@ import AlbumPlaylistCard from "@/components/discover/album-playlist-card";
 
 import type NSMusic from "@/music";
 import ROUTES from "@/routes";
+import { getMusicImageUrl } from "@/utils/common";
 
 const SearchedAlbums = ({ albums }: { albums: NSMusic.IAlbum[] }) => {
   return (
@@ -16,8 +17,8 @@ const SearchedAlbums = ({ albums }: { albums: NSMusic.IAlbum[] }) => {
           {albums.map((item, idx) => (
             <AlbumPlaylistCard
               href={`${ROUTES.ALBUMS}/${item.id}`}
-              name={item?.title ?? item.name}
-              image={item.image?.[1]?.link}
+              name={item?.name ?? item.title}
+              image={getMusicImageUrl(item.image)}
               key={idx}
             />
           ))}

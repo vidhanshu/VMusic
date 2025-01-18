@@ -30,7 +30,6 @@ interface IDetailPageHeaderProps {
   artistsId?: string;
   year?: string;
   songCount: string;
-  followers?: string;
   isAlbumHeader?: boolean;
   songs: NSMusic.IMusic[];
 }
@@ -41,7 +40,6 @@ const DetailPageHeader = ({
   year,
   songCount,
   artistsId,
-  followers,
   id: originalListId,
   songs: ORIGINAL_SONGS,
   isAlbumHeader = false,
@@ -164,18 +162,22 @@ const DetailPageHeader = ({
             >
               {isAlbumHeader ? (
                 <>
-                  <RenderArtistsAsLinks
-                    artists={artists ?? ""}
-                    artistsIds={artistsId}
-                  />{" "}
-                  . {year}
+                  {artists?.length && (
+                    <>
+                      {
+                        <RenderArtistsAsLinks
+                          artists={artists ?? ""}
+                          artistsIds={artistsId ?? ""}
+                        />
+                      }
+                      {" . "}
+                    </>
+                  )}
+                  {year}
+                  {" . "}
                 </>
-              ) : isNaN(Number(followers)) ? (
-                0
-              ) : (
-                `${getShortNumberRepresentation(Number(followers))} followers`
-              )}{" "}
-              . {songCount} song(s)
+              ) : null}{" "}
+              {songCount} song(s)
             </Typography>
             <div className="flex items-center justify-center gap-x-4 md:justify-normal">
               <Tooltip content="Play/Pause">

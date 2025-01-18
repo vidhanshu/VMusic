@@ -35,10 +35,10 @@ export default function RootLayout({
             </AudioPlayerContextProvider>
           </MusicContextProvider>
         </Providers>
-        <Toaster />
+        <Toaster position="top-right" duration={2000} />
         <Analytics />
         <SpeedInsights />
-        <PrintLogo/>
+        <PrintLogo />
       </body>
     </html>
   );

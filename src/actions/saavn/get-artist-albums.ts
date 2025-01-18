@@ -7,7 +7,7 @@ interface ReturnType {
   data: {
     total: number;
     lastPage: boolean;
-    results: NSMusic.IAlbum[];
+    albums: NSMusic.IAlbum[];
   };
 }
 const getAlbumsByArtistId = async (

@@ -7,7 +7,7 @@ export default async function search(
   keyword: string,
 ): Promise<NSMusic.ISearchAllType> {
   try {
-    const data = await fetch(`${BASE_API_URL}/search/all?query=${keyword}`);
+    const data = await fetch(`${BASE_API_URL}/search?query=${keyword}`);
     const response = (await data.json()) as { data: NSMusic.ISearchAllType };
     return response.data;
   } catch (error) {

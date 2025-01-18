@@ -7,6 +7,7 @@ import AlbumPlaylistCard from "./album-playlist-card";
 import useMusicContext from "@/contexts/music-context/use-music-context";
 import ROUTES from "@/routes";
 import Link from "next/link";
+import { getMusicImageUrl } from "@/utils/common";
 
 const LatestReleases = () => {
   const {
@@ -28,7 +29,7 @@ const LatestReleases = () => {
               <AlbumPlaylistCard
                 href={`${ROUTES.ALBUMS}/${item.id}`}
                 name={item.name}
-                image={item.image?.[1]?.link}
+                image={getMusicImageUrl(item.image)}
                 key={idx}
               />
             ))}

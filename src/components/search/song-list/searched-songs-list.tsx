@@ -17,6 +17,7 @@ import ROUTES from "@/routes";
 
 import type NSMusic from "@/music";
 import AlbumPlaylistCard from "@/components/discover/album-playlist-card";
+import { getMusicImageUrl } from "@/utils/common";
 
 const SearchedSongsList = ({
   songs,
@@ -77,8 +78,8 @@ const SearchedSongsList = ({
             return (
               <Link key={idx} href={`${ROUTES.ARTISTS}/${song.id}`}>
                 <ArtistListItem
-                  name={song.title}
-                  image={song.image?.[0]?.link}
+                  name={song.name ?? song.title}
+                  image={getMusicImageUrl(song.image)}
                 />
               </Link>
             );
@@ -86,8 +87,8 @@ const SearchedSongsList = ({
             return (
               <AlbumPlaylistCard
                 href={`${ROUTES.ALBUMS}/${song.id}`}
-                name={song?.title ?? song.name}
-                image={song.image?.[1]?.link}
+                name={song.name ?? song.title}
+                image={getMusicImageUrl(song.image)}
                 key={idx}
               />
             );
@@ -96,8 +97,8 @@ const SearchedSongsList = ({
             return (
               <AlbumPlaylistCard
                 href={`${ROUTES.PLAYLISTS}/${song.id}`}
-                name={song?.title ?? song.name}
-                image={song.image?.[1]?.link}
+                name={song.name ?? song.title}
+                image={getMusicImageUrl(song.image)}
                 key={idx}
               />
             );

@@ -37,7 +37,6 @@ import { useCopyToClipboard, useMediaQuery } from "usehooks-ts";
 import useAudioPlayerContext from "@/contexts/audio-player-context/use-audio-player-context";
 import { toast } from "sonner";
 import LikeUnlikeSong from "@/actions/backend/like-unlike-song";
-import NSMusic from "@/music";
 
 export interface IAudioPlayerProps {
   isSideBarPlayer?: boolean;
@@ -136,9 +135,11 @@ const AudioPlayer = ({
                   <Typography variant="T_Bold_H3">
                     {lyrics.data?.snippet}
                   </Typography>
-                  <Typography variant="T_Regular_H6">
-                    {lyrics.data?.lyrics}
-                  </Typography>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: lyrics.data?.lyrics ?? "",
+                    }}
+                  />
                   <Typography color="secondary" variant="T_Regular_H8">
                     {lyrics.data?.copyright}
                   </Typography>
@@ -604,7 +605,7 @@ export const HiddenAudioElement = ({
       ref={audioRef}
       onTimeUpdate={(a) => {
         const timestamp = a.currentTarget;
-        const duration = Number(currentMusic?.duration) || 0;
+        const duration = Number(currentMusic?.duration) ?? 0;
         const percentage = (timestamp.currentTime / duration) * 100;
         setSongProgress(percentage);
       }}

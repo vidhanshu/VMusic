@@ -39,7 +39,7 @@ const MusicContext = createContext<NSMusic.IMusicContext>({
   },
   setQueue: () => {},
   addToQueue: () => false,
-  removeFromQueye: () => false,
+  removeFromQueue: () => false,
   inQueueMap: {},
   likedSongIdsMap: {},
   setLikedSongsIdsMap: () => {},

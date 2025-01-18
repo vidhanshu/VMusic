@@ -17,7 +17,6 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInSchema } from "@/zod-schemas/auth";
 // import { signInAction } from "@/actions";
-import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 
 export default function LoginForm() {
@@ -33,7 +32,7 @@ export default function LoginForm() {
     resolver: zodResolver(SignInSchema),
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof SignInSchema>> = async (val) => {
+  const onSubmit: SubmitHandler<z.infer<typeof SignInSchema>> = async () => {
     // const { error, message } = await signInAction(val);
     // if (error) {
     //   toast.error(message);
@@ -44,7 +43,7 @@ export default function LoginForm() {
 
   return (
     <Card className="relative w-[500px] bg-primary-800 p-8 shadow-md">
-      <div className="absolute inset-x-0 top-0 text-center bg-success px-2 py-1 text-sm text-white">
+      <div className="absolute inset-x-0 top-0 bg-success px-2 py-1 text-center text-sm text-white">
         Only google sign in works for now!
       </div>
       <CardHeader className="block space-y-4">

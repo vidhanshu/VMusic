@@ -23,7 +23,7 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousTwitterImages = (await parent).twitter?.images ?? [];
 
-  const currentImage = album?.image?.[1]?.link ?? "/vmusic.svg";
+  const currentImage = album?.image?.[1]?.url ?? "/vmusic.svg";
   const title = decodeHTML(album?.name ?? "Unknown Artist") ?? "Unknown Artist";
 
   return {
@@ -51,7 +51,7 @@ const ArtistIdPage = async ({
 
   return (
     <div className="space-y-8">
-      <ArtistHeader songs={songsData?.results ?? []} artist={artistData} />
+      <ArtistHeader songs={songsData?.songs ?? []} artist={artistData} />
       <SongsList
         type="artist"
         pagination={{
@@ -60,12 +60,12 @@ const ArtistIdPage = async ({
         }}
         showPlayCount={false}
         listId={artistId}
-        songs={songsData?.results ?? []}
+        songs={songsData?.songs ?? []}
       />
-      {artistAlbums?.results?.length > 0 && (
+      {artistAlbums?.albums?.length > 0 && (
         <TrendingAlbums
           title={`${artistData?.name}'s Albums`}
-          albums={artistAlbums?.results ?? []}
+          albums={artistAlbums?.albums ?? []}
         />
       )}
     </div>

@@ -128,7 +128,7 @@ const ArtistHeader = ({
             width={250}
             height={250}
             alt="album image"
-            src={image?.[2]?.link ?? "/vmusic.svg"}
+            src={image?.[2]?.url ?? "/vmusic.svg"}
             className="h-auto rounded-md shadow-lg md:min-w-[250px]"
           />
 

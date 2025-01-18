@@ -28,7 +28,11 @@ import RenderArtistsAsLinks from "../render-artists-as-link";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 
-import { formattedTime } from "@/utils/common";
+import {
+  formattedTime,
+  getArtistIdsString,
+  getArtistsNames,
+} from "@/utils/common";
 import { SONG_LIST_ITEM_ANIMATION } from "@/utils/common";
 import { decodeHTML } from "@/utils/common";
 
@@ -42,8 +46,6 @@ import dynamic from "next/dynamic";
 import { toast } from "sonner";
 import React from "react";
 import LikeUnlikeSong from "@/actions/backend/like-unlike-song";
-import { revalidatePath } from "next/cache";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export const SongListItem = ({
@@ -77,7 +79,7 @@ export const SongListItem = ({
   const {
     currentMusic,
     addToQueue,
-    removeFromQueye,
+    removeFromQueue,
     inQueueMap,
     likedSongIdsMap,
     unsetLikedSongsIdsMap,
@@ -149,7 +151,7 @@ export const SongListItem = ({
         <div className="flex gap-x-2">
           <img
             className="h-[50px] w-[50px] rounded-sm object-cover"
-            src={song.image?.[0]?.link ?? "/vmusic.svg"}
+            src={song.image?.[0]?.url ?? "/vmusic.svg"}
             width={50}
             height={50}
             alt={song.name}
@@ -167,8 +169,8 @@ export const SongListItem = ({
               color={!isCurrentSongPlaying ? "secondary" : "primary"}
             >
               <RenderArtistsAsLinks
-                artists={song?.primaryArtists ?? ""}
-                artistsIds={song?.primaryArtistsId ?? ""}
+                artists={getArtistsNames(song.artists)}
+                artistsIds={getArtistIdsString(song.artists)}
               />
             </Typography>
           </div>
@@ -212,7 +214,7 @@ export const SongListItem = ({
                 className={inQ ? "text-white" : ""}
                 onClick={() => {
                   if (!inQ) return;
-                  removeFromQueye(song.id);
+                  removeFromQueue(song.id);
                 }}
                 startContent={<Minus size={16} />}
               />
@@ -284,7 +286,7 @@ export const SongListItem = ({
               inQ,
               song,
               addToQueue: () => addToQueue(song),
-              removeFromQueue: () => removeFromQueye(song.id),
+              removeFromQueue: () => removeFromQueue(song.id),
             })}
           </DropdownMenu>
         </Dropdown>

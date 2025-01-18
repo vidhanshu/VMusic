@@ -2,13 +2,14 @@
 
 import React from "react";
 import Link from "next/link";
- 
+
 import { Button } from "@nextui-org/react";
 
 import Typography from "@/components/common/Typography";
 
 import useMusicContext from "@/contexts/music-context/use-music-context";
 import ROUTES from "@/routes";
+import { getMusicImageUrl } from "@/utils/common";
 
 const TopCharts = () => {
   const {
@@ -23,8 +24,8 @@ const TopCharts = () => {
           <TopChartCard
             key={idx}
             id={item.id}
-            title={item.title}
-            image={item.image?.[1]?.link ?? "/vmusic.svg"}
+            name={item.name}
+            image={getMusicImageUrl(item.image)}
           />
         ))}
       </div>
@@ -36,11 +37,11 @@ export default TopCharts;
 
 export const TopChartCard = ({
   image,
-  title,
+  name,
   id,
 }: {
   image: string;
-  title: string;
+  name: string;
   id: string;
 }) => {
   return (
@@ -61,7 +62,7 @@ export const TopChartCard = ({
         className="flex-grow truncate text-wrap text-left"
         variant="T_Bold_H4"
       >
-        {title}
+        {name}
       </Typography>
     </Button>
   );

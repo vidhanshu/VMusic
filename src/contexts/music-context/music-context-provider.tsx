@@ -91,7 +91,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
     setQueue({ songs: newQueue });
     return true;
   };
-  const removeFromQueye = (songId: string) => {
+  const removeFromQueue = (songId: string) => {
     if (currentMusicDetails.queue.songs.length === 0) {
       return false;
     } else if (
@@ -193,7 +193,7 @@ const MusicContextProvider = ({ children }: PropsWithChildren) => {
         },
         setQueue,
         addToQueue,
-        removeFromQueye,
+        removeFromQueue,
         inQueueMap,
 
         likedSongIdsMap: currentMusicDetails.data.likedSongIdsMap ?? {},
